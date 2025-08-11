@@ -229,8 +229,8 @@ def add_page_footer(page_name: str):
             </div>
         </div>
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem; margin-top: 0.8rem;">
-            <div style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 0.3rem;">{page_name}</div>
-            <div style="font-size: 0.7rem; opacity: 0.5;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
+            <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 0.3rem; font-weight: 600;">{page_name}</div>
+            <div style="font-size: 0.9rem; opacity: 0.7;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
         </div>
     </div>
     """
