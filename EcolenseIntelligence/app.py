@@ -216,9 +216,9 @@ def add_page_footer(page_name: str):
     st.markdown("---")
     
     footer_html = f"""
-    <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%); 
-                padding: 1.5rem 2rem; border-radius: 0; color: white; margin: 2rem -2rem 12rem -2rem; 
-                box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+                    <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%); 
+                            padding: 1.5rem 2rem; border-radius: 0; color: white; margin: 2rem -2rem 12rem -2rem; 
+                            box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; max-width: none;">
         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.8rem;">
             <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.5rem;">🌱</span>
@@ -4265,7 +4265,7 @@ def show_model_card():
             if imp_ts is not None and not imp_ts.empty:
                 col_imp = imp_ts.columns[1]
                 c1.subheader("Permutation Importance")
-                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_perm_{label}")
+                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_perm_{label}_{hash(label)}")
                 
                 # Permutation Importance açıklaması
                 with c1.expander("📊 Permutation Importance Nedir?"):
@@ -4286,7 +4286,7 @@ def show_model_card():
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
                 c2.subheader("Ortalama |SHAP|")
-                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_shap_{label}")
+                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_shap_{label}_{hash(label)}")
                 
                 # SHAP açıklaması
                 with c2.expander("📊 SHAP Değerleri Nedir?"):
@@ -5850,7 +5850,7 @@ def show_driver_sensitivity():
             df.columns = ['feature', 'score']
         df = df.sort_values('score', ascending=True).tail(15)
         col1.subheader("Permutation Importance")
-        col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"perm_imp_{target_norm}")
+                    col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_perm_imp_{target_norm}_{hash(target_norm)}")
     if shapm is not None and not shapm.empty:
         # Kolon isimlerini kontrol et ve standardize et
         if 'feature' in shapm.columns and 'importance' in shapm.columns:
@@ -5862,7 +5862,7 @@ def show_driver_sensitivity():
             df2.columns = ['feature', 'score']
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
-        col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"shap_mean_{target_norm}")
+                    col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_shap_mean_{target_norm}_{hash(target_norm)}")
     # AI Asistan
     try:
         lead = None
