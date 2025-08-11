@@ -230,7 +230,7 @@ def add_page_footer(page_name: str):
         </div>
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem; margin-top: 0.8rem;">
             <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 0.3rem; font-weight: 600;">{page_name}</div>
-            <div style="font-size: 0.9rem; opacity: 0.7;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
+            <div style="font-size: 1.1rem; opacity: 0.8; font-weight: 500;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
         </div>
     </div>
     """
@@ -494,15 +494,15 @@ def load_css():
     }
     .metric-unit {
         color: rgba(255,255,255,0.9);
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         font-weight: 600;
         margin-top: 0.15rem;
     }
-    .metric-sub { color: rgba(255,255,255,0.75) !important; font-size: 0.85rem; margin: 0.1rem 0 0 0; }
+    .metric-sub { color: rgba(255,255,255,0.75) !important; font-size: 1rem; margin: 0.1rem 0 0 0; }
     
     .metric-card p {
         color: rgba(255, 255, 255, 0.8) !important;
-        font-size: 0.9rem;
+        font-size: 1.05rem;
         margin: 0;
         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
