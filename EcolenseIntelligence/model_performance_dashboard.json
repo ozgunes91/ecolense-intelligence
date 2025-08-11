@@ -1,0 +1,100 @@
+{
+  "model_type": "GradientBoosting",
+  "selection_criteria": "A/B Testing Winner + CV R² + Overfitting Control",
+  "train_test_split": "80/20",
+  "cv_folds": 3,
+  "targets": {
+    "Total Waste (Tons)": {
+      "train_r2": 0.9676040916881183,
+      "test_r2": 0.9608463898155585,
+      "cv_r2": 0.9581246608755514,
+      "train_rmse": 2542.2210797618454,
+      "test_rmse": 2910.6227501709764,
+      "train_mae": 1839.460943668841,
+      "test_mae": 2053.04696411787,
+      "mape": 10.231583800809588,
+      "overfitting_score": 0.006983953313932963,
+      "model_params": "{'alpha': 0.9, 'ccp_alpha': 0.0, 'criterion': 'friedman_mse', 'init': None, 'learning_rate': 0.05, 'loss': 'squared_error', 'max_depth': 4, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'n_estimators': 100, 'n_iter_no_change': None, 'random_state': 42, 'subsample': 0.8, 'tol': 0.0001, 'validation_fraction': 0.1, 'verbose': 0, 'warm_start': False}",
+      "feature_importance": {
+        "Category_Waste_Share": 0.9109264522818183,
+        "Population (Million)": 0.01960104388266972,
+        "Category_Economic_Share": 0.01872844725234991,
+        "Waste_Efficiency": 0.012703499720725868,
+        "Waste_Per_Capita_kg": 0.01237863060296131
+      }
+    },
+    "Economic Loss (Million $)": {
+      "train_r2": 0.9679874151262005,
+      "test_r2": 0.9591394410280405,
+      "cv_r2": 0.9567484470284064,
+      "train_rmse": 2594.486198192954,
+      "test_rmse": 3048.1342204694124,
+      "train_mae": 1874.4758041279306,
+      "test_mae": 2169.174721299815,
+      "mape": 10.722674622109015,
+      "overfitting_score": 0.009140587851134961,
+      "model_params": "{'alpha': 0.9, 'ccp_alpha': 0.0, 'criterion': 'friedman_mse', 'init': None, 'learning_rate': 0.05, 'loss': 'squared_error', 'max_depth': 4, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'n_estimators': 100, 'n_iter_no_change': None, 'random_state': 42, 'subsample': 0.8, 'tol': 0.0001, 'validation_fraction': 0.1, 'verbose': 0, 'warm_start': False}",
+      "feature_importance": {
+        "Category_Economic_Share": 0.9193026440501761,
+        "Population (Million)": 0.01819728814655429,
+        "Economic_Loss_Per_Capita_USD": 0.014647311301875857,
+        "GDP_Per_Capita_Proxy": 0.014179390184539472,
+        "Economic_Intensity": 0.01051852111908838
+      }
+    },
+    "Carbon_Footprint_kgCO2e": {
+      "train_r2": 0.9676071647144946,
+      "test_r2": 0.960839291569171,
+      "cv_r2": 0.9581219079805909,
+      "train_rmse": 2542100.5012981715,
+      "test_rmse": 2910886.5748990225,
+      "train_mae": 1839418.9581293887,
+      "test_mae": 2053258.1575293625,
+      "mape": 10.232251096844804,
+      "overfitting_score": 0.006994442912559549,
+      "model_params": "{'alpha': 0.9, 'ccp_alpha': 0.0, 'criterion': 'friedman_mse', 'init': None, 'learning_rate': 0.05, 'loss': 'squared_error', 'max_depth': 4, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'n_estimators': 100, 'n_iter_no_change': None, 'random_state': 42, 'subsample': 0.8, 'tol': 0.0001, 'validation_fraction': 0.1, 'verbose': 0, 'warm_start': False}",
+      "feature_importance": {
+        "Category_Waste_Share": 0.9109263829991018,
+        "Population (Million)": 0.01958434668556068,
+        "Category_Economic_Share": 0.018728429436562742,
+        "Waste_Efficiency": 0.012706327268063995,
+        "Waste_Per_Capita_kg": 0.012333242160317464
+      }
+    }
+  },
+  "average_test_r2": 0.9602750408042566,
+  "average_cv_r2": 0.9576650052948495,
+  "average_overfitting": 0.007706328025875824,
+  "feature_selection": "All engineered features (A/B testing optimized)",
+  "model_details": {
+    "Total Waste (Tons)": "GradientBoostingRegressor - CV R²: 0.9581",
+    "Economic Loss (Million $)": "GradientBoostingRegressor - CV R²: 0.9567",
+    "Carbon_Footprint_kgCO2e": "GradientBoostingRegressor - CV R²: 0.9581"
+  },
+  "data_preprocessing": "Standard scaling, outlier handling",
+  "validation_strategy": "Train-Test Split + Cross-Validation",
+  "hyperparameter_tuning": "A/B testing optimized settings",
+  "ensemble_method": "Gradient Boosting (A/B testing winner)",
+  "performance_summary": {
+    "best_performing_target": "Total Waste (Tons)",
+    "most_challenging_target": "Economic Loss (Million $)",
+    "overall_model_quality": "Good",
+    "generalization_capability": "High",
+    "recommendation": "Production Ready"
+  },
+  "model_interpretability": {
+    "shap_analysis": "Available",
+    "feature_importance": "Computed",
+    "permutation_importance": "Available"
+  },
+  "data_quality": {
+    "total_samples": 5000,
+    "feature_count": 27,
+    "missing_data_handling": "Imputation",
+    "outlier_handling": "Conservative approach",
+    "encoding_method": "Label Encoding"
+  },
+  "created_at": "2025-08-11 18:49:38",
+  "last_updated": "2025-08-11 18:49:38",
+  "version": "3.0"
+}
