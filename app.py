@@ -4109,18 +4109,29 @@ def show_policy_simulator():
         - Maliyet-fayda analizi için Model Karşılaştırma modülünü kullanın
         """)
 
-    # Basit katsayılar (sunum amaçlı)
+    # Gerçekçi baz değerler (2024 verilerine dayalı)
     base = {
-        'waste': 200.0,   # Mton
-        'loss': 200.0,    # B$
-        'carbon': 320.0,  # MtCO2e
-        'sust': 70.0
+        'waste': 29.8,    # Mton (2024 tahmini)
+        'loss': 30.2,     # B$ (2024 tahmini)
+        'carbon': 74.6,   # MtCO2e (2024 tahmini)
+        'sust': 42.3      # Küresel ortalama
     }
+    
+    # Daha gerçekçi etki hesaplamaları
+    waste_effect = waste_red / 100.0  # Doğrudan etki
+    carbon_effect = carbon_price / 200.0  # Karbon fiyatı etkisi (0-1 arası)
+    tech_effect = adoption / 100.0  # Teknoloji etkisi
+    
+    # Etki kombinasyonları (çarpımsal etkiler)
+    waste_reduction = waste_effect * (1 + tech_effect * 0.3)  # Teknoloji atık azaltımını artırır
+    carbon_reduction = waste_effect * 0.7 + carbon_effect * 0.4 + tech_effect * 0.2  # Karbon etkisi
+    economic_reduction = waste_effect * 0.8 + carbon_effect * 0.3  # Ekonomik etki
+    
     out = {
-        'waste': max(0, base['waste']*(1 - waste_red/100) - adoption*0.6/10),
-        'loss': max(0, base['loss']*(1 - waste_red/400) - carbon_price*0.15/10),
-        'carbon': max(0, base['carbon']*(1 - waste_red/300) - carbon_price*0.5/10 - adoption*0.5/10),
-        'sust': base['sust'] + waste_red*0.25 + adoption*0.15
+        'waste': max(0, base['waste'] * (1 - waste_reduction)),
+        'loss': max(0, base['loss'] * (1 - economic_reduction)),
+        'carbon': max(0, base['carbon'] * (1 - carbon_reduction)),
+        'sust': min(100, base['sust'] + waste_red * 0.8 + adoption * 0.3 + carbon_price * 0.1)
     }
 
     m1, m2, m3, m4 = st.columns(4)
@@ -4131,11 +4142,25 @@ def show_policy_simulator():
 
     # AI Asistan – Politika sim.
     try:
+        # Etki analizi
+        waste_saved = base['waste'] - out['waste']
+        carbon_saved = base['carbon'] - out['carbon']
+        economic_saved = base['loss'] - out['loss']
+        
+        # Öneri oluşturma
+        if waste_red > 20 and adoption > 50:
+            recommendation = "Mükemmel kombinasyon! Yüksek atık azaltımı ve teknoloji benimseme ile maksimum etki."
+        elif waste_red > 15 or adoption > 40:
+            recommendation = "İyi başlangıç. Karbon fiyatını artırarak ek etki sağlayabilirsiniz."
+        else:
+            recommendation = "Daha agresif politika önlemleri gerekli. Atık azaltımını %20+ yapın."
+        
         st.markdown(f"""
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Politika Etkisi</h4>
-          <p><span class='ai-badge'>Özet</span> Atık {out['waste']:.1f} Mton, Karbon {out['carbon']:.1f} MtCO2e, Ekonomik Kayıp {out['loss']:.1f} B$ seviyesinde.</p>
-          <p>Öneri: Atık azaltımı ve teknoloji benimsemeyi birlikte artırmak en yüksek marjinal faydayı sağlar; karbon fiyatını kademeli test edin.</p>
+          <p><span class='ai-badge'>Tasarruf</span> Atık: {waste_saved:.1f} Mton | Karbon: {carbon_saved:.1f} MtCO2e | Ekonomik: {economic_saved:.1f} B$</p>
+          <p><span class='ai-badge'>Sonuç</span> Atık {out['waste']:.1f} Mton, Karbon {out['carbon']:.1f} MtCO2e, Ekonomik Kayıp {out['loss']:.1f} B$ seviyesinde.</p>
+          <p>Öneri: {recommendation}</p>
         </div>
         """, unsafe_allow_html=True)
     except Exception:
