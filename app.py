@@ -217,8 +217,8 @@ def add_page_footer(page_name: str):
     
     footer_html = f"""
     <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%); 
-                padding: 1.2rem; border-radius: 15px; color: white; margin: 1.5rem 0 12rem 0; 
-                box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center;">
+                padding: 1.2rem; border-radius: 15px; color: white; margin: 1.5rem 0 2rem 0; 
+                box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center; width: 100%;">
         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
             <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 8px; margin-right: 0.8rem;">
                 <span style="font-size: 1.2rem;">🌱</span>
@@ -234,7 +234,7 @@ def add_page_footer(page_name: str):
         </div>
     </div>
     """
-    st.components.v1.html(footer_html, height=180)
+    st.components.v1.html(footer_html, height=120)
 
 # Renk paleti (Ultra Premium)
 COLORS = {
