@@ -2239,11 +2239,14 @@ def show_story_mode():
     """📖 Story Mode - Premium Data Storytelling Platform"""
     
     # Import storytelling module
-    from storytelling import show_story_mode as show_story_mode_helper
+    from storytelling import show_story_mode
     
     # Load data
     try:
-        df = pd.read_csv('data/ecolense_final_enriched_with_iso.csv')
+        df = load_data(REAL_DATA_PATH, announce=False)
+        if df is None or df.empty:
+            st.error("Veri yüklenemedi.")
+            return
     except Exception as e:
         st.error(f"Veri yüklenemedi: {e}")
         return
@@ -2387,7 +2390,7 @@ def show_story_mode():
                     st.rerun()
     else:
         # Show selected story using storytelling module
-        show_story_mode_helper(df, story_mode)
+        show_story_mode(df, story_mode)
     
     # Sayfa sonu
     add_page_footer("Story Mode")
