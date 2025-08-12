@@ -165,4 +165,4 @@ logs/
 
 # Temporary files
 tmp/
-temp/ 
+temp/ data/ecolense_final_enriched.csv
