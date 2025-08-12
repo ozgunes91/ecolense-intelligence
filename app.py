@@ -4789,6 +4789,7 @@ def show_report_builder():
     
     # Sayfa sonu
     add_page_footer("Rapor Oluşturucu")
+    try:
         lines = [
 
 
