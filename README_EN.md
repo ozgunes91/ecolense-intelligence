@@ -71,9 +71,9 @@
 
 | **Dataset** | **Variables** | **Observations** | **Period** | **Source** |
 |:-------------:|:-------------------:|:-----------------:|:---------:|:----------:|
-| **Global Food Wastage** | 8 | 5002 | 2018-2024 | Kaggle |
-| **Material Footprint** | 32 | 197 | 1990-2021 | OECD |
-| **Merged Data** | 37 | 5001 | 2018-2024 | Inner Join |
+| **Global Food Wastage** | 8 | 5000 | 2018-2024 | Kaggle |
+| **Material Footprint** | 32 | 197 | 1990-2021 | Kaggle |
+| **Merged Data** | 37 | 5000 | 2018-2024 | Inner Join |
 
 </div>
 
@@ -111,10 +111,41 @@ def calculate_sustainability_score(row):
 
 ### 🛠️ **Data Quality Improvements**
 
+#### **📊 Missing Data Analysis and Imputation**
+| **Data Type** | **Missing Count** | **Imputation Method** | **Reason** |
+|:--------------|:---------------|:-------------------|:----------|
+| **Material Footprint** | 2514 observations | Median value | Missing after merge |
+| **Continent/Hemisphere** | 20 countries | Manual assignment | Geographic info missing |
+| **Numeric Values** | Minimal | Median imputation | Data consistency |
+
+#### **🔧 Missing Data Imputation Strategy**
+```python
+# Material Footprint missing values
+footprint_median = merged_df['Material_Footprint_Per_Capita'].median()
+merged_df['Material_Footprint_Per_Capita'].fillna(footprint_median, inplace=True)
+
+# Manual continent assignment
+country_continent_map = {
+    'Turkey': 'Europe', 'USA': 'America', 'Germany': 'Europe',
+    'France': 'Europe', 'UK': 'Europe', 'Italy': 'Europe',
+    'Spain': 'Europe', 'Australia': 'Oceania', 'Indonesia': 'Asia',
+    'India': 'Asia', 'China': 'Asia', 'South Africa': 'Africa',
+    'Japan': 'Asia', 'Brazil': 'America', 'Canada': 'America',
+    'Mexico': 'America', 'Russia': 'Europe', 'South Korea': 'Asia',
+    'Saudi Arabia': 'Asia', 'Argentina': 'America'
+}
+
+# Median for numeric values
+for col in numeric_cols:
+    if merged_df[col].isnull().sum() > 0:
+        median_val = merged_df[col].median()
+        merged_df[col].fillna(median_val, inplace=True)
+```
+
+#### **📈 Other Data Quality Improvements**
 | **Process** | **Method** | **Impact** |
 |:----------|:----------|:---------|
 | **Outliers** | Winsorization (1%-99%) | 15% improvement |
-| **Missing Data** | KNN Imputer + Median | 100% completion |
 | **Categorical Encoding** | Label Encoding | Standardization |
 | **Scaling** | StandardScaler | Model performance |
 
@@ -353,27 +384,57 @@ def calculate_sustainability_score(row):
 - **AI-powered:** Smart recommendations
 - **Real-time:** Instant analysis
 
-### 💡 **Action Recommendations**
+### 💡 **Global Sustainability Insights and Action Recommendations**
+
+#### **🌍 Global Insights**
+
+##### **📊 Social Sustainability**
+One-third of the food produced worldwide is wasted, amounting to 1.3 billion tons of food loss. While household waste is more common in developing countries, supply chain waste occurs throughout developed countries. This situation increases social inequalities and threatens food security. Education and awareness programs are critically important to solve this problem. Additionally, food waste has indirect effects on health systems.
+
+##### **💰 Economic Sustainability**
+Food waste causes an annual economic loss of 1.2 trillion USD. This is a significant burden on the world economy. Through supply chain optimization, 15-20% savings can be achieved. Investments in sustainable food systems provide 25-30% return on investment. Rising food prices and supply-demand imbalance also threaten economic stability.
+
+##### **🌱 Environmental Sustainability**
+Food waste accounts for 8-10% of global greenhouse gas emissions. This is one of the main causes of climate change. 250 km³ of water is used annually for wasted food. 1.4 billion hectares of agricultural land is used solely for food production that will be wasted. This situation reduces biodiversity and creates great pressure on ecosystems.
+
+#### **🎯 Global Goals (2030)**
+
+##### **📈 Social Goals**
+We aim to reduce food waste by 50% by 2030. This aligns with the United Nations Sustainable Development Goal 12.3. We plan to ensure food security for 2 billion people and provide sustainable food education to 1 billion people. We aim to strengthen social justice by reducing inequalities in food access.
+
+##### **💼 Economic Goals**
+We aim to save 600 billion USD by reducing economic losses. We plan to create 10 million new jobs in the sustainable food sector and increase supply chain efficiency by 30%. We aim to attract 500 billion USD in sustainable food investment.
+
+##### **🌿 Environmental Goals**
+We aim to reduce 2.5 gigatons of CO2 emissions from the food sector. We plan to save 125 km³ of water to protect water resources. We aim to save 700 million hectares of land to protect natural areas and transition to a circular economy with an 80% recycling rate.
 
 #### **🏛️ For Policy Makers**
 - **Targeted Policies:** Category-based strategies
 - **Country-Specific:** Regional solutions
 - **Technology Investment:** IoT and blockchain
+- **Regulation:** Food waste laws and standards
+- **Incentive Programs:** Sustainable food production support
 
 #### **🏢 For Business**
 - **Supply Chain:** Optimization
 - **Customer Education:** Awareness raising
 - **Technology Adoption:** Smart systems
+- **Sustainable Business Model:** Circular economy approach
+- **Social Responsibility:** Food banks and donation programs
 
 #### **🏫 For Educational Institutions**
 - **Curriculum Update:** Sustainability-focused
 - **Research Support:** Data-driven studies
 - **Awareness Programs:** Student education
+- **Applied Projects:** Food waste prevention campaigns
+- **International Collaborations:** Global research networks
 
 #### **🌍 For Civil Society**
 - **Awareness Campaigns:** Social consciousness
 - **Volunteer Programs:** Active participation
 - **Monitoring Systems:** Transparency
+- **Community Initiatives:** Local food rescue programs
+- **Social Media:** Digital awareness campaigns
 
 ---
 

@@ -3391,10 +3391,7 @@ def show_target_based_forecasts():
     target = st.selectbox("Hedef", [
         ('Total Waste (Tons)', 'Toplam Atık (ton)', '↓'),
         ('Economic Loss (Million $)', 'Ekonomik Kayıp (M$)', '↓'),
-        ('Carbon_Footprint_kgCO2e', 'Karbon (kgCO2e)', '↓'),
-        ('Waste_Per_Capita_kg', 'Kişi Başına Atık (kg)', '↓'),
-        ('Economic_Loss_Per_Capita_USD', 'Kişi Başına Ekonomik Kayıp (USD)', '↓'),
-        ('Carbon_Per_Capita_kgCO2e', 'Kişi Başına Karbon (kg CO2e)', '↓')
+        ('Carbon_Footprint_kgCO2e', 'Karbon (kgCO2e)', '↓')
     ], format_func=lambda x: x[1], key="tbf_target")
     tcol, tlabel, direction = target
     dfc = preds[preds['Country']==country].sort_values('Year')
@@ -4310,7 +4307,7 @@ def show_model_card():
         st.markdown(f"""
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Metodoloji Özeti</h4>
-          <p><span class='ai-badge'>TS güvenlik</span> Lag/Rolling + expanding-CV + damping/clip; genel durum: {msg}.</p>
+          <p><span class='ai-badge'>Regresyon Modeli</span> Gradient Boosting + Cross-Validation + Overfitting Control; genel durum: {msg}.</p>
           <p>Öneri: CV dağılımını sayfada göster, |Test−CV| yüksek hedeflerde λ/k’yi artır.</p>
         </div>
         """, unsafe_allow_html=True)
