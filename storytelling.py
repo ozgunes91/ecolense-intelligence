@@ -262,20 +262,20 @@ def show_story_mode():
         return
     
     # Hikaye içeriğini göster
-    if story_mode == "🥗 Gıda İsrafı Krizi ve Çözüm Yolları":
+    if story_mode == "🥗 Global Food Waste Crisis & Solutions":
         show_food_waste_story(df)
-    elif story_mode == "💰 Gıda İsrafının Ekonomik Etkileri":
+    elif story_mode == "💰 Economic Impact of Food Waste":
         show_economic_impact_story(df)
-    elif story_mode == "🌍 Gıda İsrafının Çevresel Ayak İzi":
+    elif story_mode == "🌍 Environmental Footprint Analysis":
         show_environmental_impact_story(df)
-    elif story_mode == "🎯 Sürdürülebilir Gıda Sistemleri":
+    elif story_mode == "🎯 Sustainable Food Systems Roadmap":
         show_sustainable_systems_story(df)
-    elif story_mode == "🚀 2030 Gelecek Önerileri ve Stratejiler":
+    elif story_mode == "🚀 2030 Future Strategy & Recommendations":
         show_future_recommendations_story(df)
-    elif story_mode == "📊 Kapsamlı Veri Analizi ve İçgörüler":
+    elif story_mode == "📊 Comprehensive Data Analytics & Insights":
         show_comprehensive_analysis_story(df)
     else:
-        st.warning(f"Bilinmeyen hikaye modu: {story_mode}")
+        st.warning(f"Unknown story mode: {story_mode}")
 
 def show_food_waste_story(df):
     """🥗 Global Food Waste Crisis & Solutions - Premium Jury Edition"""
