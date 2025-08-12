@@ -3943,19 +3943,19 @@ def show_ab_testing():
     
     with col1:
         try:
-            st.image('ab_testing_model_performance.png', caption='Model Performans Karşılaştırması', use_column_width=True)
+            st.image('ab_testing_model_performance.png', caption='Model Performans Karşılaştırması', use_container_width=True)
         except:
             st.warning("Model performans grafiği yüklenemedi")
     
     with col2:
         try:
-            st.image('ab_testing_model_types.png', caption='Model Türleri Karşılaştırması', use_column_width=True)
+            st.image('ab_testing_model_types.png', caption='Model Türleri Karşılaştırması', use_container_width=True)
         except:
             st.warning("Model türleri grafiği yüklenemedi")
     
     # Özellik grupları grafiği
     try:
-        st.image('ab_testing_feature_groups.png', caption='Özellik Grupları Karşılaştırması', use_column_width=True)
+        st.image('ab_testing_feature_groups.png', caption='Özellik Grupları Karşılaştırması', use_container_width=True)
     except:
         st.warning("Özellik grupları grafiği yüklenemedi")
     
