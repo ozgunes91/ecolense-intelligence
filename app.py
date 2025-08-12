@@ -195,7 +195,200 @@ I18N = {
         'STORY_CIRCULAR_ECONOMY': 'Döngüsel Ekonomi Uygulaması',
         'STORY_POLICY_FRAMEWORK': 'Politika Çerçevesi Geliştirme',
         'STORY_TECH_INNOVATION': 'Teknoloji İnovasyon Yatırımı',
-        'STORY_GLOBAL_COLLABORATION': 'Küresel İşbirliği Ağları'
+        'STORY_GLOBAL_COLLABORATION': 'Küresel İşbirliği Ağları',
+        # Ana sayfa metinleri
+        'HOME_WELCOME_TITLE': 'Hoş Geldiniz, Sürdürülebilirlik Kahramanı!',
+        'HOME_WELCOME_DESC': 'Ecolense Intelligence ile sürdürülebilir bir gelecek inşa ediyoruz. Bu ultra premium dashboard, yapay zeka destekli analizlerle size güçlü içgörüler sunuyor.',
+        'HOME_PREMIUM_FEATURES': 'PREMIUM ÖZELLİKLER',
+        'HOME_QUICK_ACCESS': 'HIZLI ERİŞİM',
+        'HOME_TARGET_FORECASTS': 'Hedef Bazlı Tahminler',
+        'HOME_TARGET_FORECASTS_DESC': 'Özel hedeflere göre tahmin',
+        'HOME_ADVANCED_ANALYSIS': 'Gelişmiş Analizler',
+        'HOME_ADVANCED_ANALYSIS_DESC': 'SHAP, korelasyon, 3D görselleştirme',
+        'HOME_FUTURE_FORECASTS': 'Gelecek Tahminleri',
+        'HOME_FUTURE_FORECASTS_DESC': '2024–2030 projeksiyonlar',
+        'HOME_AI_ASSISTANT': 'AI Asistan',
+        'HOME_AI_ASSISTANT_DESC': 'Akıllı öneriler ve içgörüler',
+        'HOME_RISK_OPPORTUNITY': 'Risk & Fırsat Radar',
+        'HOME_RISK_OPPORTUNITY_DESC': 'Ülkeleri 2×2 eksende konumlandır',
+        'HOME_MODEL_CARD': 'Model Kartı',
+        'HOME_MODEL_CARD_DESC': 'Metodoloji ve performans özeti',
+        'HOME_DATA_ANALYSIS': 'Veri Analizi',
+        'HOME_MODEL_PERFORMANCE': 'Model Performansı',
+        'HOME_FUTURE_FORECASTS_BTN': 'Gelecek Tahminleri',
+        'HOME_AI_TIP': 'İpucu',
+        'HOME_AI_WELCOME_TIP': 'KPI kartları 2018–2024 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
+        'HOME_AI_WELCOME_SUGGESTION': 'Öneri: Önce Veri Analizi → sonra Model Performansı → ardından Gelecek Tahminleri ile ülke seçip AI Insights\'a göz at.',
+        'HOME_FOOTER_COPYRIGHT': '© 2024 Ecolense. Tüm hakları saklıdır. | Gıda israfı analizi ve sürdürülebilirlik çözümleri',
+        'HOME_FOOTER_SUBTITLE': 'Sürdürülebilir Gıda Analizi Platformu',
+        # Veri analizi sayfası metinleri
+        'DATA_ANALYSIS_TITLE': '📊 VERİ ANALİZİ',
+        'DATA_ANALYSIS_DESC': 'Kapsamlı veri analizi ve görselleştirme',
+        'DATA_OVERVIEW': 'Veri Genel Bakış',
+        'DATA_TOTAL_RECORDS': 'Toplam Kayıt',
+        'DATA_COUNTRIES': 'Ülke Sayısı',
+        'DATA_YEARS': 'Yıl Aralığı',
+        'DATA_MISSING_VALUES': 'Eksik Değerler',
+        'DATA_DUPLICATES': 'Tekrarlanan Kayıtlar',
+        'DATA_DATA_QUALITY': 'Veri Kalitesi',
+        'DATA_DATA_QUALITY_DESC': 'Veri kalitesi analizi ve temizlik',
+        'DATA_DISTRIBUTION': 'Dağılım Analizi',
+        'DATA_CORRELATION': 'Korelasyon Analizi',
+        'DATA_TREND_ANALYSIS': 'Trend Analizi',
+        'DATA_OUTLIER_DETECTION': 'Aykırı Değer Tespiti',
+        'DATA_SUMMARY_STATS': 'Özet İstatistikler',
+        'DATA_VISUALIZATIONS': 'Görselleştirmeler',
+        'DATA_LOADING': 'Veri yükleniyor...',
+        'DATA_ERROR': 'Veri yüklenirken hata oluştu',
+        'DATA_NO_DATA': 'Veri bulunamadı',
+        # Model performansı sayfası metinleri
+        'MODEL_PERF_TITLE': '🤖 MODEL PERFORMANSI',
+        'MODEL_PERF_DESC': 'Makine öğrenmesi modellerinin performans analizi',
+        'MODEL_PERF_OVERVIEW': 'Model Genel Bakış',
+        'MODEL_PERF_METRICS': 'Performans Metrikleri',
+        'MODEL_PERF_R2_SCORE': 'R² Skoru',
+        'MODEL_PERF_MAE': 'Ortalama Mutlak Hata',
+        'MODEL_PERF_RMSE': 'Kök Ortalama Kare Hata',
+        'MODEL_PERF_CV_SCORE': 'Çapraz Doğrulama Skoru',
+        'MODEL_PERF_BEST_MODEL': 'En İyi Model',
+        'MODEL_PERF_MODEL_COMPARISON': 'Model Karşılaştırması',
+        'MODEL_PERF_FEATURE_IMPORTANCE': 'Özellik Önem Sırası',
+        'MODEL_PERF_LOADING': 'Model performansı yükleniyor...',
+        'MODEL_PERF_ERROR': 'Model performansı yüklenirken hata oluştu',
+        # Gelecek tahminleri sayfası metinleri
+        'FORECASTS_TITLE': '🔮 GELECEK TAHMİNLERİ',
+        'FORECASTS_DESC': '2024-2030 yılları için tahminler',
+        'FORECASTS_SELECT_COUNTRY': 'Ülke Seçin',
+        'FORECASTS_SELECT_METRIC': 'Metrik Seçin',
+        'FORECASTS_TOTAL_WASTE': 'Toplam Atık (Ton)',
+        'FORECASTS_ECONOMIC_LOSS': 'Ekonomik Kayıp (Milyon $)',
+        'FORECASTS_CARBON_FOOTPRINT': 'Karbon Ayak İzi (kg CO2e)',
+        'FORECASTS_SUSTAINABILITY_SCORE': 'Sürdürülebilirlik Skoru',
+        'FORECASTS_FORECAST_CHART': 'Tahmin Grafiği',
+        'FORECASTS_CONFIDENCE_INTERVAL': 'Güven Aralığı',
+        'FORECASTS_LOADING': 'Tahminler yükleniyor...',
+        'FORECASTS_ERROR': 'Tahminler yüklenirken hata oluştu',
+        # Politika simülatörü sayfası metinleri
+        'POLICY_TITLE': '🛠️ POLİTİKA SİMÜLATÖRÜ',
+        'POLICY_DESC': 'Politika müdahalelerinin etkisini simüle edin',
+        'POLICY_WASTE_REDUCTION': 'Atık Azaltımı (%)',
+        'POLICY_CARBON_PRICE': 'Karbon Fiyatı ($/ton)',
+        'POLICY_TECH_ADOPTION': 'Teknoloji Benimseme (%)',
+        'POLICY_SIMULATE': 'Simüle Et',
+        'POLICY_RESULTS': 'Simülasyon Sonuçları',
+        'POLICY_IMPACT_ANALYSIS': 'Etki Analizi',
+        'POLICY_SAVINGS': 'Tasarruf',
+        'POLICY_RECOMMENDATIONS': 'Öneriler',
+        'POLICY_EXCELLENT_COMBO': 'Mükemmel kombinasyon!',
+        'POLICY_GOOD_START': 'İyi başlangıç.',
+        'POLICY_NEED_AGGRESSIVE': 'Daha agresif politika önlemleri gerekli.',
+        # Risk & Fırsat sayfası metinleri
+        'RISK_TITLE': '⚠️ RİSK & FIRSAT',
+        'RISK_DESC': 'Risk ve fırsat analizi',
+        'RISK_HIGH_RISK': 'Yüksek Risk',
+        'RISK_LOW_RISK': 'Düşük Risk',
+        'RISK_HIGH_OPPORTUNITY': 'Yüksek Fırsat',
+        'RISK_LOW_OPPORTUNITY': 'Düşük Fırsat',
+        'RISK_RISK_ANALYSIS': 'Risk Analizi',
+        'RISK_OPPORTUNITY_ANALYSIS': 'Fırsat Analizi',
+        'RISK_RECOMMENDATIONS': 'Öneriler',
+        # Hedef planlayıcı sayfası metinleri
+        'TARGET_TITLE': '🎯 HEDEF PLANLAYICI',
+        'TARGET_DESC': 'Hedef bazlı planlama ve analiz',
+        'TARGET_SELECT_METRIC': 'Metrik Seçin',
+        'TARGET_SET_GOAL': 'Hedef Belirleyin',
+        'TARGET_CALCULATE': 'Hesapla',
+        'TARGET_RESULTS': 'Hedef Sonuçları',
+        'TARGET_REQUIRED_CAGR': 'Gerekli CAGR',
+        'TARGET_2030_GOAL': '2030 Hedefi',
+        'TARGET_DIFFICULTY': 'Zorluk',
+        'TARGET_EASY': 'Kolay',
+        'TARGET_MEDIUM': 'Orta',
+        'TARGET_HARD': 'Zor',
+        # Rapor oluşturucu sayfası metinleri
+        'REPORT_TITLE': '📄 RAPOR OLUŞTURUCU',
+        'REPORT_DESC': 'Özelleştirilebilir raporlar oluşturun',
+        'REPORT_SELECT_SECTIONS': 'Bölüm Seçin',
+        'REPORT_GENERATE': 'Rapor Oluştur',
+        'REPORT_DOWNLOAD': 'İndir',
+        'REPORT_PREVIEW': 'Önizleme',
+        # Model kartı sayfası metinleri
+        'MODEL_CARD_TITLE': '📑 MODEL KARTI',
+        'MODEL_CARD_DESC': 'Model metodolojisi ve performans özeti',
+        'MODEL_CARD_METHODOLOGY': 'Metodoloji',
+        'MODEL_CARD_PERFORMANCE': 'Performans',
+        'MODEL_CARD_FEATURES': 'Özellikler',
+        'MODEL_CARD_LIMITATIONS': 'Sınırlamalar',
+        'MODEL_CARD_ETHICS': 'Etik',
+        # What-if analizi sayfası metinleri
+        'WHATIF_TITLE': '🧩 WHAT-IF ANALİZİ',
+        'WHATIF_DESC': 'Senaryo analizi ve simülasyon',
+        'WHATIF_POPULATION_GROWTH': 'Nüfus Artışı (%)',
+        'WHATIF_CATEGORY_REDUCTION': 'Kategori Azaltımı (%)',
+        'WHATIF_SIMULATE': 'Simüle Et',
+        'WHATIF_RESULTS': 'Simülasyon Sonuçları',
+        'WHATIF_BASELINE': 'Temel Senaryo',
+        'WHATIF_SCENARIO': 'Senaryo',
+        'WHATIF_CHANGE': 'Değişim',
+        # Ülke derinlemesine analiz sayfası metinleri
+        'DEEPDIVE_TITLE': '🔎 ÜLKE DERİNLEMESİNE ANALİZ',
+        'DEEPDIVE_DESC': 'Ülke bazlı detaylı analiz',
+        'DEEPDIVE_SELECT_COUNTRY': 'Ülke Seçin',
+        'DEEPDIVE_ANALYSIS': 'Analiz',
+        'DEEPDIVE_TRENDS': 'Trendler',
+        'DEEPDIVE_COMPARISON': 'Karşılaştırma',
+        'DEEPDIVE_RECOMMENDATIONS': 'Öneriler',
+        # Driver sensitivity sayfası metinleri
+        'TORNADO_TITLE': '🌪️ DRIVER SENSITIVITY',
+        'TORNADO_DESC': 'Değişken duyarlılık analizi',
+        'TORNADO_SENSITIVITY_ANALYSIS': 'Duyarlılık Analizi',
+        'TORNADO_MOST_SENSITIVE': 'En Duyarlı',
+        'TORNADO_LEAST_SENSITIVE': 'En Az Duyarlı',
+        # ROI/NPV sayfası metinleri
+        'ROI_TITLE': '💹 ROI / NPV',
+        'ROI_DESC': 'Yatırım getirisi ve net bugünkü değer analizi',
+        'ROI_INVESTMENT_COST': 'Yatırım Maliyeti (M$)',
+        'ROI_DISCOUNT_RATE': 'İskonto Oranı (%)',
+        'ROI_TIME_HORIZON': 'Zaman Ufku (Yıl)',
+        'ROI_CALCULATE': 'Hesapla',
+        'ROI_NPV': 'NPV (M$)',
+        'ROI_ROI_PERCENT': 'ROI (%)',
+        'ROI_TOTAL_BENEFIT': 'Toplam Fayda (M$)',
+        'ROI_STATUS': 'Durum',
+        'ROI_LOW': 'Düşük',
+        'ROI_GOOD': 'İyi',
+        'ROI_EXCELLENT': 'Mükemmel',
+        # Benchmark & Lig sayfası metinleri
+        'BENCH_TITLE': '🏁 BENCHMARK & LİG',
+        'BENCH_DESC': 'Ülke performans karşılaştırması',
+        'BENCH_LEAGUE_TABLE': 'Lig Tablosu',
+        'BENCH_PERFORMANCE': 'Performans',
+        'BENCH_RANKING': 'Sıralama',
+        'BENCH_IMPROVEMENT': 'İyileştirme',
+        # Anomali izleme sayfası metinleri
+        'ANOM_TITLE': '🚨 ANOMALİ & İZLEME',
+        'ANOM_DESC': 'Anomali tespiti ve izleme',
+        'ANOM_DETECTION': 'Anomali Tespiti',
+        'ANOM_MONITORING': 'İzleme',
+        'ANOM_ALERTS': 'Uyarılar',
+        # Veri hattı & kalite sayfası metinleri
+        'LINEAGE_TITLE': '🧬 VERİ HATTI & KALİTE',
+        'LINEAGE_DESC': 'Veri hattı ve kalite analizi',
+        'LINEAGE_DATA_FLOW': 'Veri Akışı',
+        'LINEAGE_QUALITY_METRICS': 'Kalite Metrikleri',
+        'LINEAGE_VALIDATION': 'Doğrulama',
+        # Karbon akışları sayfası metinleri
+        'FLOWS_TITLE': '🌿 KARBON AKIŞLARI',
+        'FLOWS_DESC': 'Karbon emisyonu akış analizi',
+        'FLOWS_CARBON_FLOW': 'Karbon Akışı',
+        'FLOWS_EMISSIONS': 'Emisyonlar',
+        'FLOWS_REDUCTION': 'Azaltım',
+        # Adalet/Etki paneli sayfası metinleri
+        'JUSTICE_TITLE': '⚖️ ADALET/ETKİ PANELİ',
+        'JUSTICE_DESC': 'Sosyal adalet ve etki analizi',
+        'JUSTICE_IMPACT_ANALYSIS': 'Etki Analizi',
+        'JUSTICE_FAIRNESS': 'Adalet',
+        'JUSTICE_EQUITY': 'Eşitlik'
     },
     'EN': {
         'PAGE_SELECT': '📱 SELECT PAGE',
@@ -2045,102 +2238,114 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
 def show_story_mode():
     """📖 Story Mode - Premium Data Storytelling Platform"""
     
-    # Premium başlık
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
-                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
-        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-            <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
-                <span style="font-size: 1.8rem;">📖</span>
-            </div>
-            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">STORY MODE</h1>
-        </div>
-        <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Premium Data Storytelling & Strategic Insights Platform
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    # Import storytelling module
+    from storytelling import show_story_mode as show_story_mode_helper
     
-    # Hikaye seçimi
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
-                padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
-                box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);">
-        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">🎯 Select Your Story</h3>
-        <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
-            Choose a compelling data story to explore insights and strategic recommendations
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    # Load data
+    try:
+        df = pd.read_csv('data/ecolense_final_enriched_with_iso.csv')
+    except Exception as e:
+        st.error(f"Veri yüklenemedi: {e}")
+        return
     
-    # Hikaye seçenekleri
-    stories = [
-        {
-            "title": "🥗 Global Food Waste Crisis & Solutions",
-            "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
-            "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
-            "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-        },
-        {
-            "title": "💰 Economic Impact of Food Waste",
-            "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
-            "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
-            "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
-        },
-        {
-            "title": "🌍 Environmental Footprint Analysis",
-            "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
-            "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
-            "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
-        },
-        {
-            "title": "🎯 Sustainable Food Systems Roadmap",
-            "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
-            "key_metrics": ["2030 targets", "Circular economy", "Technology adoption", "Policy recommendations"],
-            "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-        },
-        {
-            "title": "🚀 2030 Future Strategy & Recommendations",
-            "subtitle": "AI-powered strategic insights and actionable recommendations",
-            "key_metrics": ["AI insights", "Strategic planning", "Risk assessment", "Opportunity analysis"],
-            "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
-        },
-        {
-            "title": "📊 Comprehensive Data Analytics & Insights",
-            "subtitle": "Deep dive into patterns, trends, and predictive analytics",
-            "key_metrics": ["Pattern analysis", "Trend forecasting", "Predictive models", "Statistical insights"],
-            "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
-        }
-    ]
+    # Check if story is selected
+    story_mode = st.session_state.get('story_mode', '')
     
-    # Hikaye kartları
-    cols = st.columns(2)
-    for i, story in enumerate(stories):
-        with cols[i % 2]:
-            st.markdown(f"""
-            <div style="background: {story['color']}; 
-                        padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s;"
-                        onmouseover="this.style.transform='scale(1.02)'" 
-                        onmouseout="this.style.transform='scale(1)'">
-                <h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 600;">{story['title']}</h4>
-                <p style="margin: 0 0 1rem 0; font-size: 0.9rem; opacity: 0.9;">{story['subtitle']}</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                    {''.join([f'<span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">{metric}</span>' for metric in story['key_metrics']])}
+    if not story_mode:
+        # Premium başlık
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
+                    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
+                    <span style="font-size: 1.8rem;">📖</span>
                 </div>
+                <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">STORY MODE</h1>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button(f"📖 Explore {story['title'].split()[0]}", key=f"story_{i}", use_container_width=True):
-                st.session_state['selected_story'] = story['title']
-                st.session_state['story_mode'] = story['title']
-                st.rerun()
-    
-    # Seçili hikaye varsa göster
-    if 'selected_story' in st.session_state:
-        st.markdown("---")
-        st.markdown(f"""
+            <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
+                Premium Data Storytelling & Strategic Insights Platform
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Hikaye seçimi
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+                    padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);">
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">🎯 Select Your Story</h3>
+            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
+                Choose a compelling data story to explore insights and strategic recommendations
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Hikaye seçenekleri
+        stories = [
+            {
+                "title": "🥗 Global Food Waste Crisis & Solutions",
+                "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
+                "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
+                "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+            },
+            {
+                "title": "💰 Economic Impact Analysis",
+                "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
+                "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
+                "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+            },
+            {
+                "title": "🌍 Environmental Footprint Analysis",
+                "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
+                "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
+                "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+            },
+            {
+                "title": "🎯 Sustainable Solutions Roadmap",
+                "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
+                "key_metrics": ["2030 targets", "Circular economy", "Technology adoption", "Policy recommendations"],
+                "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+            },
+            {
+                "title": "🚀 2030 Strategic Forecast",
+                "subtitle": "AI-powered strategic insights and actionable recommendations",
+                "key_metrics": ["AI insights", "Strategic planning", "Risk assessment", "Opportunity analysis"],
+                "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+            },
+            {
+                "title": "📊 Comprehensive Analytics",
+                "subtitle": "Deep dive into patterns, trends, and predictive analytics",
+                "key_metrics": ["Pattern analysis", "Trend forecasting", "Predictive models", "Statistical insights"],
+                "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+            }
+        ]
+        
+        # Hikaye kartları
+        cols = st.columns(2)
+        for i, story in enumerate(stories):
+            with cols[i % 2]:
+                st.markdown(f"""
+                <div style="background: {story['color']}; 
+                            padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                            box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s;"
+                            onmouseover="this.style.transform='scale(1.02)'" 
+                            onmouseout="this.style.transform='scale(1)'">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 600;">{story['title']}</h4>
+                    <p style="margin: 0 0 1rem 0; font-size: 0.9rem; opacity: 0.9;">{story['subtitle']}</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        {''.join([f'<span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">{metric}</span>' for metric in story['key_metrics']])}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button(f"📖 Explore {story['title'].split()[0]}", key=f"story_{i}", use_container_width=True):
+                    st.session_state['selected_story'] = story['title']
+                    st.session_state['story_mode'] = story['title']
+                    st.rerun()
+    else:
+        # Show selected story using storytelling module
+        show_story_mode_helper(df, story_mode)
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                     padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
                     box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
