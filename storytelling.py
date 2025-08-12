@@ -359,7 +359,7 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
             )
             fig.update_traces(line=dict(width=4, color='#ff6b6b'))
             st.plotly_chart(fig, use_container_width=True)
-        
+            
         # Country Analysis
         country_analysis_title = "🌍 ÜLKE BAZINDA ANALİZ" if lang == 'TR' else "🌍 COUNTRY-LEVEL ANALYSIS"
         st.markdown(f"### {country_analysis_title}")
@@ -423,22 +423,22 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
             
             st.markdown(f"""
             <div style="background: linear-gradient(135deg, #55a3ff 0%, #0066cc 100%); 
-                        padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                         box-shadow: 0 8px 25px rgba(85, 163, 255, 0.3);">
                 <h4 style="margin: 0 0 1rem 0;">{longterm_title}</h4>
                 <ul style="margin: 0; padding-left: 1.5rem;">
                     {''.join([f'<li>{action}</li>' for action in longterm_actions])}
                 </ul>
-            </div>
-            """, unsafe_allow_html=True)
-
+        </div>
+        """, unsafe_allow_html=True)
+            
 def show_economic_impact_story(df: pd.DataFrame):
     """💰 Economic Impact Analysis - Premium Edition"""
     
     # Hero section
     st.markdown("""
     <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
-                padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
+        padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(253, 203, 110, 0.3);">
         <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">💰 ECONOMIC IMPACT ANALYSIS</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
@@ -488,7 +488,7 @@ def show_economic_impact_story(df: pd.DataFrame):
             )
             fig.update_traces(line=dict(width=4, color='#fdcb6e'))
             st.plotly_chart(fig, use_container_width=True)
-
+            
 def show_environmental_impact_story(df: pd.DataFrame):
     """🌍 Environmental Footprint Analysis - Premium Edition"""
     
@@ -525,7 +525,7 @@ def show_environmental_impact_story(df: pd.DataFrame):
         with col4:
             st.metric("🌳 Forest Equivalent", f"{total_carbon/1_000_000_000*0.5:.1f}M hectares",
                      delta="+1.8M hectares", delta_color="inverse")
-
+        
 def show_sustainable_solutions_story(df: pd.DataFrame):
     """🎯 Sustainable Solutions Roadmap - Premium Edition"""
     
@@ -543,7 +543,7 @@ def show_sustainable_solutions_story(df: pd.DataFrame):
     
     # Solutions Framework
     st.markdown("### 🛠️ SOLUTIONS FRAMEWORK")
-    
+        
     col1, col2 = st.columns(2)
     
     with col1:
@@ -560,7 +560,7 @@ def show_sustainable_solutions_story(df: pd.DataFrame):
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
+
     with col2:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); 
@@ -619,12 +619,12 @@ def show_2030_strategy_story(df: pd.DataFrame):
     with col3:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
-                    padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
             <h4 style="margin: 0 0 1rem 0;">🟢 Aggressive Action</h4>
             <p style="margin: 0; font-size: 0.9rem;">-30% waste reduction<br>-$1.5T economic savings<br>-25% carbon footprint</p>
-        </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
 def show_comprehensive_analytics_story(df: pd.DataFrame):
     """📊 Comprehensive Analytics - Premium Edition"""
@@ -632,7 +632,7 @@ def show_comprehensive_analytics_story(df: pd.DataFrame):
     # Hero section
     st.markdown("""
     <div style="background: linear-gradient(135deg, #2d3436 0%, #636e72 100%); 
-                padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
+        padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(45, 52, 54, 0.3);">
         <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">📊 COMPREHENSIVE ANALYTICS</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
@@ -655,7 +655,7 @@ def show_comprehensive_analytics_story(df: pd.DataFrame):
         fig = px.imshow(
             correlation_matrix,
             title="Feature Correlation Matrix",
-            color_continuous_scale='RdBu',
+                       color_continuous_scale='RdBu',
             aspect="auto"
         )
         fig.update_layout(
@@ -665,7 +665,7 @@ def show_comprehensive_analytics_story(df: pd.DataFrame):
             title_font_size=20
         )
         st.plotly_chart(fig, use_container_width=True)
-    
+        
     # Statistical Summary
     st.markdown("### 📊 STATISTICAL SUMMARY")
     
