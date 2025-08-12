@@ -5608,9 +5608,9 @@ def show_what_if_advanced():
     cat_share = _estimate_category_share(real_df, country, cat, ['food_waste_tons', 'Total Waste (Tons)'],
                                          ['food_category', 'Food Category'])
 
-    # Birleşik katsayılar (clip ile güvenli)
-    k_waste = np.clip(alpha * iw + (1 - alpha) * abs(e_pop_waste), 0.2, 1.5)
-    k_carbon = np.clip(alpha * ic + (1 - alpha) * abs(e_pop_carbon), 0.2, 1.5)
+    # Birleşik katsayılar (clip ile güvenli) - daha gerçekçi değerler
+    k_waste = np.clip(alpha * iw + (1 - alpha) * abs(e_pop_waste), 0.1, 0.8)
+    k_carbon = np.clip(alpha * ic + (1 - alpha) * abs(e_pop_carbon), 0.1, 0.6)
 
     # Debug bilgisi ekle
     st.sidebar.markdown(f"""
@@ -5628,12 +5628,18 @@ def show_what_if_advanced():
     fig = go.Figure()
     if 'Total Waste (Tons)' in dfc.columns:
         base = dfc['Total Waste (Tons)'].astype(float).values
-        adj = base * (1.0 - k_waste*cat_share*cat_reduct/100.0) * (1.0 + k_waste*pop_growth/100.0)
+        # Daha gerçekçi hesaplama: azaltım etkisi + nüfus etkisi
+        reduction_effect = 1.0 - (k_waste * cat_share * cat_reduct / 100.0)
+        population_effect = 1.0 + (k_waste * 0.3 * pop_growth / 100.0)  # Nüfus etkisini azalttık
+        adj = base * reduction_effect * population_effect
         fig.add_trace(go.Scatter(x=dfc['Year'], y=base, mode='lines+markers', name='Baz Atık', line=dict(color='#11E6C1')))
         fig.add_trace(go.Scatter(x=dfc['Year'], y=adj, mode='lines+markers', name='What‑if Atık', line=dict(color='#A9FF4F', dash='dash')))
     if 'Carbon_Footprint_kgCO2e' in dfc.columns:
         base = dfc['Carbon_Footprint_kgCO2e'].astype(float).values
-        adj = base * (1.0 - k_carbon*0.7*cat_share*cat_reduct/100.0) * (1.0 + k_carbon*0.2*pop_growth/100.0)
+        # Daha gerçekçi hesaplama: karbon etkisi daha düşük
+        reduction_effect = 1.0 - (k_carbon * 0.5 * cat_share * cat_reduct / 100.0)  # Karbon etkisini azalttık
+        population_effect = 1.0 + (k_carbon * 0.15 * pop_growth / 100.0)  # Nüfus etkisini daha da azalttık
+        adj = base * reduction_effect * population_effect
         fig.add_trace(go.Scatter(x=dfc['Year'], y=base, mode='lines+markers', name='Baz Karbon', line=dict(color='#0EA5E9')))
         fig.add_trace(go.Scatter(x=dfc['Year'], y=adj, mode='lines+markers', name='What‑if Karbon', line=dict(color='#F59E0B', dash='dash')))
     # Bantlar: RMSE yaklaşık
