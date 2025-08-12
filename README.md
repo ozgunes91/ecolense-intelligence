@@ -106,6 +106,58 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 ### Model Başarısı ve Çıkarımlar
 - **%96.0 Test R²**: Model çok yüksek doğrulukla tahmin yapıyor
 
+### SHAP Analizi Sonuçları (Model Açıklanabilirliği)
+
+#### En Önemli Özellikler (Tüm Hedefler İçin):
+1. **Category_Waste_Share**: Gıda kategorisi israf payı (en etkili)
+2. **Waste_Efficiency**: İsraf verimliliği (ikinci en etkili)
+3. **Population (Million)**: Nüfus büyüklüğü
+4. **GDP_Per_Capita_Proxy**: Kişi başı GSYİH
+5. **Country_Trend**: Ülke trendi
+6. **Waste_Trend**: İsraf trendi
+7. **Population_Material_Interaction**: Nüfus-malzeme etkileşimi
+
+#### Hedef Bazında Önem Sıralaması:
+- **Toplam İsraf**: Category_Waste_Share > Waste_Efficiency > Population
+- **Ekonomik Kayıp**: Category_Economic_Share > GDP_Per_Capita_Proxy > Population
+- **Karbon Ayak İzi**: Category_Waste_Share > Waste_Efficiency > Population
+
+#### Pandemi Etkisi:
+- **Is_Pandemic_Year**: Tüm hedeflerde düşük etki (33-47 önem skoru)
+- **Is_Post_Pandemic**: En düşük etki (2-3 önem skoru)
+
+### Dashboard Özellikleri ve Modülleri (22 Modül)
+
+#### 📊 Analiz Modülleri
+1. **Ana Sayfa**: Proje özeti ve temel metrikler
+2. **Veri Analizi**: İnteraktif veri keşfi
+3. **Trend Analizi**: Zaman serisi görselleştirmeleri
+4. **Coğrafi Analiz**: Ülke bazlı karşılaştırmalar
+5. **Kategori Analizi**: Gıda türü bazlı incelemeler
+6. **Sürdürülebilirlik Skorları**: Ülke performansları
+7. **Karbon Ayak İzi**: Çevresel etki analizi
+8. **Ekonomik Etki**: Finansal kayıp hesaplamaları
+
+#### 🤖 AI ve Model Modülleri
+9. **Model Performansı**: ML model sonuçları
+10. **SHAP Analizi**: Özellik önem seviyeleri
+11. **A/B Testing**: Model karşılaştırmaları
+12. **Tahmin Motoru**: Gelecek projeksiyonları
+13. **AI Asistan**: Akıllı öneriler sistemi
+
+#### 🎯 Politika ve Strateji Modülleri
+14. **Politika Simülatörü**: What-if analizleri
+15. **ROI Hesaplayıcı**: Yatırım getirisi
+16. **Sürücü Analizi**: Faktör etki analizi
+17. **Anomali İzleme**: Anormal durum tespiti
+18. **Karbon Akışları**: Çevresel etki haritaları
+
+#### 📋 Raporlama Modülleri
+19. **Rapor Oluşturucu**: Otomatik rapor üretimi
+20. **Model Kartı**: Model dokümantasyonu
+21. **Veri Kalitesi**: Veri doğruluk raporu
+22. **Hakkında**: Proje bilgileri
+
 ### Dashboard Çıktılarının Analizi ve Nedenleri
 
 #### Sürdürülebilirlik Skorları (0-100 Arası)
@@ -252,6 +304,14 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 ## 🔗 Canlı Dashboard
 
 **🌐 Erişim Linki**: [Ecolense Intelligence Dashboard](https://ecolense-intelligence.streamlit.app/)
+
+### Dashboard Özellikleri:
+- **22 İnteraktif Modül**: Kapsamlı analiz araçları
+- **Gerçek Zamanlı Veri**: 5000+ gözlem ile güncel analizler
+- **AI Destekli Öneriler**: Akıllı içgörüler ve tavsiyeler
+- **Gelişmiş Görselleştirme**: Plotly ile interaktif grafikler
+- **Mobil Uyumlu**: Tüm cihazlarda kullanım
+- **Otomatik Raporlama**: PDF ve HTML formatlarında rapor üretimi
 
 ## 📁 Proje Yapısı
 

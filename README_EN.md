@@ -106,6 +106,58 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 ### Model Success and Insights
 - **96.0% Test R²**: Model makes predictions with very high accuracy
 
+### SHAP Analysis Results (Model Interpretability)
+
+#### Most Important Features (For All Targets):
+1. **Category_Waste_Share**: Food category waste share (most effective)
+2. **Waste_Efficiency**: Waste efficiency (second most effective)
+3. **Population (Million)**: Population size
+4. **GDP_Per_Capita_Proxy**: GDP per capita
+5. **Country_Trend**: Country trend
+6. **Waste_Trend**: Waste trend
+7. **Population_Material_Interaction**: Population-material interaction
+
+#### Target-based Importance Ranking:
+- **Total Waste**: Category_Waste_Share > Waste_Efficiency > Population
+- **Economic Loss**: Category_Economic_Share > GDP_Per_Capita_Proxy > Population
+- **Carbon Footprint**: Category_Waste_Share > Waste_Efficiency > Population
+
+#### Pandemic Impact:
+- **Is_Pandemic_Year**: Low impact on all targets (33-47 importance score)
+- **Is_Post_Pandemic**: Lowest impact (2-3 importance score)
+
+### Dashboard Features and Modules (22 Modules)
+
+#### 📊 Analysis Modules
+1. **Home**: Project summary and basic metrics
+2. **Data Analysis**: Interactive data exploration
+3. **Trend Analysis**: Time series visualizations
+4. **Geographic Analysis**: Country-based comparisons
+5. **Category Analysis**: Food type-based examinations
+6. **Sustainability Scores**: Country performance
+7. **Carbon Footprint**: Environmental impact analysis
+8. **Economic Impact**: Financial loss calculations
+
+#### 🤖 AI and Model Modules
+9. **Model Performance**: ML model results
+10. **SHAP Analysis**: Feature importance levels
+11. **A/B Testing**: Model comparisons
+12. **Prediction Engine**: Future projections
+13. **AI Assistant**: Smart recommendations system
+
+#### 🎯 Policy and Strategy Modules
+14. **Policy Simulator**: What-if analyses
+15. **ROI Calculator**: Investment return
+16. **Driver Analysis**: Factor impact analysis
+17. **Anomaly Monitoring**: Abnormal situation detection
+18. **Carbon Flows**: Environmental impact maps
+
+#### 📋 Reporting Modules
+19. **Report Builder**: Automatic report generation
+20. **Model Card**: Model documentation
+21. **Data Quality**: Data accuracy report
+22. **About**: Project information
+
 ### Dashboard Output Analysis and Reasons
 
 #### Sustainability Scores (0-100 Range)
@@ -252,6 +304,14 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 ## 🔗 Live Dashboard
 
 **🌐 Access Link**: [Ecolense Intelligence Dashboard](https://ecolense-intelligence.streamlit.app/)
+
+### Dashboard Features:
+- **22 Interactive Modules**: Comprehensive analysis tools
+- **Real-time Data**: Current analyses with 5000+ observations
+- **AI-powered Recommendations**: Smart insights and suggestions
+- **Advanced Visualization**: Interactive charts with Plotly
+- **Mobile Compatible**: Usable on all devices
+- **Automatic Reporting**: Report generation in PDF and HTML formats
 
 ## 📁 Project Structure
 
