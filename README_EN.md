@@ -23,15 +23,32 @@
 - **29 new features** engineering for total of 37 variables
 - **5000 observations** enriched final dataset
 
-### Feature Engineering
+### Feature Engineering (from 01_veri_hazirlama.py)
 - **Per capita metrics**: Waste, economic loss, carbon footprint
 - **Temporal features**: Pandemic period, year trends, cyclical features
 - **Geographic features**: Continent, hemisphere, development level
 - **Derived features**: Efficiency, intensity, share ratios
+- **Interaction features**: Population-material interaction, year-population interaction
+- **Time-based trends**: 3-year rolling average trends
+- **Category-based features**: Category share ratios
+
+### Sustainability Score Calculation
+```python
+# Formula from 01_veri_hazirlama.py
+waste_score = max(0, 1 - (Waste_Per_Capita_kg / 0.5))
+economic_score = max(0, 1 - (Economic_Loss_Per_Capita_USD / 300))
+carbon_score = max(0, 1 - (Carbon_Per_Capita_kgCO2e / 0.5))
+sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+```
+
+### Data Quality Improvements
+- **Outlier handling**: Winsorization (clipping to 1%-99% range)
+- **Missing value imputation**: KNN Imputer and median imputation
+- **Encoding**: Label Encoding for categorical variables
 
 ## 🤖 Machine Learning Models
 
-### Model Selection and Performance
+### Model Selection and Performance (from 02_model_egitimi.py)
 - **Primary Model**: Gradient Boosting Regressor
 - **Alternative Models**: Random Forest, Linear Regression, Ridge, Lasso
 - **Multi-target**: Total Waste, Economic Loss, Carbon Footprint
@@ -50,15 +67,25 @@
 - **A/B Testing**: 27 different model-feature combinations
 - **SHAP Analysis**: Model interpretability
 
-## 📈 Critical Findings
+### A/B Testing Results (from 03_ab_testing_analizi.py)
+- **Total Tests**: 27 combinations
+- **Best Model**: Gradient Boosting
+- **Best Feature Group**: Core + Trends
+- **Target Variables**: 3 (Waste, Economic Loss, Carbon)
 
-### Food Waste by Category
+## 📈 Critical Findings and Insights
+
+### Food Waste by Category (from Dataset)
 1. **Prepared Food**: Highest waste rate
 2. **Fruits & Vegetables**: Second highest
 3. **Dairy Products**: Third highest
 4. **Grains & Cereals**: Fourth highest
+5. **Beverages**: Fifth highest
+6. **Meat & Seafood**: Sixth highest
+7. **Frozen Food**: Seventh highest
+8. **Bakery Items**: Eighth highest
 
-### Country Performance
+### Country Performance (from Dashboard Analysis)
 - **Highest Waste**: Spain (50K tons), USA (50K tons), India (50K tons)
 - **Lowest Waste**: Australia, Canada, Germany
 - **Highest CO2**: Spain (406 kg), UK (385 kg), Germany (166 kg)
@@ -68,6 +95,12 @@
 - 15-20% increase in 2020-2021 period
 - 30% increase in household waste
 - 40% decrease in restaurant waste
+
+### Model Success and Insights
+- **96.0% Test R²**: Model makes predictions with very high accuracy
+- **0.8% Overfitting Gap**: Model has excellent generalization ability
+- **10.2% MAPE**: Low mean absolute percentage error
+- **Gradient Boosting**: Best performing model
 
 ## 🎛️ Dashboard Modules (22 Modules)
 
@@ -126,11 +159,66 @@
 - Average sustainability score: 84/100
 - Highest sustainability: China (86.5/100)
 
+### Critical Insights
+
+#### 1. **Model Success**
+- **96.0% accuracy** with very high prediction success
+- **Low overfitting** (0.8%) with reliable generalization
+- **Gradient Boosting** most effective model
+
+#### 2. **Data Quality**
+- **29 new features** enriched dataset
+- **Winsorization** for outlier control
+- **KNN Imputation** for missing data filling
+
+#### 3. **Sustainability Analysis**
+- **Multi-factor scoring** system
+- **Weighted calculation** (waste 40%, economic 30%, carbon 30%)
+- **Normalized scores** in 0-100 range
+
+#### 4. **Country Performance**
+- **Spain, USA, India** highest waste
+- **China, Russia, Spain** highest sustainability
+- **Geographic differences** significant
+
 ### Action Recommendations
-1. **Policy Level**: Food waste laws and incentives
-2. **Corporate Level**: Supply chain optimization
-3. **Individual Level**: Awareness campaigns
-4. **Technological**: IoT and AI-supported solutions
+
+#### 1. **Policy Level**
+- **Food waste laws** and incentives
+- **International cooperation** programs
+- **Sustainability goal** setting
+
+#### 2. **Corporate Level**
+- **Supply chain optimization**
+- **Waste management systems**
+- **Green technology investments**
+
+#### 3. **Individual Level**
+- **Awareness campaigns**
+- **Education programs**
+- **Behavior change** incentives
+
+#### 4. **Technological**
+- **IoT and AI-supported** solutions
+- **Blockchain** supply chain tracking
+- **Smart waste management** systems
+
+### Future Development Recommendations
+
+#### 1. **Model Improvements**
+- **Deep Learning** model integration
+- **Real-time** prediction systems
+- **Ensemble** model combinations
+
+#### 2. **Dashboard Improvements**
+- **Mobile app** development
+- **API** integration
+- **Multi-language** support
+
+#### 3. **Data Expansion**
+- **More countries** addition
+- **New data sources** integration
+- **Real-time** data flow
 
 ## 🔗 Live Dashboard
 
@@ -141,6 +229,9 @@
 ```
 EcolenseIntelligence/
 ├── app.py                          # Main Streamlit application
+├── 01_veri_hazirlama.py            # Data preparation and feature engineering
+├── 02_model_egitimi.py             # Model training and evaluation
+├── 03_ab_testing_analizi.py        # A/B testing and model comparison
 ├── data/                           # Datasets
 ├── models/                         # ML models
 ├── static/                         # Visual files

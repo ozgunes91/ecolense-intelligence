@@ -23,15 +23,32 @@
 - **29 yeni özellik** mühendisliği ile toplam 37 değişken
 - **5000 gözlem** ile zenginleştirilmiş final veri seti
 
-### Özellik Mühendisliği
+### Özellik Mühendisliği (01_veri_hazirlama.py'den)
 - **Kişi başı metrikler**: İsraf, ekonomik kayıp, karbon ayak izi
 - **Zaman özellikleri**: Pandemi dönemi, yıl trendleri, döngüsel özellikler
 - **Coğrafi özellikler**: Kıta, yarıküre, gelişmişlik seviyesi
 - **Türetilmiş özellikler**: Verimlilik, yoğunluk, pay oranları
+- **Etkileşim özellikleri**: Nüfus-malzeme etkileşimi, yıl-nüfus etkileşimi
+- **Zaman bazlı trendler**: 3 yıllık rolling average trendler
+- **Kategori bazlı özellikler**: Kategori pay oranları
+
+### Sürdürülebilirlik Skoru Hesaplama
+```python
+# 01_veri_hazirlama.py'den alınan formül
+waste_score = max(0, 1 - (Waste_Per_Capita_kg / 0.5))
+economic_score = max(0, 1 - (Economic_Loss_Per_Capita_USD / 300))
+carbon_score = max(0, 1 - (Carbon_Per_Capita_kgCO2e / 0.5))
+sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+```
+
+### Veri Kalitesi İyileştirmeleri
+- **Aykırı değer işleme**: Winsorization (%1-%99 aralığına kırpma)
+- **Eksik değer doldurma**: KNN Imputer ve median imputation
+- **Encoding**: Label Encoding kategorik değişkenler için
 
 ## 🤖 Makine Öğrenmesi Modelleri
 
-### Model Seçimi ve Performans
+### Model Seçimi ve Performans (02_model_egitimi.py'den)
 - **Ana Model**: Gradient Boosting Regressor
 - **Alternatif Modeller**: Random Forest, Linear Regression, Ridge, Lasso
 - **Çoklu Hedef**: Toplam İsraf, Ekonomik Kayıp, Karbon Ayak İzi
@@ -50,15 +67,25 @@
 - **A/B Testing**: 27 farklı model-özellik kombinasyonu
 - **SHAP Analizi**: Model açıklanabilirliği
 
-## 📈 Kritik Bulgular
+### A/B Testing Sonuçları (03_ab_testing_analizi.py'den)
+- **Toplam Test**: 27 kombinasyon
+- **En İyi Model**: Gradient Boosting
+- **En İyi Özellik Grubu**: Core + Trends
+- **Hedef Değişkenler**: 3 (Atık, Ekonomik Kayıp, Karbon)
 
-### Gıda Kategorilerine Göre İsraf
+## 📈 Kritik Bulgular ve Çıkarımlar
+
+### Gıda Kategorilerine Göre İsraf (Veri Setinden)
 1. **Prepared Food**: En yüksek israf oranı
 2. **Fruits & Vegetables**: İkinci sırada
 3. **Dairy Products**: Üçüncü sırada
 4. **Grains & Cereals**: Dördüncü sırada
+5. **Beverages**: Beşinci sırada
+6. **Meat & Seafood**: Altıncı sırada
+7. **Frozen Food**: Yedinci sırada
+8. **Bakery Items**: Sekizinci sırada
 
-### Ülke Performansları
+### Ülke Performansları (Dashboard Analizinden)
 - **En Yüksek İsraf**: İspanya (50K ton), ABD (50K ton), Hindistan (50K ton)
 - **En Düşük İsraf**: Avustralya, Kanada, Almanya
 - **En Yüksek CO2**: İspanya (406 kg), İngiltere (385 kg), Almanya (166 kg)
@@ -68,6 +95,12 @@
 - 2020-2021 döneminde %15-20 artış
 - Ev tipi israfın %30 artması
 - Restoran israfının %40 azalması
+
+### Model Başarısı ve Çıkarımlar
+- **%96.0 Test R²**: Model çok yüksek doğrulukla tahmin yapıyor
+- **%0.8 Overfitting Gap**: Model genelleme yeteneği çok iyi
+- **%10.2 MAPE**: Ortalama mutlak yüzde hata düşük
+- **Gradient Boosting**: En iyi performans gösteren model
 
 ## 🎛️ Dashboard Modülleri (22 Modül)
 
@@ -126,11 +159,66 @@
 - Sürdürülebilirlik skoru ortalaması: 84/100
 - En yüksek sürdürülebilirlik: Çin (86.5/100)
 
+### Kritik Çıkarımlar
+
+#### 1. **Model Başarısı**
+- **%96.0 doğruluk** ile çok yüksek tahmin başarısı
+- **Düşük overfitting** (%0.8) ile güvenilir genelleme
+- **Gradient Boosting** en etkili model
+
+#### 2. **Veri Kalitesi**
+- **29 yeni özellik** ile zenginleştirilmiş veri seti
+- **Winsorization** ile aykırı değer kontrolü
+- **KNN Imputation** ile eksik veri doldurma
+
+#### 3. **Sürdürülebilirlik Analizi**
+- **Çok faktörlü skorlama** sistemi
+- **Ağırlıklı hesaplama** (atık %40, ekonomik %30, karbon %30)
+- **0-100 aralığında** normalize edilmiş skorlar
+
+#### 4. **Ülke Performansları**
+- **İspanya, ABD, Hindistan** en yüksek israf
+- **Çin, Rusya, İspanya** en yüksek sürdürülebilirlik
+- **Coğrafi farklılıklar** belirgin
+
 ### Aksiyon Önerileri
-1. **Politika Seviyesi**: Gıda israfı yasaları ve teşvikler
-2. **Kurumsal Seviye**: Tedarik zinciri optimizasyonu
-3. **Bireysel Seviye**: Farkındalık kampanyaları
-4. **Teknolojik**: IoT ve AI destekli çözümler
+
+#### 1. **Politika Seviyesi**
+- **Gıda israfı yasaları** ve teşvikler
+- **Uluslararası işbirliği** programları
+- **Sürdürülebilirlik hedefleri** belirleme
+
+#### 2. **Kurumsal Seviye**
+- **Tedarik zinciri optimizasyonu**
+- **Atık yönetimi sistemleri**
+- **Yeşil teknoloji yatırımları**
+
+#### 3. **Bireysel Seviye**
+- **Farkındalık kampanyaları**
+- **Eğitim programları**
+- **Davranış değişikliği** teşvikleri
+
+#### 4. **Teknolojik**
+- **IoT ve AI destekli** çözümler
+- **Blockchain** tedarik zinciri takibi
+- **Akıllı atık yönetimi** sistemleri
+
+### Gelecek Geliştirme Önerileri
+
+#### 1. **Model İyileştirmeleri**
+- **Deep Learning** modelleri entegrasyonu
+- **Real-time** tahmin sistemleri
+- **Ensemble** model kombinasyonları
+
+#### 2. **Dashboard Geliştirmeleri**
+- **Mobile app** geliştirme
+- **API** entegrasyonu
+- **Multi-language** desteği
+
+#### 3. **Veri Genişletme**
+- **Daha fazla ülke** ekleme
+- **Yeni veri kaynakları** entegrasyonu
+- **Real-time** veri akışı
 
 ## 🔗 Canlı Dashboard
 
@@ -141,6 +229,9 @@
 ```
 EcolenseIntelligence/
 ├── app.py                          # Ana Streamlit uygulaması
+├── 01_veri_hazirlama.py            # Veri hazırlama ve özellik mühendisliği
+├── 02_model_egitimi.py             # Model eğitimi ve değerlendirme
+├── 03_ab_testing_analizi.py        # A/B testing ve model karşılaştırma
 ├── data/                           # Veri setleri
 ├── models/                         # ML modelleri
 ├── static/                         # Görsel dosyalar
