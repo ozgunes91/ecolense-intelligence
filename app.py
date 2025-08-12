@@ -3934,21 +3934,24 @@ def show_ab_testing():
     
     with col1:
         try:
-            st.image('ab_testing_model_performance.png', caption='Model Performans Karşılaştırması', use_container_width=True)
-        except:
-            st.warning("Model performans grafiği yüklenemedi")
+            with open('ab_testing_model_performance.png', 'rb') as f:
+                st.image(f.read(), caption='Model Performans Karşılaştırması', use_container_width=True)
+        except Exception as e:
+            st.warning(f"Model performans grafiği yüklenemedi: {str(e)}")
     
     with col2:
         try:
-            st.image('ab_testing_model_types.png', caption='Model Türleri Karşılaştırması', use_container_width=True)
-        except:
-            st.warning("Model türleri grafiği yüklenemedi")
+            with open('ab_testing_model_types.png', 'rb') as f:
+                st.image(f.read(), caption='Model Türleri Karşılaştırması', use_container_width=True)
+        except Exception as e:
+            st.warning(f"Model türleri grafiği yüklenemedi: {str(e)}")
     
     # Özellik grupları grafiği
     try:
-        st.image('ab_testing_feature_groups.png', caption='Özellik Grupları Karşılaştırması', use_container_width=True)
-    except:
-        st.warning("Özellik grupları grafiği yüklenemedi")
+        with open('ab_testing_feature_groups.png', 'rb') as f:
+            st.image(f.read(), caption='Özellik Grupları Karşılaştırması', use_container_width=True)
+    except Exception as e:
+        st.warning(f"Özellik grupları grafiği yüklenemedi: {str(e)}")
     
     # Detaylı sonuçlar
     st.markdown("### 📋 Detaylı Sonuçlar")
