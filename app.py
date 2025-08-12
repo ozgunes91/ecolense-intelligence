@@ -217,24 +217,25 @@ def add_page_footer(page_name: str):
     
     footer_html = f"""
     <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%); 
-                padding: 1.2rem; border-radius: 15px; color: white; margin: 1.5rem 0 2rem 0; 
-                box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center; width: 100%;">
-        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
-            <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 8px; margin-right: 0.8rem;">
-                <span style="font-size: 1.2rem;">🌱</span>
+                padding: 1rem; border-radius: 12px; color: white; margin: 1rem 0 1rem 0; 
+                box-shadow: 0 4px 15px rgba(35, 46, 92, 0.2); text-align: center; width: 100%; 
+                border: 1px solid rgba(144, 238, 144, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.3rem;">
+            <div style="background: rgba(144, 238, 144, 0.15); padding: 0.4rem; border-radius: 6px; margin-right: 0.6rem;">
+                <span style="font-size: 1rem;">🌱</span>
             </div>
             <div>
-                <div style="font-size: 1.2rem; font-weight: 700; color: #90EE90; margin-bottom: 0.2rem;">ECOLENSE</div>
-                <div style="font-size: 0.8rem; opacity: 0.8;">Ultra Premium Dashboard</div>
+                <div style="font-size: 1rem; font-weight: 600; color: #90EE90; margin-bottom: 0.1rem;">ECOLENSE</div>
+                <div style="font-size: 0.7rem; opacity: 0.7;">Ultra Premium Dashboard</div>
             </div>
         </div>
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem; margin-top: 0.8rem;">
-            <div style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 0.3rem;">{page_name}</div>
-            <div style="font-size: 0.7rem; opacity: 0.5;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
+        <div style="border-top: 1px solid rgba(144, 238, 144, 0.1); padding-top: 0.5rem; margin-top: 0.5rem;">
+            <div style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 0.2rem;">{page_name}</div>
+            <div style="font-size: 0.65rem; opacity: 0.4;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
         </div>
     </div>
     """
-    st.components.v1.html(footer_html, height=120)
+    st.components.v1.html(footer_html, height=100)
 
 # Renk paleti (Ultra Premium)
 COLORS = {
