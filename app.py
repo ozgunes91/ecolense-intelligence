@@ -2704,16 +2704,7 @@ def show_home_page():
                 st.markdown(f"**AI Yanıtı:** {chat['ai']}")
                 st.caption(f"Zaman: {chat['timestamp'].strftime('%H:%M:%S')}")
     
-    # AI Tips - Ana sayfada daha görünür
-    st.markdown(f"""
-    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); 
-                padding: 1.5rem; border-radius: 15px; margin: 1rem 0; 
-                border-left: 4px solid #ff6b6b;">
-        <h4 style="margin: 0 0 0.5rem 0; color: #d63031;">💡 {_t('AI_TIP')}</h4>
-        <p style="margin: 0; color: #2d3436; line-height: 1.6;">{_t('AI_WELCOME_TIP')}</p>
-        <p style="margin: 0.5rem 0 0 0; color: #2d3436; line-height: 1.6; font-weight: 600;">{_t('AI_WELCOME_SUGGESTION')}</p>
-    </div>
-    """, unsafe_allow_html=True)
+
 
     # AI Asistan – Ana Sayfa kısa yorumu
     try:
@@ -4089,8 +4080,64 @@ def show_target_based_forecasts():
 
 
 def generate_ai_response(question, preds_df, real_df):
-    """Generate AI response based on user question and available data"""
+    """Generate AI response based on user question and available data - Türkçe destekli"""
+    
+    # Get language from session state
+    lang = st.session_state.get('lang', 'TR')
+    
+    # Language-specific responses
+    responses = {
+        'TR': {
+            'top_waste': "🌍 **En yüksek gıda israfı olan 3 ülke:**\n",
+            'lowest_waste': "🌍 **En düşük gıda israfı olan 3 ülke:**\n",
+            'best_sustainability': "🏆 **En iyi sürdürülebilirlik skoruna sahip 3 ülke:**\n",
+            'global_trend': "📈 **Küresel gıda israfı trendi:**",
+            'increasing': "artıyor",
+            'decreasing': "azalıyor",
+            'recommendations': "🎯 **Gıda israfını azaltmak için en iyi 3 öneri:**\n",
+            'smart_chain': "• **Akıllı Tedarik Zinciri:** IoT sensörleri ve blockchain takibi uygulayın\n",
+            'education': "• **Tüketici Eğitimi:** Farkındalık kampanyaları ve akıllı paketleme başlatın\n",
+            'policy': "• **Politika Desteği:** Karbon fiyatlandırması ve sürdürülebilir üretim teşvikleri\n",
+            'germany_analysis': "🇩🇪 **Almanya Analizi:** Ortalama gıda israfı:",
+            'germany_desc': "Almanya orta seviye israf gösteriyor ve iyi sürdürülebilirlik uygulamalarına sahip.",
+            'default': "🤖 **AI Analizi:** Verilere dayanarak, gıda israfı kalıplarını, sürdürülebilirlik skorlarını ve trendleri keşfetmenize yardımcı olabilirim. Belirli ülkeler, trendler veya öneriler hakkında soru sorun!",
+            'tons': "ton",
+            'score': "/100"
+        },
+        'EN': {
+            'top_waste': "🌍 **Top 3 countries with highest food waste:**\n",
+            'lowest_waste': "🌍 **Top 3 countries with lowest food waste:**\n",
+            'best_sustainability': "🏆 **Top 3 countries with best sustainability scores:**\n",
+            'global_trend': "📈 **Global food waste trend:**",
+            'increasing': "increasing",
+            'decreasing': "decreasing",
+            'recommendations': "🎯 **Top 3 recommendations to reduce food waste:**\n",
+            'smart_chain': "• **Smart Supply Chain:** Implement IoT sensors and blockchain tracking\n",
+            'education': "• **Consumer Education:** Launch awareness campaigns and smart packaging\n",
+            'policy': "• **Policy Support:** Carbon pricing and sustainable production incentives\n",
+            'germany_analysis': "🇩🇪 **Germany Analysis:** Average food waste:",
+            'germany_desc': "Germany shows moderate waste levels with good sustainability practices.",
+            'default': "🤖 **AI Analysis:** Based on the data, I can help you explore food waste patterns, sustainability scores, and trends. Try asking about specific countries, trends, or recommendations!",
+            'tons': "tons",
+            'score': "/100"
+        }
+    }
+    
+    resp = responses.get(lang, responses['EN'])
     question_lower = question.lower()
+    
+    # Türkçe anahtar kelimeler için kontrol
+    tr_keywords = {
+        'en yüksek': 'highest', 'en düşük': 'lowest', 'en iyi': 'best', 'en kötü': 'worst',
+        'israf': 'waste', 'sürdürülebilirlik': 'sustainability', 'trend': 'trend',
+        'küresel': 'global', 'öneri': 'recommendation', 'azalt': 'reduce',
+        'almanya': 'germany', 'türkiye': 'turkey', 'fransa': 'france', 'italya': 'italy'
+    }
+    
+    # Türkçe anahtar kelimeleri İngilizce'ye çevir
+    for tr_word, en_word in tr_keywords.items():
+        if tr_word in question_lower:
+            question_lower = question_lower.replace(tr_word, en_word)
     
     # Analyze question keywords
     if any(word in question_lower for word in ['highest', 'top', 'best', 'worst', 'lowest']):
@@ -4099,45 +4146,47 @@ def generate_ai_response(question, preds_df, real_df):
             waste_data = preds_df.groupby('Country')['Total Waste (Tons)'].mean().sort_values(ascending=False)
             if 'highest' in question_lower or 'top' in question_lower:
                 top_countries = waste_data.head(3)
-                return f"🌍 **Top 3 countries with highest food waste:**\n" + \
-                       "\n".join([f"• {country}: {value:,.0f} tons" for country, value in top_countries.items()])
+                return resp['top_waste'] + "\n".join([f"• {country}: {value:,.0f} {resp['tons']}" for country, value in top_countries.items()])
             else:
                 bottom_countries = waste_data.tail(3)
-                return f"🌍 **Top 3 countries with lowest food waste:**\n" + \
-                       "\n".join([f"• {country}: {value:,.0f} tons" for country, value in bottom_countries.items()])
+                return resp['lowest_waste'] + "\n".join([f"• {country}: {value:,.0f} {resp['tons']}" for country, value in bottom_countries.items()])
         
         elif 'sustainability' in question_lower:
             # Find countries with best sustainability scores
             if 'Sustainability_Score' in preds_df.columns:
                 sust_data = preds_df.groupby('Country')['Sustainability_Score'].mean().sort_values(ascending=False)
                 top_countries = sust_data.head(3)
-                return f"🏆 **Top 3 countries with best sustainability scores:**\n" + \
-                       "\n".join([f"• {country}: {value:.1f}/100" for country, value in top_countries.items()])
+                return resp['best_sustainability'] + "\n".join([f"• {country}: {value:.1f}{resp['score']}" for country, value in top_countries.items()])
     
     elif 'trend' in question_lower:
         # Analyze trends
         if 'global' in question_lower:
             global_trend = preds_df.groupby('Year')['Total Waste (Tons)'].mean()
-            trend_direction = "increasing" if global_trend.iloc[-1] > global_trend.iloc[0] else "decreasing"
-            return f"📈 **Global food waste trend:** {trend_direction} from {global_trend.iloc[0]:,.0f} to {global_trend.iloc[-1]:,.0f} tons"
+            trend_direction = resp['increasing'] if global_trend.iloc[-1] > global_trend.iloc[0] else resp['decreasing']
+            return f"{resp['global_trend']} {trend_direction} - {global_trend.iloc[0]:,.0f}'den {global_trend.iloc[-1]:,.0f} {resp['tons']}'a"
     
     elif 'recommendation' in question_lower or 'reduce' in question_lower:
-        return f"🎯 **Top 3 recommendations to reduce food waste:**\n" + \
-               "• **Smart Supply Chain:** Implement IoT sensors and blockchain tracking\n" + \
-               "• **Consumer Education:** Launch awareness campaigns and smart packaging\n" + \
-               "• **Policy Support:** Carbon pricing and sustainable production incentives"
+        return resp['recommendations'] + resp['smart_chain'] + resp['education'] + resp['policy']
     
     elif 'germany' in question_lower:
         # Germany-specific analysis
         germany_data = preds_df[preds_df['Country'] == 'Germany']
         if not germany_data.empty:
             avg_waste = germany_data['Total Waste (Tons)'].mean()
-            return f"🇩🇪 **Germany Analysis:** Average food waste: {avg_waste:,.0f} tons. " + \
-                   "Germany shows moderate waste levels with good sustainability practices."
+            return f"{resp['germany_analysis']} {avg_waste:,.0f} {resp['tons']}. {resp['germany_desc']}"
+    
+    elif 'turkey' in question_lower or 'türkiye' in question_lower:
+        # Turkey-specific analysis
+        turkey_data = preds_df[preds_df['Country'] == 'Turkey']
+        if not turkey_data.empty:
+            avg_waste = turkey_data['Total Waste (Tons)'].mean()
+            if lang == 'TR':
+                return f"🇹🇷 **Türkiye Analizi:** Ortalama gıda israfı: {avg_waste:,.0f} ton. Türkiye'de gıda israfı konusunda iyileştirme alanları mevcut."
+            else:
+                return f"🇹🇷 **Turkey Analysis:** Average food waste: {avg_waste:,.0f} tons. Turkey has areas for improvement in food waste management."
     
     # Default response
-    return f"🤖 **AI Analysis:** Based on the data, I can help you explore food waste patterns, " + \
-           "sustainability scores, and trends. Try asking about specific countries, trends, or recommendations!"
+    return resp['default']
 
 
 def show_ai_insights():
