@@ -3678,13 +3678,13 @@ def show_ai_insights():
         imp_n = imp.head(20)
         # Sütun adlarını kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in imp_n.columns else imp_n.columns[1]
-        col1.plotly_chart(px.bar(imp_n, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True)
+        col1.plotly_chart(px.bar(imp_n, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_perm_{hash(str(imp_n))}_{hash('ai_insights')}")
     if shapm is not None and not shapm.empty:
         col2.subheader("Ortalama |SHAP|")
         sm = shapm.head(20)
         # Kolon isimlerini kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in sm.columns else 'mean_abs_shap'
-        col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True)
+        col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_shap_{hash(str(sm))}_{hash('ai_insights')}")
 
     st.markdown("---")
     st.subheader("🧠 SHAP – Özellik Etkileri (Profesyonel, referans)")
@@ -3746,11 +3746,11 @@ def show_ai_insights():
         c1, c2 = st.columns(2)
         if impP is not None and not impP.empty:
             c1.subheader("Permutation Importance (Profesyonel)")
-            c1.plotly_chart(px.bar(impP.head(20), x=impP.columns[1], y=impP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True)
+            c1.plotly_chart(px.bar(impP.head(20), x=impP.columns[1], y=impP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_prof_perm_{hash(str(impP))}_{hash('ai_insights')}")
         if shapP is not None and not shapP.empty:
             c2.subheader("Ortalama |SHAP| (Profesyonel)")
             colx = 'mean_abs_shap' if 'mean_abs_shap' in shapP.columns else shapP.columns[1]
-            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True)
+            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_prof_shap_{hash(str(shapP))}_{hash('ai_insights')}")
 
     # Δ Etki (TS − Profesyonel)
     if shap_ts is not None and not shap_ts.empty and shapP is not None and not shapP.empty:
@@ -3762,7 +3762,7 @@ def show_ai_insights():
             merged = m_ts.merge(m_p, on='feature', how='inner')
             merged['delta'] = merged['ts'] - merged['prof']
             st.subheader("Δ Etki (TS − Profesyonel)")
-            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
+            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ai_insights_delta_{hash(str(merged))}_{hash('ai_insights')}")
             with st.expander("📊 Δ Etki Grafiği Ne Anlatıyor?"):
                 st.markdown("""
                 **Δ Etki (TS − Profesyonel)** grafiği, zaman serisi modeli ile referans model arasındaki özellik etki farklarını gösterir:
@@ -6513,7 +6513,7 @@ def show_data_lineage_quality():
     </div>
     """, unsafe_allow_html=True)
     st.subheader("Soy Ağacı")
-    st.markdown("- Kaynak: global_food_wastage_dataset.csv + material_footprint.csv\n- Birleştirme: 01_veri_birlestirme_analiz.py\n- Model Eğitimi: 02_model_egitimi.py\n- A/B Testing: 03_ab_testing_analizi.py\n- Pipeline: run_dashboard_pipeline.py")
+    st.markdown("- Kaynak: global_food_wastage_dataset.csv + material_footprint.csv\n- Birleştirme: 01_veri_hazirlama.py\n- Model Eğitimi: 02_model_egitimi.py\n- A/B Testing: 03_ab_testing_analizi.py\n- Dashboard: app.py")
     st.subheader("Cache Durumu")
     st.caption("Streamlit cache: veri/pred dosyaları cache’de; yenilemek için sayfayı yeniden başlatın.")
     st.subheader("Sürüm Etiketi")
