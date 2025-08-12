@@ -2645,17 +2645,18 @@ def show_home_page():
                         "ai": ai_response,
                         "timestamp": pd.Timestamp.now()
                     })
-                    st.rerun()
+                    # Don't use st.rerun() to prevent page scroll to top
+                    st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
                 else:
                     st.error("Veri yüklenemedi. AI yanıtı için gerekli veriler mevcut değil.")
     
     # Quick action buttons - Ana sayfada daha görünür
     st.markdown("### ⚡ Hızlı Sorular")
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        if st.button("🔍 En İyi Performans Gösterenleri Bul", key="home_quick_top", use_container_width=True):
-            question = "Hangi ülkelerin en iyi sürdürülebilirlik skorları var?"
+        if st.button("🔍 Detaylı İsraf Analizi", key="home_quick_top", use_container_width=True):
+            question = "En yüksek israf analizi"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
             if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
@@ -2665,11 +2666,12 @@ def show_home_page():
                     "ai": ai_response,
                     "timestamp": pd.Timestamp.now()
                 })
-                st.rerun()
+                # Don't use st.rerun() to prevent page scroll to top
+                st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     with col2:
-        if st.button("📈 Trendleri Göster", key="home_quick_trends", use_container_width=True):
-            question = "Küresel gıda israfı trendleri nelerdir?"
+        if st.button("📈 Sürdürülebilirlik Trendleri", key="home_quick_trends", use_container_width=True):
+            question = "Sürdürülebilirlik trendleri"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
             if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
@@ -2679,11 +2681,12 @@ def show_home_page():
                     "ai": ai_response,
                     "timestamp": pd.Timestamp.now()
                 })
-                st.rerun()
+                # Don't use st.rerun() to prevent page scroll to top
+                st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     with col3:
-        if st.button("💡 Öneriler Al", key="home_quick_recs", use_container_width=True):
-            question = "Gıda israfını azaltmak için en iyi 3 öneri nedir?"
+        if st.button("💡 Akıllı Öneriler", key="home_quick_recs", use_container_width=True):
+            question = "Akıllı öneriler"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
             if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
@@ -2693,7 +2696,23 @@ def show_home_page():
                     "ai": ai_response,
                     "timestamp": pd.Timestamp.now()
                 })
-                st.rerun()
+                # Don't use st.rerun() to prevent page scroll to top
+                st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
+    
+    with col4:
+        if st.button("🌍 Ülke Karşılaştırması", key="home_quick_country", use_container_width=True):
+            question = "Ülke karşılaştırması analizi"
+            real_df = load_data(REAL_DATA_PATH, announce=False)
+            preds = load_predictions_dashboard()
+            if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
+                ai_response = generate_ai_response(question, preds, real_df)
+                st.session_state.ai_chat_history.append({
+                    "user": question,
+                    "ai": ai_response,
+                    "timestamp": pd.Timestamp.now()
+                })
+                # Don't use st.rerun() to prevent page scroll to top
+                st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     # Display chat history - Ana sayfada daha görünür
     if st.session_state.ai_chat_history:
@@ -7075,7 +7094,7 @@ def show_roi_npv():
     # Metrikleri göster
     col1, col2, col3 = st.columns(3)
     with col1:
-    st.metric("NPV (M$)", f"{npv:,.2f}")
+        st.metric("NPV (M$)", f"{npv:,.2f}")
     with col2:
         st.metric("ROI (%)", f"{roi:.1f}%")
     with col3:
