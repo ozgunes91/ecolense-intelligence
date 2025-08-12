@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-class ABTestingAnalizi:
+class ModelKarsilastirmaAnalizi:
     def __init__(self):
         self.df = None
         self.results = []
@@ -19,7 +19,7 @@ class ABTestingAnalizi:
         
     def veri_yukle(self):
         """Veriyi yükle"""
-        print("🚀 A/B TESTING ANALİZİ BAŞLIYOR...")
+        print("🚀 MODEL KARŞILAŞTIRMA ANALİZİ BAŞLIYOR...")
         print("=" * 60)
         
         print("📊 Veri yükleniyor...")
@@ -131,7 +131,7 @@ class ABTestingAnalizi:
     
     def ab_testing_calistir(self):
         """A/B testing sürecini yönet"""
-        print("\n🧪 A/B Testing analizi başlıyor...")
+        print("\n🧪 Model Karşılaştırma analizi başlıyor...")
         
         feature_combinations = self.ozellik_gruplari_olustur()
         models = self.model_gruplari_olustur()
@@ -236,10 +236,10 @@ class ABTestingAnalizi:
                 'feature_count': int(combo['feature_count'])
             })
         
-        with open('ab_testing_raporu.json', 'w', encoding='utf-8') as f:
+        with open('model_comparison_raporu.json', 'w', encoding='utf-8') as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
         
-        print(f"\n✅ A/B Testing tamamlandı!")
+        print(f"\n✅ Model Karşılaştırma tamamlandı!")
         print(f"📊 Toplam test edilen kombinasyon: {len(results)}")
         print(f"🏆 En iyi kombinasyonlar:")
         
@@ -401,14 +401,14 @@ class ABTestingAnalizi:
         report['en_iyi_model_turleri'] = model_performance.head(5).to_dict()
         
         # Raporu kaydet
-        with open('ab_testing_raporu.json', 'w', encoding='utf-8') as f:
+        with open('model_comparison_raporu.json', 'w', encoding='utf-8') as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
         
-        print("✅ A/B testing raporu kaydedildi: ab_testing_raporu.json")
+        print("✅ Model karşılaştırma raporu kaydedildi: model_comparison_raporu.json")
         
         # Sonuçları CSV olarak da kaydet
-        results_df.to_csv('ab_testing_sonuclari.csv', index=False)
-        print("✅ A/B testing sonuçları kaydedildi: ab_testing_sonuclari.csv")
+        results_df.to_csv('model_comparison_sonuclari.csv', index=False)
+        print("✅ Model karşılaştırma sonuçları kaydedildi: model_comparison_sonuclari.csv")
         
         return report
     
@@ -421,7 +421,7 @@ class ABTestingAnalizi:
             self.gorseller_olustur(results_df)
             report = self.rapor_olustur(results_df)
         
-        print("\n🎉 A/B TESTING ANALİZİ TAMAMLANDI!")
+        print("\n🎉 MODEL KARŞILAŞTIRMA ANALİZİ TAMAMLANDI!")
         print("=" * 60)
         print("📊 Oluşturulan Dosyalar:")
         print("   ✅ ab_testing_raporu.json")
@@ -433,5 +433,5 @@ class ABTestingAnalizi:
         return report
 
 if __name__ == "__main__":
-    ab_testing = ABTestingAnalizi()
+    ab_testing = ModelKarsilastirmaAnalizi()
     ab_testing.calistir() 

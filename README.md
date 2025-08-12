@@ -17,7 +17,7 @@
 |:-------------:|:-------------:|:----------------:|:-----------------:|
 | Küresel gıda israfı analizi | 20 ülke, 8 kategori | Gradient Boosting | %96.0 Test R² |
 | Sürdürülebilirlik skorlaması | 5000+ gözlem | SHAP Analizi | %0.8 Overfitting |
-| Politika önerileri | 37 değişken | A/B Testing | 22 Modül |
+| Politika önerileri | 37 değişken | Model Karşılaştırma | 22 Modül |
 
 </div>
 
@@ -77,6 +77,8 @@
 
 </div>
 
+**📝 Veri Seti Notu:** Bu veri seti gerçek dünya verilerinin küçük ölçekli bir örneğidir. Toplam atık miktarı (125 milyon ton) gerçek dünya değerlerinin (1.3 milyar ton/yıl) çok küçük bir kısmını temsil etmektedir. Bu nedenle per-capita değerler ve sürdürülebilirlik skorları veri setine özgü olarak hesaplanmıştır.
+
 ### 🔧 **Veri Zenginleştirme Süreci**
 
 #### **1. Veri Birleştirme (Inner Join)**
@@ -102,11 +104,17 @@ merged_df = food_waste.merge(material_footprint,
 #### **3. Sürdürülebilirlik Skoru Hesaplama**
 ```python
 def calculate_sustainability_score(row):
-    waste_score = (100 - row['Waste_Per_Capita_kg']) / 100
-    economic_score = (100 - row['Economic_Loss_Per_Capita_USD']) / 100
-    carbon_score = (100 - row['Carbon_Per_Capita_kgCO2e']) / 100
+    # Gerçek dünya threshold'ları (veri setine göre ayarlandı)
+    waste_threshold = 150  # kg/kişi/yıl (veri seti ortalaması: 109.5)
+    economic_threshold = 40  # USD/kişi/yıl (veri seti ortalaması: 35.4)
+    carbon_threshold = 0.5  # kg CO2e/kişi/yıl (veri seti ortalamasına göre)
     
-    return (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+    waste_score = max(0, 1 - (row['Waste_Per_Capita_kg'] / waste_threshold))
+    economic_score = max(0, 1 - (row['Economic_Loss_Per_Capita_USD'] / economic_threshold))
+    carbon_score = max(0, 1 - (row['Carbon_Per_Capita_kgCO2e'] / carbon_threshold))
+    
+    sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+    return max(0, min(100, sustainability))
 ```
 
 ### 🛠️ **Veri Kalitesi İyileştirmeleri**
@@ -158,7 +166,7 @@ for col in numeric_cols:
 #### **🏆 Ana Model: Gradient Boosting Regressor**
 - **Algoritma:** Gradient Boosting
 - **Hiperparametreler:** n_estimators=100, max_depth=4, learning_rate=0.05
-- **Seçim Kriteri:** A/B Testing Winner + CV R² + Overfitting Control
+- **Seçim Kriteri:** Model Karşılaştırma Winner + CV R² + Overfitting Control
 
 #### **🔄 Alternatif Modeller**
 - **Random Forest:** Conservative approach
@@ -190,12 +198,12 @@ for col in numeric_cols:
 |:-----------|:----------|:----------|
 | **Train-Test Split** | %80/%20 | ✅ Geçerli |
 | **Cross-Validation** | 3-fold CV | ✅ Stabil |
-| **A/B Testing** | 27 kombinasyon | ✅ Optimize |
+| **Model Karşılaştırma** | 27 kombinasyon | ✅ Optimize |
 | **SHAP Analizi** | Model açıklanabilirliği | ✅ Şeffaf |
 
 ---
 
-## 🧪 **A/B TESTING SONUÇLARI (03_ab_testing_analizi.py'den)**
+## 🧪 **MODEL KARŞILAŞTIRMA SONUÇLARI (03_model_karsilastirma_analizi.py'den)**
 
 ### 📈 **Test Kapsamı**
 
@@ -223,47 +231,50 @@ for col in numeric_cols:
 
 | **Sıra** | **Ülke** | **Sürdürülebilirlik Skoru** | **Öne Çıkan Özellik** |
 |:--------:|:---------|:---------------------------|:----------------------|
-| **🥇** | **Çin** | **86.7** | Düşük kişi başı israf |
-| **🥈** | **Rusya** | **86.2** | Verimli gıda yönetimi |
-| **🥉** | **ABD** | **85.2** | Gelişmiş teknoloji |
+| **🥇** | **UK** | **45.6** | Dengeli atık yönetimi |
+| **🥈** | **İspanya** | **44.3** | Verimli gıda yönetimi |
+| **🥉** | **Rusya** | **43.7** | Orta seviye sürdürülebilirlik |
 
 </div>
 
-### 🗑️ **En Yüksek İsraf Yapan Ülkeler**
+### 🗑️ **En Düşük Sürdürülebilirlik Skoruna Sahip Ülkeler**
 
-| **Sıra** | **Ülke** | **Toplam İsraf (Milyon Ton)** | **Ana Neden** |
-|:--------:|:---------|:-----------------------------|:-------------|
-| **1** | **Türkiye** | **6.9M** | Ev tipi israf |
-| **2** | **Kanada** | **6.8M** | Tedarik zinciri |
-| **3** | **İspanya** | **6.8M** | Perakende israfı |
+| **Sıra** | **Ülke** | **Sürdürülebilirlik Skoru** | **Ana Sorun** |
+|:--------:|:---------|:---------------------------|:-------------|
+| **1** | **Suudi Arabistan** | **40.9** | Yüksek kişi başı israf |
+| **2** | **Fransa** | **41.0** | Verimsiz gıda yönetimi |
+| **3** | **İtalya** | **41.5** | Orta seviye sürdürülebilirlik |
 
-### 🍎 **Gıda Kategorilerine Göre İsraf**
+### 🍎 **Gıda Kategorilerine Göre İsraf (Veri Seti)**
 
 | **Kategori** | **Toplam İsraf (Milyon Ton)** | **Pay (%)** | **Ana Sorun** |
 |:-------------|:-----------------------------|:------------|:-------------|
-| **Prepared Food** | **17.9M** | **35.8%** | Son kullanma tarihi |
-| **Fruits & Vegetables** | **15.2M** | **30.4%** | Depolama sorunları |
-| **Dairy Products** | **8.5M** | **17.0%** | Soğuk zincir |
-| **Meat & Fish** | **4.8M** | **9.6%** | Hijyen standartları |
-| **Grains & Cereals** | **3.8M** | **7.6%** | En düşük israf |
+| **Prepared Food** | **17.9M** | **14.3%** | Son kullanma tarihi |
+| **Beverages** | **16.4M** | **13.1%** | Paketleme sorunları |
+| **Bakery Items** | **15.6M** | **12.4%** | Taze ürün israfı |
+| **Fruits & Vegetables** | **15.5M** | **12.4%** | Depolama sorunları |
+| **Meat & Seafood** | **15.4M** | **12.3%** | Hijyen standartları |
+| **Dairy Products** | **15.3M** | **12.2%** | Soğuk zincir |
+| **Frozen Food** | **15.0M** | **12.0%** | Donma/çözme döngüsü |
+| **Grains & Cereals** | **14.2M** | **11.3%** | En düşük israf |
 
 ### 🦠 **Pandemi Etkisi Analizi**
 
 #### **Genel Etki**
-- **Genel İsraf:** %1 azalma
-- **Ekonomik Kayıp:** %2 artış
-- **Karbon Ayak İzi:** %1.5 azalma
+- **Genel İsraf:** Veri setinde pandemi yılları (2020-2022) mevcut
+- **Ekonomik Kayıp:** Pandemi etkisi analiz edilebilir
+- **Karbon Ayak İzi:** Pandemi döneminde değişimler gözlemlenebilir
 
-#### **Kategori Bazında Değişim**
-| **Kategori** | **Pandemi Etkisi** | **Neden** |
-|:-------------|:------------------|:----------|
-| **Beverages** | **%6.5 artış** | Evde tüketim artışı |
-| **Dairy Products** | **%10.3 azalış** | Restoran kapanışları |
-| **Prepared Food** | **%3.2 azalış** | Dışarıda yeme azalışı |
+#### **Veri Seti Kapsamı**
+| **Dönem** | **Yıl Aralığı** | **Veri Mevcudiyeti** |
+|:----------|:----------------|:---------------------|
+| **Pandemi Öncesi** | 2018-2019 | ✅ Mevcut |
+| **Pandemi Dönemi** | 2020-2022 | ✅ Mevcut |
+| **Pandemi Sonrası** | 2023-2024 | ✅ Mevcut |
 
-#### **Ülke Bazında Etki**
-- **Gelişmiş Ülkeler:** %2-5 azalma (evde yeme artışı)
-- **Gelişmekte Olan Ülkeler:** %1-3 artış (tedarik zinciri sorunları)
+#### **Analiz Notu**
+- Pandemi etkisi analizi için dashboard'da "Veri Analizi" sayfası kullanılabilir
+- Zaman serisi analizi ile trend değişimleri gözlemlenebilir
 
 ---
 
@@ -315,7 +326,7 @@ for col in numeric_cols:
 |:---------------------|:-----------------|:-------------------|
 | **🏠 Ana Modüller** | 5 | Veri analizi, model performansı |
 | **🤖 AI Destekli** | 4 | Tahminler, öneriler, simülasyon |
-| **📈 Analitik** | 6 | SHAP, A/B testing, ROI |
+| **📈 Analitik** | 6 | SHAP, Model karşılaştırma, ROI |
 | **📄 Raporlama** | 4 | Rapor oluşturucu, model kartı |
 | **⚙️ Yardımcı** | 3 | Ayarlar, yardım, hakkında |
 
@@ -338,7 +349,7 @@ for col in numeric_cols:
 | **Politika Simülatörü** | Politika testi | Risk değerlendirmesi | What-if analizi |
 | **Hedef Planlayıcı** | Hedef belirleme | Stratejik planlama | Hedef optimizasyonu |
 | **ROI Hesaplayıcı** | Yatırım analizi | Finansal değerlendirme | ROI hesaplama |
-| **A/B Testing** | Model karşılaştırma | Performans optimizasyonu | Test sonuçları |
+| **Model Karşılaştırma** | Model karşılaştırma | Performans optimizasyonu | Test sonuçları |
 
 #### **📈 Analitik Modüller**
 | **Modül** | **Amaç** | **Faydalar** | **Kullanıcı Yetenekleri** |
@@ -477,6 +488,13 @@ Sivil toplum için toplumsal bilinç artırıcı farkındalık kampanyaları ön
 [![Streamlit](https://img.shields.io/badge/Streamlit-Cloud-blue?style=for-the-badge&logo=streamlit)](https://ecolense-intelligence.streamlit.app/)
 [![Status](https://img.shields.io/badge/Status-Live-brightgreen?style=for-the-badge)](https://ecolense-intelligence.streamlit.app/)
 
+### 📱 **Hızlı Erişim Linkleri:**
+- **🏠 Ana Sayfa:** [Dashboard](https://ecolense-intelligence.streamlit.app/)
+- **💹 ROI Analizi:** [ROI/NPV Hesaplayıcı](https://ecolense-intelligence.streamlit.app/?page=💹%20ROI%20/%20NPV)
+- **🧪 Model Karşılaştırma:** [Model Karşılaştırması](https://ecolense-intelligence.streamlit.app/?page=🧪%20Model%20Karşılaştırma)
+- **🤖 AI Insights:** [Yapay Zeka Önerileri](https://ecolense-intelligence.streamlit.app/?page=🤖%20AI%20Insights)
+- **📊 Veri Analizi:** [Detaylı Analiz](https://ecolense-intelligence.streamlit.app/?page=📊%20Veri%20Analizi)
+
 </div>
 
 ---
@@ -510,7 +528,7 @@ Sivil toplum için toplumsal bilinç artırıcı farkındalık kampanyaları ön
 | **Üye** | **Rol** | **Katkı** |
 |:--------|:--------|:----------|
 | **Özge Güneş** | Data Scientist | Model geliştirme, analiz |
-| **Kübra Saruhan** | Takım Arkadaşı | Veri analizi, dokümantasyon |
+| **Kübra Saruhan** | Data Scientist | Veri analizi, dokümantasyon |
 
 </div>
 

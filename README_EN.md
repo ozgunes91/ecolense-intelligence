@@ -17,7 +17,7 @@
 |:-------------:|:-------------:|:----------------:|:-----------------:|
 | Global food waste analysis | 20 countries, 8 categories | Gradient Boosting | 96.0% Test R² |
 | Sustainability scoring | 5000+ observations | SHAP Analysis | 0.8% Overfitting |
-| Policy recommendations | 37 variables | A/B Testing | 22 Modules |
+| Policy recommendations | 37 variables | Model Comparison | 22 Modules |
 
 </div>
 
@@ -77,6 +77,8 @@
 
 </div>
 
+**📝 Dataset Note:** This dataset is a small-scale sample of real-world data. The total waste amount (125 million tons) represents a very small fraction of real-world values (1.3 billion tons/year). Therefore, per-capita values and sustainability scores are calculated specifically for this dataset.
+
 ### 🔧 **Data Enrichment Process**
 
 #### **1. Data Merging (Inner Join)**
@@ -102,11 +104,17 @@ merged_df = food_waste.merge(material_footprint,
 #### **3. Sustainability Score Calculation**
 ```python
 def calculate_sustainability_score(row):
-    waste_score = (100 - row['Waste_Per_Capita_kg']) / 100
-    economic_score = (100 - row['Economic_Loss_Per_Capita_USD']) / 100
-    carbon_score = (100 - row['Carbon_Per_Capita_kgCO2e']) / 100
+    # Real-world thresholds (adjusted for dataset)
+    waste_threshold = 150  # kg/person/year (dataset average: 109.5)
+    economic_threshold = 40  # USD/person/year (dataset average: 35.4)
+    carbon_threshold = 0.5  # kg CO2e/person/year (based on dataset average)
     
-    return (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+    waste_score = max(0, 1 - (row['Waste_Per_Capita_kg'] / waste_threshold))
+    economic_score = max(0, 1 - (row['Economic_Loss_Per_Capita_USD'] / economic_threshold))
+    carbon_score = max(0, 1 - (row['Carbon_Per_Capita_kgCO2e'] / carbon_threshold))
+    
+    sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3) * 100
+    return max(0, min(100, sustainability))
 ```
 
 ### 🛠️ **Data Quality Improvements**
@@ -158,7 +166,7 @@ for col in numeric_cols:
 #### **🏆 Main Model: Gradient Boosting Regressor**
 - **Algorithm:** Gradient Boosting
 - **Hyperparameters:** n_estimators=100, max_depth=4, learning_rate=0.05
-- **Selection Criteria:** A/B Testing Winner + CV R² + Overfitting Control
+- **Selection Criteria:** Model Comparison Winner + CV R² + Overfitting Control
 
 #### **🔄 Alternative Models**
 - **Random Forest:** Conservative approach
@@ -190,12 +198,12 @@ for col in numeric_cols:
 |:-----------|:----------|:----------|
 | **Train-Test Split** | 80%/20% | ✅ Valid |
 | **Cross-Validation** | 3-fold CV | ✅ Stable |
-| **A/B Testing** | 27 combinations | ✅ Optimized |
+| **Model Comparison** | 27 combinations | ✅ Optimized |
 | **SHAP Analysis** | Model explainability | ✅ Transparent |
 
 ---
 
-## 🧪 **A/B TESTING RESULTS (from 03_ab_testing_analizi.py)**
+## 🧪 **MODEL COMPARISON RESULTS (from 03_model_karsilastirma_analizi.py)**
 
 ### 📈 **Test Scope**
 
@@ -223,47 +231,50 @@ for col in numeric_cols:
 
 | **Rank** | **Country** | **Sustainability Score** | **Key Feature** |
 |:--------:|:---------|:---------------------------|:----------------------|
-| **🥇** | **China** | **86.7** | Low per capita waste |
-| **🥈** | **Russia** | **86.2** | Efficient food management |
-| **🥉** | **USA** | **85.2** | Advanced technology |
+| **🥇** | **UK** | **45.6** | Balanced waste management |
+| **🥈** | **Spain** | **44.3** | Efficient food management |
+| **🥉** | **Russia** | **43.7** | Medium sustainability level |
 
 </div>
 
-### 🗑️ **Highest Waste Producing Countries**
+### 🗑️ **Countries with Lowest Sustainability Scores**
 
-| **Rank** | **Country** | **Total Waste (Million Tons)** | **Main Cause** |
-|:--------:|:---------|:-----------------------------|:-------------|
-| **1** | **Turkey** | **6.9M** | Household waste |
-| **2** | **Canada** | **6.8M** | Supply chain |
-| **3** | **Spain** | **6.8M** | Retail waste |
+| **Rank** | **Country** | **Sustainability Score** | **Main Issue** |
+|:--------:|:---------|:---------------------------|:-------------|
+| **1** | **Saudi Arabia** | **40.9** | High per capita waste |
+| **2** | **France** | **41.0** | Inefficient food management |
+| **3** | **Italy** | **41.5** | Medium sustainability level |
 
-### 🍎 **Food Waste by Category**
+### 🍎 **Food Waste by Category (Dataset)**
 
 | **Category** | **Total Waste (Million Tons)** | **Share (%)** | **Main Issue** |
 |:-------------|:-----------------------------|:------------|:-------------|
-| **Prepared Food** | **17.9M** | **35.8%** | Expiry date |
-| **Fruits & Vegetables** | **15.2M** | **30.4%** | Storage issues |
-| **Dairy Products** | **8.5M** | **17.0%** | Cold chain |
-| **Meat & Fish** | **4.8M** | **9.6%** | Hygiene standards |
-| **Grains & Cereals** | **3.8M** | **7.6%** | Lowest waste |
+| **Prepared Food** | **17.9M** | **14.3%** | Expiry date |
+| **Beverages** | **16.4M** | **13.1%** | Packaging issues |
+| **Bakery Items** | **15.6M** | **12.4%** | Fresh product waste |
+| **Fruits & Vegetables** | **15.5M** | **12.4%** | Storage issues |
+| **Meat & Seafood** | **15.4M** | **12.3%** | Hygiene standards |
+| **Dairy Products** | **15.3M** | **12.2%** | Cold chain |
+| **Frozen Food** | **15.0M** | **12.0%** | Freeze/thaw cycle |
+| **Grains & Cereals** | **14.2M** | **11.3%** | Lowest waste |
 
 ### 🦠 **Pandemic Impact Analysis**
 
 #### **General Impact**
-- **General Waste:** 1% decrease
-- **Economic Loss:** 2% increase
-- **Carbon Footprint:** 1.5% decrease
+- **General Waste:** Pandemic years (2020-2022) available in dataset
+- **Economic Loss:** Pandemic effects can be analyzed
+- **Carbon Footprint:** Changes during pandemic period observable
 
-#### **Category-Based Changes**
-| **Category** | **Pandemic Impact** | **Reason** |
-|:-------------|:------------------|:----------|
-| **Beverages** | **6.5% increase** | Increased home consumption |
-| **Dairy Products** | **10.3% decrease** | Restaurant closures |
-| **Prepared Food** | **3.2% decrease** | Decreased dining out |
+#### **Dataset Coverage**
+| **Period** | **Year Range** | **Data Availability** |
+|:----------|:----------------|:---------------------|
+| **Pre-Pandemic** | 2018-2019 | ✅ Available |
+| **Pandemic Period** | 2020-2022 | ✅ Available |
+| **Post-Pandemic** | 2023-2024 | ✅ Available |
 
-#### **Country-Based Impact**
-- **Developed Countries:** 2-5% decrease (increased home cooking)
-- **Developing Countries:** 1-3% increase (supply chain issues)
+#### **Analysis Note**
+- Pandemic impact analysis can be performed using "Data Analysis" page in dashboard
+- Time series analysis can observe trend changes
 
 ---
 
@@ -315,7 +326,7 @@ for col in numeric_cols:
 |:---------------------|:-----------------|:-------------------|
 | **🏠 Core Modules** | 5 | Data analysis, model performance |
 | **🤖 AI-Powered** | 4 | Predictions, recommendations, simulation |
-| **📈 Analytics** | 6 | SHAP, A/B testing, ROI |
+| **📈 Analytics** | 6 | SHAP, Model comparison, ROI |
 | **📄 Reporting** | 4 | Report generator, model card |
 | **⚙️ Utility** | 3 | Settings, help, about |
 
@@ -338,7 +349,7 @@ for col in numeric_cols:
 | **Policy Simulator** | Policy testing | Risk assessment | What-if analysis |
 | **Goal Planner** | Goal setting | Strategic planning | Goal optimization |
 | **ROI Calculator** | Investment analysis | Financial evaluation | ROI calculation |
-| **A/B Testing** | Model comparison | Performance optimization | Test results |
+| **Model Comparison** | Model comparison | Performance optimization | Test results |
 
 #### **📈 Analytics Modules**
 | **Module** | **Purpose** | **Benefits** | **User Capabilities** |
@@ -508,7 +519,7 @@ We aim to reduce 2.5 gigatons of CO2 emissions from the food sector. We plan to 
 | **Member** | **Role** | **Contribution** |
 |:--------|:--------|:----------|
 | **Özge Güneş** | Data Scientist | Model development, analysis |
-| **Kübra Saruhan** | Team Member | Data analysis, documentation |
+| **Kübra Saruhan** | Data Scientist | Data analysis, documentation |
 
 </div>
 

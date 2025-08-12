@@ -79,9 +79,9 @@ def evaluate_model(model, X_train, X_test, y_train, y_test, cv_folds=5):
     }
 
 def select_best_model(X_train, X_test, y_train, y_test, target_name):
-    """En iyi modeli seç (A/B testing sonuçlarına göre Gradient Boosting öncelikli)"""
+    """En iyi modeli seç (Model karşılaştırma sonuçlarına göre Gradient Boosting öncelikli)"""
     models = {
-        'Gradient Boosting (A/B Winner)': GradientBoostingRegressor(
+                            'Gradient Boosting (Model Karşılaştırma Winner)': GradientBoostingRegressor(
             n_estimators=100, max_depth=4, learning_rate=0.05, 
             subsample=0.8, random_state=42
         ),
@@ -113,9 +113,9 @@ def select_best_model(X_train, X_test, y_train, y_test, target_name):
             print(f"{name}: Hata - {e}")
             continue
     
-    # A/B testing sonuçlarına göre Gradient Boosting'i tercih et
+    # Model karşılaştırma sonuçlarına göre Gradient Boosting'i tercih et
     if best_model is None or 'Gradient Boosting' not in str(type(best_model)):
-        print("⚠️ A/B testing sonuçlarına göre Gradient Boosting kullanılıyor...")
+        print("⚠️ Model karşılaştırma sonuçlarına göre Gradient Boosting kullanılıyor...")
         best_model = GradientBoostingRegressor(
             n_estimators=100, max_depth=4, learning_rate=0.05, 
             subsample=0.8, random_state=42
@@ -192,19 +192,19 @@ def save_results(models, results, targets, feature_columns):
     # JSON yapısı
     output = {
         "model_type": "GradientBoosting",
-        "selection_criteria": "A/B Testing Winner + CV R² + Overfitting Control",
+        "selection_criteria": "Model Karşılaştırma Winner + CV R² + Overfitting Control",
         "train_test_split": "80/20",
         "cv_folds": 3,
         "targets": {},
         "average_test_r2": np.mean([results[target]['test_r2'] for target in targets]),
         "average_cv_r2": np.mean([results[target]['cv_r2'] for target in targets]),
         "average_overfitting": np.mean([results[target]['overfitting_score'] for target in targets]),
-        "feature_selection": "All engineered features (A/B testing optimized)",
+        "feature_selection": "All engineered features (Model karşılaştırma optimized)",
         "model_details": {},
         "data_preprocessing": "Standard scaling, outlier handling",
         "validation_strategy": "Train-Test Split + Cross-Validation",
-        "hyperparameter_tuning": "A/B testing optimized settings",
-        "ensemble_method": "Gradient Boosting (A/B testing winner)",
+        "hyperparameter_tuning": "Model karşılaştırma optimized settings",
+        "ensemble_method": "Gradient Boosting (Model karşılaştırma winner)",
         "performance_summary": {},
         "model_interpretability": {
             "shap_analysis": "Available",

@@ -175,13 +175,18 @@ class VeriHazirlama:
         """Özellik mühendisliği yap"""
         print("\n⚙️ Özellik mühendisliği yapılıyor...")
         
-        # Per capita hesaplamaları
-        self.merged_df['Waste_Per_Capita_kg'] = (self.merged_df['Total Waste (Tons)'] * 1000) / (self.merged_df['Population (Million)'] * 1000000)
-        self.merged_df['Economic_Loss_Per_Capita_USD'] = (self.merged_df['Economic Loss (Million $)'] * 1000000) / (self.merged_df['Population (Million)'] * 1000000)
+        # Per capita hesaplamaları (DÜZELTİLDİ)
+        self.merged_df['Waste_Per_Capita_kg'] = self.merged_df['Avg Waste per Capita (Kg)']  # Orijinal veri zaten kg/kişi
         
-        # Carbon footprint hesaplama (gerçekçi)
+        # Ekonomik kayıp per capita (DÜZELTİLDİ)
+        # Economic Loss (Million $) zaten milyon USD cinsinde, nüfusa bölünce USD/kişi olur
+        # Veri seti küçük ölçekte olduğu için gerçek dünya değerlerine uygun hale getiriyoruz
+        self.merged_df['Economic_Loss_Per_Capita_USD'] = self.merged_df['Economic Loss (Million $)'] / self.merged_df['Population (Million)']
+        
+        # Carbon footprint hesaplama (DÜZELTİLDİ)
         # Gıda atığı kişi başına yıllık ~500-1000 kg CO2e yaratır (FAO, IPCC)
-        self.merged_df['Carbon_Footprint_kgCO2e'] = self.merged_df['Total Waste (Tons)'] * 1000  # kg CO2e per ton waste
+        # 1 ton gıda atığı ≈ 2.5 ton CO2e (daha gerçekçi)
+        self.merged_df['Carbon_Footprint_kgCO2e'] = self.merged_df['Total Waste (Tons)'] * 2.5 * 1000  # kg CO2e per ton waste
         self.merged_df['Carbon_Per_Capita_kgCO2e'] = self.merged_df['Carbon_Footprint_kgCO2e'] / (self.merged_df['Population (Million)'] * 1000000)
         
         # Zaman özellikleri
@@ -216,12 +221,12 @@ class VeriHazirlama:
         self.merged_df['Category_Waste_Share'] = self.merged_df.groupby(['Country', 'Year'])['Total Waste (Tons)'].transform(lambda x: x / x.sum())
         self.merged_df['Category_Economic_Share'] = self.merged_df.groupby(['Country', 'Year'])['Economic Loss (Million $)'].transform(lambda x: x / x.sum())
         
-        # Sustainability Score hesaplama (veri setine uygun threshold'larla)
+        # Sustainability Score hesaplama (gerçek dünya verilerine göre)
         def calculate_sustainability_score(row):
-            # Veri setindeki değerlere göre threshold'lar (kg cinsinden)
-            waste_threshold = 0.5  # kg/kişi (veri dağılımına göre)
-            economic_threshold = 300  # USD/kişi (veri dağılımına göre)
-            carbon_threshold = 0.5  # kg CO2e/kişi (veri dağılımına göre)
+            # Gerçek dünya threshold'ları (veri setine göre ayarlandı)
+            waste_threshold = 150  # kg/kişi/yıl (veri seti ortalaması: 109.5)
+            economic_threshold = 40  # USD/kişi/yıl (veri seti ortalaması: 35.4)
+            carbon_threshold = 0.5  # kg CO2e/kişi/yıl (veri seti ortalamasına göre)
             
             waste_score = max(0, 1 - (row['Waste_Per_Capita_kg'] / waste_threshold))
             economic_score = max(0, 1 - (row['Economic_Loss_Per_Capita_USD'] / economic_threshold))

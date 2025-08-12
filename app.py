@@ -36,7 +36,7 @@ import os
 from typing import Dict, List, Tuple, Optional, Any
 
 # Özel modüller
-# from storytelling import show_storytelling_section  # Eksik modül
+# from storytelling import show_storytelling_section  # Gerekirse aktifleştir
 
 # Performans optimizasyonları
 
@@ -56,8 +56,8 @@ warnings.filterwarnings('ignore')
 REAL_DATA_PATH = "data/ecolense_final_enriched_with_iso.csv"      # 5000 satırlık zenginleştirilmiş veri (ISO kodları ile)
 PREDICTIONS_PATH = "ecolense_2025_2030_predictions_dashboard.csv"  # En son tahminler (2025-2030)
 PERF_REPORT_PATH = "model_performance_dashboard.json"    # En son model raporu (GradientBoosting)
-AB_TESTING_PATH = "ab_testing_raporu.json"              # A/B testing raporu
-AB_RESULTS_PATH = "ab_testing_sonuclari.csv"            # A/B testing sonuçları
+MODEL_COMPARISON_PATH = "model_comparison_raporu.json"              # Model karşılaştırma raporu
+MODEL_RESULTS_PATH = "model_comparison_sonuclari.csv"            # Model karşılaştırma sonuçları
 OUTLIER_REPORT_PATH = "aykiri_deger_raporu.csv"         # Aykırı değer raporu
 CATEGORY_ANALYSES_PATH = "dashboard_category_analyses.json"  # Kategori analizleri
 DASHBOARD_CONFIG_PATH = "dashboard_config.json"         # Dashboard konfigürasyonu
@@ -98,7 +98,7 @@ I18N = {
         'PAGE_ANALYSIS': '📊 Veri Analizi',
         'PAGE_PERF': '🤖 Model Performansı',
         'PAGE_FORECASTS': '🔮 Gelecek Tahminleri',
-        'PAGE_AB': '🧪 A/B Testing',
+        'PAGE_AB': '🧪 Model Karşılaştırma',
         'PAGE_POLICY': '🛠️ Politika Simülatörü',
         'PAGE_AI': '🤖 AI Insights',
         'PAGE_RISK': '⚠️ Risk & Fırsat',
@@ -150,7 +150,7 @@ I18N = {
         'PAGE_ANALYSIS': '📊 Data Analysis',
         'PAGE_PERF': '🤖 Model Performance',
         'PAGE_FORECASTS': '🔮 Forecasts',
-        'PAGE_AB': '🧪 A/B Testing',
+        'PAGE_AB': '🧪 Model Comparison',
         'PAGE_POLICY': '🛠️ Policy Simulator',
         'PAGE_AI': '🤖 AI Insights',
         'PAGE_RISK': '⚠️ Risk & Opportunity',
@@ -756,24 +756,24 @@ def load_predictions_dashboard() -> Optional[pd.DataFrame]:
         return None
 
 @st.cache_data(show_spinner=False)
-def load_ab_testing_results() -> Optional[pd.DataFrame]:
-    """A/B testing sonuçlarını yükle"""
+def load_model_comparison_results() -> Optional[pd.DataFrame]:
+    """Model karşılaştırma sonuçlarını yükle"""
     try:
-        df = pd.read_csv(AB_RESULTS_PATH)
+        df = pd.read_csv(MODEL_RESULTS_PATH)
         return df
     except Exception as e:
-        st.error(f"❌ A/B testing sonuçları yükleme hatası: {e}")
+        st.error(f"❌ Model karşılaştırma sonuçları yükleme hatası: {e}")
         return None
 
 @st.cache_data(show_spinner=False)
-def load_ab_testing_report() -> Optional[dict]:
-    """A/B testing raporunu yükle"""
+def load_model_comparison_report() -> Optional[dict]:
+    """Model karşılaştırma raporunu yükle"""
     try:
-        with open(AB_TESTING_PATH, 'r', encoding='utf-8') as f:
+        with open(MODEL_COMPARISON_PATH, 'r', encoding='utf-8') as f:
             report = json.load(f)
         return report
     except Exception as e:
-        st.error(f"❌ A/B testing raporu yükleme hatası: {e}")
+        st.error(f"❌ Model karşılaştırma raporu yükleme hatası: {e}")
         return None
 
 @st.cache_data(show_spinner=False)
@@ -2030,7 +2030,7 @@ def main():
     elif page == _t('PAGE_POLICY'):
         show_policy_simulator()
     elif page == _t('PAGE_AB'):
-        show_ab_testing()
+        show_model_comparison()
     elif page == _t('PAGE_AI'):
         show_ai_insights()
     elif page == _t('PAGE_RISK'):
@@ -3389,9 +3389,10 @@ def show_target_based_forecasts():
         return
     country = st.selectbox("Ülke", sorted(preds['Country'].dropna().unique()), key="tbf_country")
     target = st.selectbox("Hedef", [
-        ('Total Waste (Tons)', 'Toplam Atık (ton)', '↓'),
-        ('Economic Loss (Million $)', 'Ekonomik Kayıp (M$)', '↓'),
-        ('Carbon_Footprint_kgCO2e', 'Karbon (kgCO2e)', '↓')
+        ('Total Waste (Tons)', 'Toplam Atık (ton) - Azalt', '↓'),
+        ('Economic Loss (Million $)', 'Ekonomik Kayıp (M$) - Azalt', '↓'),
+        ('Carbon_Footprint_kgCO2e', 'Karbon (kgCO2e) - Azalt', '↓'),
+        ('Sustainability_Score', 'Sürdürülebilirlik Skoru - Artır', '↑')
     ], format_func=lambda x: x[1], key="tbf_target")
     tcol, tlabel, direction = target
     dfc = preds[preds['Country']==country].sort_values('Year')
@@ -3426,7 +3427,7 @@ def show_target_based_forecasts():
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Hedefe Gidiş</h4>
           <p><span class='ai-badge'>2030 hedefi</span> {goal:,.2f} → {direction_txt} gereksinimi: {req*100:.2f}%/yıl.</p>
-          <p>Öneri: A/B veya Politika Simülatörü'nde atık azaltımı ve teknoloji benimseme kaldıraçlarını kombine test ederek hedef rotasına yaklaş.</p>
+          <p>Öneri: Model Karşılaştırma veya Politika Simülatörü'nde atık azaltımı ve teknoloji benimseme kaldıraçlarını kombine test ederek hedef rotasına yaklaş.</p>
         </div>
         """, unsafe_allow_html=True)
     except Exception:
@@ -3455,7 +3456,7 @@ def show_ai_insights():
     </div>
     """, unsafe_allow_html=True)
     real_df = load_data(REAL_DATA_PATH, announce=False)
-    # A/B, varsayılan kaynağı Profesyonel‑TS yapalım
+    # Model karşılaştırma, varsayılan kaynağı Profesyonel‑TS yapalım
     preds_ts = load_predictions_dashboard()
     preds = preds_ts if (preds_ts is not None and not preds_ts.empty) else load_predictions_dashboard()
     if preds is None or preds.empty:
@@ -3822,8 +3823,8 @@ def show_ai_insights():
     # Sayfa sonu yazısı
     add_page_footer("AI Insights")
 
-def show_ab_testing():
-    """A/B Testing – Model ve özellik kombinasyonları karşılaştırması"""
+def show_model_comparison():
+    """Model Karşılaştırma – Model ve özellik kombinasyonları karşılaştırması"""
     # Premium başlık
     st.markdown("""
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -3833,7 +3834,7 @@ def show_ab_testing():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">🧪</span>
             </div>
-            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">A/B TESTING ANALİZİ</h1>
+            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">MODEL KARŞILAŞTIRMA ANALİZİ</h1>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
             Gradient Boosting vs Random Forest vs Linear Regression - 3 hedef değişken için performans karşılaştırması
@@ -3841,19 +3842,19 @@ def show_ab_testing():
     </div>
     """, unsafe_allow_html=True)
 
-    # A/B testing sonuçlarını yükle
-    ab_results = load_ab_testing_results()
-    ab_report = load_ab_testing_report()
+    # Model karşılaştırma sonuçlarını yükle
+    ab_results = load_model_comparison_results()
+    ab_report = load_model_comparison_report()
     
     if ab_results is None or ab_results.empty:
-        st.warning("⚠️ A/B testing sonuçları bulunamadı. Önce A/B testing analizini çalıştırın.")
+        st.warning("⚠️ Model karşılaştırma sonuçları bulunamadı. Önce model karşılaştırma analizini çalıştırın.")
         return
     
     if ab_report is None:
-        st.warning("⚠️ A/B testing raporu bulunamadı.")
+        st.warning("⚠️ Model karşılaştırma raporu bulunamadı.")
         return
 
-    # A/B Testing Özeti
+    # Model Karşılaştırma Özeti
     st.markdown("""
     <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
@@ -3862,7 +3863,7 @@ def show_ab_testing():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">📊</span>
             </div>
-            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">A/B TESTING ÖZETİ</h2>
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">MODEL KARŞILAŞTIRMA ÖZETİ</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
             3 hedef değişken için 27 farklı model-özellik kombinasyonu test edildi
@@ -3927,34 +3928,34 @@ def show_ab_testing():
                     orientation='h', title='Model Türlerine Göre Performans')
         st.plotly_chart(fig, use_container_width=True)
     
-    # A/B Testing Grafikleri
-    st.markdown("### 📊 A/B Testing Görsel Analizi")
+    # Model Karşılaştırma Grafikleri
+    st.markdown("### 📊 Model Karşılaştırma Görsel Analizi")
     
     col1, col2 = st.columns(2)
     
     with col1:
         try:
-            with open('ab_testing_model_performance.png', 'rb') as f:
-                st.image(f.read(), caption='Model Performans Karşılaştırması', use_container_width=True)
+            with open('model_comparison_performance.png', 'rb') as f:
+                st.image(f.read(), caption='Model Performans Karşılaştırması')
         except Exception as e:
             st.warning(f"Model performans grafiği yüklenemedi: {str(e)}")
     
     with col2:
         try:
-            with open('ab_testing_model_types.png', 'rb') as f:
-                st.image(f.read(), caption='Model Türleri Karşılaştırması', use_container_width=True)
+            with open('model_comparison_model_types.png', 'rb') as f:
+                st.image(f.read(), caption='Model Türleri Karşılaştırması')
         except Exception as e:
             st.warning(f"Model türleri grafiği yüklenemedi: {str(e)}")
     
     # Özellik grupları grafiği
     try:
-        with open('ab_testing_feature_groups.png', 'rb') as f:
-            st.image(f.read(), caption='Özellik Grupları Karşılaştırması', use_container_width=True)
+        with open('model_comparison_feature_groups.png', 'rb') as f:
+            st.image(f.read(), caption='Özellik Grupları Karşılaştırması')
     except Exception as e:
         st.warning(f"Özellik grupları grafiği yüklenemedi: {str(e)}")
     
     # Detaylı sonuçlar
-    st.markdown("### 📋 Detaylı Sonuçlar")
+    st.markdown("### 📋 Model Karşılaştırma Sonuçları")
     
     # Filtreleme seçenekleri
     col1, col2, col3 = st.columns(3)
@@ -3991,7 +3992,7 @@ def show_ab_testing():
         st.warning("Seçilen filtrelere uygun sonuç bulunamadı.")
     
     # Performans karşılaştırması
-    st.markdown("### 🎯 Performans Karşılaştırması")
+    st.markdown("### 🎯 Model Performans Karşılaştırması")
     
     if not filtered_results.empty:
         # Size için pozitif değerler kullan (cv_r2'nin mutlak değeri)
@@ -4008,7 +4009,7 @@ def show_ab_testing():
         )
         st.plotly_chart(fig, use_container_width=True)
 
-    # AI Asistan – A/B Testing yorumu
+    # AI Asistan – Model Karşılaştırma yorumu
     try:
         if 'genel_istatistikler' in ab_report:
             stats = ab_report['genel_istatistikler']
@@ -4019,7 +4020,7 @@ def show_ab_testing():
             ]
             st.markdown("""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>🤖</span>AI Asistan — A/B Testing Özeti</h4>
+              <h4><span class='ai-emoji'>🤖</span>AI Asistan — Model Karşılaştırma Özeti</h4>
               <p>{rows}</p>
               <p>Öneri: Gradient Boosting + Core + Efficiency/Trends kombinasyonları en iyi performansı gösteriyor. Overfitting skoru düşük olan modelleri tercih edin.</p>
             </div>
@@ -4028,7 +4029,7 @@ def show_ab_testing():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("A/B Testing")
+    add_page_footer("Model Karşılaştırma")
 
 def show_policy_simulator():
     """Politika Simülatörü – müdahalelerin 2030'a etkisi"""
@@ -4105,7 +4106,7 @@ def show_policy_simulator():
         ### 💡 Kullanım Önerileri:
         - Farklı politika kombinasyonlarını test edin
         - En yüksek etkiyi yaratan politika paketini bulun
-        - Maliyet-fayda analizi için A/B Test modülünü kullanın
+        - Maliyet-fayda analizi için Model Karşılaştırma modülünü kullanın
         """)
 
     # Basit katsayılar (sunum amaçlı)
@@ -4190,7 +4191,7 @@ def show_model_card():
             <li><strong>Veri Zenginleştirme:</strong> ISO kodları, coğrafi özellikler, pandemi dummyları, temporal özellikler</li>
             <li><strong>Değerlendirme:</strong> Train-Test Split (80/20) + 5-fold Cross-Validation</li>
             <li><strong>Regularization:</strong> Learning rate, max_depth, subsample parametreleri</li>
-            <li><strong>Model:</strong> GradientBoostingRegressor (A/B test kazananı)</li>
+            <li><strong>Model:</strong> GradientBoostingRegressor (Model karşılaştırma kazananı)</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -4360,7 +4361,7 @@ def show_risk_opportunity():
         st.warning("⚠️ Tahmin dosyası bulunamadı.")
         return
     st.caption(f"Kaynak: {source_label}")
-    st.markdown("<small>Risk skoru: max(0,waste_cagr)+max(0,carbon_cagr)+max(0,loss_cagr) − sus_2030/100</small>", unsafe_allow_html=True)
+    st.markdown("<small>Risk skoru: [max(0,waste_cagr)×0.4 + max(0,carbon_cagr)×0.3 + max(0,loss_cagr)×0.3] − (sus_2030/100)×0.5</small>", unsafe_allow_html=True)
     # Son yıl ve CAGR ile basit risk/fırsat puanları
     pmin, pmax = int(preds['Year'].min()), int(preds['Year'].max())
     def cagr(g: pd.DataFrame, col: str) -> float:
@@ -4386,7 +4387,12 @@ def show_risk_opportunity():
         df_data['sus_2030'] = 50.0  # Varsayılan değer
     
     df = pd.DataFrame(df_data).dropna()
-    df['risk_score'] = (df['waste_cagr'].clip(lower=0) + df['carbon_cagr'].clip(lower=0) + df['loss_cagr'].clip(lower=0)) - (df['sus_2030'] / 100.0)
+    # İyileştirilmiş risk skoru hesaplama (ağırlıklı ve dengeli)
+    df['risk_score'] = (
+        df['waste_cagr'].clip(lower=0) * 0.4 +      # Atık ağırlığı (%40)
+        df['carbon_cagr'].clip(lower=0) * 0.3 +     # Karbon ağırlığı (%30)
+        df['loss_cagr'].clip(lower=0) * 0.3         # Ekonomik kayıp ağırlığı (%30)
+    ) - (df['sus_2030'] / 100.0) * 0.5              # Sürdürülebilirlik etkisi (%50)
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Yüksek Risk – Top 10")
@@ -4398,7 +4404,13 @@ def show_risk_opportunity():
             **🚨 Yüksek Risk Tablosu**, 2030 yılına kadar en büyük sorunlarla karşılaşabilecek ülkeleri listeler:
             
             ### 📈 Risk Skoru Hesaplama:
-            **Risk Skoru = max(0, Atık CAGR) + max(0, Karbon CAGR) + max(0, Ekonomik Kayıp CAGR) - (Sürdürülebilirlik 2030 / 100)**
+            **Risk Skoru = [max(0, Atık CAGR) × 0.4 + max(0, Karbon CAGR) × 0.3 + max(0, Ekonomik Kayıp CAGR) × 0.3] - (Sürdürülebilirlik 2030 / 100) × 0.5**
+            
+            **Ağırlıklar:**
+            - **Atık CAGR:** %40 (en yüksek öncelik)
+            - **Karbon CAGR:** %30 (orta öncelik)
+            - **Ekonomik Kayıp CAGR:** %30 (orta öncelik)
+            - **Sürdürülebilirlik Etkisi:** %50 (dengeleyici faktör)
             
             ### 🔍 Tablo Yorumu:
             
@@ -4670,7 +4682,7 @@ def show_target_planner():
         
         ### 🚀 Sonraki Adımlar:
         1. **AI Insights** sayfasında en etkili faktörleri inceleyin
-        2. **A/B Test** modülünde farklı senaryoları test edin
+        2. **Model Karşılaştırma** modülünde farklı senaryoları test edin
         3. **Politika Simülatörü** ile etki analizi yapın
         4. **Risk & Fırsat** sayfasında ülke konumunu kontrol edin
         """)
@@ -4682,7 +4694,7 @@ def show_target_planner():
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Gerekli İvme</h4>
           <p><span class='ai-badge'>2030</span> hedefi için {direction} gereksinimi ≈ {req*100:.2f}%/yıl.</p>
-          <p>Öneri: Ülke için AI Insights sayfasındaki en etkili sürücülere odaklanarak A/B testinde parametrik arama yap.</p>
+          <p>Öneri: Ülke için AI Insights sayfasındaki en etkili sürücülere odaklanarak model karşılaştırmasında parametrik arama yap.</p>
         </div>
         """, unsafe_allow_html=True)
     except Exception:
@@ -5671,7 +5683,7 @@ def show_what_if_advanced():
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — What‑if</h4>
           <p>Nüfus {pop}% ve {cat} için {red}% azaltım ile etkiler üstte.</p>
-          <p>Öneri: A/B ile kombinasyonları test edin, en yüksek etki/uygulanabilirlik dengesi yakalanana kadar parametreleri tarayın.</p>
+          <p>Öneri: Model karşılaştırması ile kombinasyonları test edin, en yüksek etki/uygulanabilirlik dengesi yakalanana kadar parametreleri tarayın.</p>
         </div>
         """.replace("{pop}", str(pop_growth)).replace("{red}", str(cat_reduct)).replace("{cat}", cat), unsafe_allow_html=True)
     except Exception:
@@ -5858,7 +5870,7 @@ def show_driver_sensitivity():
             <div class='ai-assistant'>
               <h4><span class='ai-emoji'>🤖</span>AI Asistan — Tornado Özeti</h4>
               <p>En etkili sürücüler: {', '.join(lead)}</p>
-              <p>Öneri: What‑if’te bu sürücülere odaklanıp politika etkisini A/B ile sınayın.</p>
+              <p>Öneri: What‑if’te bu sürücülere odaklanıp politika etkisini model karşılaştırması ile sınayın.</p>
             </div>
             """, unsafe_allow_html=True)
     except Exception:
@@ -5873,7 +5885,7 @@ def show_driver_sensitivity():
             <div class='ai-assistant'>
               <h4><span class='ai-emoji'>🤖</span>AI Asistan — Sürücü Analizi</h4>
               <p>En etkili sürücüler: {', '.join(lead)}</p>
-              <p>Öneri: What‑if'te bu sürücülere odaklanıp politika etkisini A/B ile sınayın.</p>
+              <p>Öneri: What‑if'te bu sürücülere odaklanıp politika etkisini model karşılaştırması ile sınayın.</p>
             </div>
             """, unsafe_allow_html=True)
     except Exception:
@@ -6493,7 +6505,7 @@ def show_data_lineage_quality():
     </div>
     """, unsafe_allow_html=True)
     st.subheader("Soy Ağacı")
-    st.markdown("- Kaynak: global_food_wastage_dataset.csv + material_footprint.csv\n- Birleştirme: 01_veri_hazirlama.py\n- Model Eğitimi: 02_model_egitimi.py\n- A/B Testing: 03_ab_testing_analizi.py\n- Dashboard: app.py")
+    st.markdown("- Kaynak: global_food_wastage_dataset.csv + material_footprint.csv\n- Birleştirme: 01_veri_hazirlama.py\n- Model Eğitimi: 02_model_egitimi.py\n- Model Karşılaştırma: 03_model_karsilastirma_analizi.py\n- Dashboard: app.py")
     st.subheader("Cache Durumu")
     st.caption("Streamlit cache: veri/pred dosyaları cache’de; yenilemek için sayfayı yeniden başlatın.")
     st.subheader("Sürüm Etiketi")

@@ -2,64 +2,64 @@
   "Fruits & Vegetables": {
     "total_waste": 15522081.2,
     "economic_loss": 15622033.18,
-    "carbon_footprint": 15522081200.0,
-    "avg_sustainability": 82.98744391334073,
+    "carbon_footprint": 38805203000.0,
+    "avg_sustainability": 42.460170264203434,
     "country_count": 20,
     "year_count": 7
   },
   "Prepared Food": {
     "total_waste": 17929317.919999998,
     "economic_loss": 17878643.94,
-    "carbon_footprint": 17929317920.0,
-    "avg_sustainability": 82.67015424008473,
+    "carbon_footprint": 44823294800.0,
+    "avg_sustainability": 41.91194390457522,
     "country_count": 20,
     "year_count": 7
   },
   "Dairy Products": {
     "total_waste": 15292167.33,
     "economic_loss": 15223458.7,
-    "carbon_footprint": 15292167330.0,
-    "avg_sustainability": 83.5223665010944,
+    "carbon_footprint": 38230418325.0,
+    "avg_sustainability": 42.21893479765312,
     "country_count": 20,
     "year_count": 7
   },
   "Beverages": {
     "total_waste": 16354455.29,
     "economic_loss": 16331179.83,
-    "carbon_footprint": 16354455290.0,
-    "avg_sustainability": 83.84711403428507,
+    "carbon_footprint": 40886138225.0,
+    "avg_sustainability": 41.75414274991296,
     "country_count": 20,
     "year_count": 7
   },
   "Meat & Seafood": {
     "total_waste": 15371347.52,
     "economic_loss": 15352228.39,
-    "carbon_footprint": 15371347520.0,
-    "avg_sustainability": 84.11845644635963,
+    "carbon_footprint": 38428368800.0,
+    "avg_sustainability": 42.28827815807409,
     "country_count": 20,
     "year_count": 7
   },
   "Grains & Cereals": {
     "total_waste": 14206460.57,
     "economic_loss": 14073418.43,
-    "carbon_footprint": 14206460570.0,
-    "avg_sustainability": 84.5399702271396,
+    "carbon_footprint": 35516151425.0,
+    "avg_sustainability": 43.276113015513936,
     "country_count": 20,
     "year_count": 7
   },
   "Frozen Food": {
     "total_waste": 15045115.02,
     "economic_loss": 15180582.95,
-    "carbon_footprint": 15045115020.0,
-    "avg_sustainability": 86.10171517304856,
+    "carbon_footprint": 37612787550.0,
+    "avg_sustainability": 43.68369030372233,
     "country_count": 20,
     "year_count": 7
   },
   "Bakery Items": {
     "total_waste": 15587955.510000002,
     "economic_loss": 15536973.93,
-    "carbon_footprint": 15587955510.0,
-    "avg_sustainability": 83.84359869687378,
+    "carbon_footprint": 38969888775.0,
+    "avg_sustainability": 42.50962883935844,
     "country_count": 20,
     "year_count": 7
   }
