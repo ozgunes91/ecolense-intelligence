@@ -3661,7 +3661,7 @@ def show_ai_insights():
         sm = shapm.head(20)
         # Kolon isimlerini kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in sm.columns else 'mean_abs_shap'
-        col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True)
+                    col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_chart_{hash(str(sm))}")
 
     st.markdown("---")
     st.subheader("🧠 SHAP – Özellik Etkileri (Profesyonel, referans)")
@@ -3727,7 +3727,7 @@ def show_ai_insights():
         if shapP is not None and not shapP.empty:
             c2.subheader("Ortalama |SHAP| (Profesyonel)")
             colx = 'mean_abs_shap' if 'mean_abs_shap' in shapP.columns else shapP.columns[1]
-            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True)
+            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"shap_professional_{hash(str(shapP))}")
 
     # Δ Etki (TS − Profesyonel)
     if shap_ts is not None and not shap_ts.empty and shapP is not None and not shapP.empty:
@@ -5839,7 +5839,7 @@ def show_driver_sensitivity():
             df2.columns = ['feature', 'score']
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
-                    col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
+                    col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_sensitivity_chart_{hash(str(df2))}")
     # AI Asistan
     try:
         lead = None
