@@ -3406,28 +3406,115 @@ def show_target_based_forecasts():
         goal = st.number_input("2030 hedefi (artır)", value=max(0.0, cur*1.05))
     else:
         goal = st.number_input("2030 hedefi (azalt)", value=max(0.0, cur*0.9))
-    # CAGR gereksinimi
-    years = max(1, y1-y0)
-    req = 0.0 if cur<=0 else (goal/cur)**(1.0/years) - 1.0
-    st.metric("Gerekli yıllık değişim (CAGR)", f"{req*100:.2f}%/yıl")
-    # Yol haritası: doğrusal köprü (sunum amaçlı), gerçek kullanımda politika simülatörüyle bağlanır
-    xs = np.arange(y0, y1+1)
+    # CAGR gereksinimi (daha doğru hesaplama)
+    years_to_2030 = 2030 - y1  # 2030'a kalan yıl sayısı
+    if years_to_2030 <= 0:
+        years_to_2030 = 1  # Minimum 1 yıl
+    
+    # CAGR hesaplama (Compound Annual Growth Rate)
+    if cur > 0 and goal > 0:
+        if direction == '↑':  # Artış hedefi
+            req = (goal/cur)**(1.0/years_to_2030) - 1.0
+        else:  # Azalış hedefi
+            req = (goal/cur)**(1.0/years_to_2030) - 1.0
+    else:
+        req = 0.0
+    
+    # CAGR metrik gösterimi
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Gerekli CAGR", f"{req*100:.2f}%/yıl")
+    with col2:
+        st.metric("2030 Hedefi", f"{goal:,.0f}")
+    
+    # Yol haritası: Daha gerçekçi hedef rotası
+    xs = np.arange(y0, 2031)  # 2030'a kadar
     base = dfc[tcol].values.astype(float)
-    lin = np.linspace(base[0] if len(base)>0 else 0.0, goal, len(xs))
+    
+    # Mevcut trend (son 3 yılın ortalaması)
+    if len(base) >= 3:
+        recent_trend = np.mean(np.diff(base[-3:]))  # Son 3 yılın ortalama değişimi
+    else:
+        recent_trend = 0
+    
+    # Hedef rotası: Mevcut trend + hedef odaklı düzeltme
+    target_path = []
+    current_value = base[-1] if len(base) > 0 else cur
+    
+    for year in range(y1+1, 2031):
+        if direction == '↑':  # Artış hedefi
+            # Kademeli artış
+            growth_factor = 1 + req
+            current_value *= growth_factor
+        else:  # Azalış hedefi
+            # Kademeli azalış
+            reduction_factor = 1 + req  # req negatif olacak
+            current_value *= reduction_factor
+        target_path.append(current_value)
+    
+    # Tam yol haritası
+    full_path = list(base) + target_path
+    full_years = list(range(y0, 2031))
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=dfc['Year'], y=base, mode='lines+markers', name='Tahmin (baz)', line=dict(color='#11E6C1', width=3)))
-    fig.add_trace(go.Scatter(x=xs, y=lin, mode='lines+markers', name='Hedef rotası', line=dict(color='#A9FF4F', width=3, dash='dash')))
-    fig.update_layout(title=f"{country} – {tlabel}", xaxis_title='Yıl', yaxis_title=tlabel, template='plotly_white', height=480)
+    
+    # Mevcut tahminler
+    fig.add_trace(go.Scatter(
+        x=dfc['Year'], 
+        y=base, 
+        mode='lines+markers', 
+        name='Mevcut Tahmin', 
+        line=dict(color='#11E6C1', width=3)
+    ))
+    
+    # Hedef rotası
+    fig.add_trace(go.Scatter(
+        x=full_years, 
+        y=full_path, 
+        mode='lines+markers', 
+        name='Hedef Rotası', 
+        line=dict(color='#A9FF4F', width=3, dash='dash')
+    ))
+    
+    # 2030 hedef noktası
+    fig.add_trace(go.Scatter(
+        x=[2030], 
+        y=[goal], 
+        mode='markers', 
+        name='2030 Hedefi', 
+        marker=dict(color='#FF6B6B', size=12, symbol='star')
+    ))
+    
+    fig.update_layout(
+        title=f"{country} – {tlabel} (2030 Hedefi: {goal:,.0f})", 
+        xaxis_title='Yıl', 
+        yaxis_title=tlabel, 
+        template='plotly_white', 
+        height=480,
+        showlegend=True
+    )
     st.plotly_chart(fig, use_container_width=True)
     # AI Asistan
     try:
         diff2030 = (goal - cur)
         direction_txt = 'artış' if direction=='↑' else 'azalış'
+        
+        # Hedef zorluğu değerlendirmesi
+        if abs(req) < 0.05:  # %5'ten az değişim
+            difficulty = "Kolay"
+            recommendation = "Mevcut trend ile hedefe ulaşılabilir."
+        elif abs(req) < 0.15:  # %15'ten az değişim
+            difficulty = "Orta"
+            recommendation = "Politika müdahaleleri gerekli. Politika Simülatörü'nü kullanın."
+        else:  # %15'ten fazla değişim
+            difficulty = "Zor"
+            recommendation = "Agresif politika önlemleri gerekli. Çoklu müdahale kombinasyonu önerilir."
+        
         st.markdown(f"""
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Hedefe Gidiş</h4>
-          <p><span class='ai-badge'>2030 hedefi</span> {goal:,.2f} → {direction_txt} gereksinimi: {req*100:.2f}%/yıl.</p>
-          <p>Öneri: Model Karşılaştırma veya Politika Simülatörü'nde atık azaltımı ve teknoloji benimseme kaldıraçlarını kombine test ederek hedef rotasına yaklaş.</p>
+          <p><span class='ai-badge'>2030 Hedefi</span> {goal:,.0f} | <span class='ai-badge'>Gerekli CAGR</span> {req*100:.2f}%/yıl | <span class='ai-badge'>Zorluk</span> {difficulty}</p>
+          <p><span class='ai-badge'>Analiz</span> {direction_txt} gereksinimi: {req*100:.2f}%/yıl ({years_to_2030} yıl kaldı).</p>
+          <p>Öneri: {recommendation}</p>
         </div>
         """, unsafe_allow_html=True)
     except Exception:
