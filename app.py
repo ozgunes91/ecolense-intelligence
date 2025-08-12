@@ -2239,7 +2239,7 @@ def show_story_mode_page():
     """📖 Story Mode - Premium Data Storytelling Platform"""
     
     # Import storytelling module
-    from storytelling import show_story_mode
+    from storytelling import show_story_mode as storytelling_show_story_mode
     
     # Load data
     try:
@@ -2390,7 +2390,7 @@ def show_story_mode_page():
                     st.rerun()
     else:
         # Show selected story using storytelling module
-        show_story_mode(df, story_mode)
+        storytelling_show_story_mode(df, story_mode)
     
     # Sayfa sonu
     add_page_footer("Story Mode")
