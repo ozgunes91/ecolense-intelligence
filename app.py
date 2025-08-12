@@ -4281,7 +4281,7 @@ def show_model_card():
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
                 c2.subheader("Ortalama |SHAP|")
-                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True)
+                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_shap_{hash(str(shap_ts))}_{hash('model_card')}")
                 
                 # SHAP açıklaması
                 with c2.expander("📊 SHAP Değerleri Nedir?"):
