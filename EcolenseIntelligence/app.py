@@ -3739,7 +3739,7 @@ def show_ai_insights():
             merged = m_ts.merge(m_p, on='feature', how='inner')
             merged['delta'] = merged['ts'] - merged['prof']
             st.subheader("Δ Etki (TS − Profesyonel)")
-                            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False, key="chart_ubgtroqt").head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ab_testing_chart_{hash(str(merged))}")
+                            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False, key="chart_ubgtroqt").head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ab_testing_chart_{hash(str(merged))}_{hash('delta_effect')}")
             with st.expander("📊 Δ Etki Grafiği Ne Anlatıyor?"):
                 st.markdown("""
                 **Δ Etki (TS − Profesyonel)** grafiği, zaman serisi modeli ile referans model arasındaki özellik etki farklarını gösterir:
@@ -5963,7 +5963,7 @@ def show_driver_sensitivity():
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
                     st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined', key="chart_peb1vh0a").tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}")
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined', key="chart_peb1vh0a").tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}_{hash(lbl)}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6054,7 +6054,7 @@ def show_roi_npv():
     r = disc/100.0
     npv = sum([flows[i] / ((1+r)**i) for i in range(len(flows))])
     st.metric("NPV (M$)", f"{npv:,.2f}")
-                    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$, key="chart_sm0o5760")'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(years_arr))}")
+                    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(years_arr))}_{hash('roi_flows')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6456,7 +6456,7 @@ def show_anomaly_monitor():
     # Zaman serisi izleme (ülke seçimi)
     country = st.selectbox("Ülke", sorted(df[ccol].dropna().unique()), key="anom_country")
     ts = dff[dff[ccol]==country][[ycol, tcol]].groupby(ycol).mean().reset_index()
-                    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360, key="chart_13ib636o"), use_container_width=True, key=f"anomaly_chart_{hash(str(ts))}")
+                    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360), use_container_width=True, key=f"anomaly_chart_{hash(str(ts))}_{hash(country)}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6684,7 +6684,7 @@ def show_carbon_flows():
     # Treemap
     st.subheader("Treemap – Karbon dağılımı")
     tre = d.groupby(catcol)[carbon].sum().reset_index()
-                    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420, key="chart_37ss73w5"), use_container_width=True, key=f"carbon_treemap_{hash(str(tre))}")
+                    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), use_container_width=True, key=f"carbon_treemap_{hash(str(tre))}_{hash(country)}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
