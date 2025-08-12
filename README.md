@@ -510,7 +510,7 @@ Sivil toplum için toplumsal bilinç artırıcı farkındalık kampanyaları ön
 | **Üye** | **Rol** | **Katkı** |
 |:--------|:--------|:----------|
 | **Özge Güneş** | Data Scientist | Model geliştirme, analiz |
-| **Kübra Saruhan** | Takım Arkadaşı | Veri analizi, dokümantasyon |
+| **Kübra Saruhan** | Data Scientist | Veri analizi, dokümantasyon |
 
 </div>
 
