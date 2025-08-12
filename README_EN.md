@@ -4,6 +4,8 @@
 
 **Ecolense Intelligence** is a comprehensive data analysis and machine learning platform that analyzes global food waste problems and provides sustainable solutions. Developed with 20 countries, 8 food categories, and 5000+ observations, this platform provides in-depth analysis of the economic, environmental, and social impacts of food waste.
 
+
+
 ### 🎯 Main Objectives
 - Analyze global food waste trends
 - Calculate carbon footprint and economic losses
