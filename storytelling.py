@@ -106,18 +106,22 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
     # Story content based on selection - Support both languages
     if story_mode in ["🥗 Global Food Waste Crisis & Solutions", "🥗 Gıda İsrafı Krizi ve Çözüm Yolları"]:
         show_food_waste_crisis_story(df)
-    elif story_mode in ["💰 Economic Impact Analysis", "💰 Ekonomik Etki Analizi"]:
+    elif story_mode in ["💰 Economic Impact Analysis", "💰 Ekonomik Etki Analizi", "💰 Gıda İsrafının Ekonomik Etkileri"]:
         show_economic_impact_story(df)
-    elif story_mode in ["🌍 Environmental Footprint Analysis", "🌍 Çevresel Ayak İzi Analizi"]:
+    elif story_mode in ["🌍 Environmental Footprint Analysis", "🌍 Çevresel Ayak İzi Analizi", "🌍 Gıda İsrafının Çevresel Ayak İzi"]:
         show_environmental_impact_story(df)
-    elif story_mode in ["🎯 Sustainable Solutions Roadmap", "🎯 Sürdürülebilir Çözümler Yol Haritası"]:
+    elif story_mode in ["🎯 Sustainable Solutions Roadmap", "🎯 Sürdürülebilir Çözümler Yol Haritası", "🎯 Sürdürülebilir Gıda Sistemleri"]:
         show_sustainable_solutions_story(df)
     elif story_mode in ["🚀 2030 Strategic Forecast", "🚀 2030 Stratejik Tahmin"]:
         show_2030_strategy_story(df)
     elif story_mode in ["📊 Comprehensive Analytics", "📊 Kapsamlı Analitik"]:
         show_comprehensive_analytics_story(df)
     else:
-        st.warning(f"Unknown story mode: {story_mode}")
+        # Dil desteği ile hata mesajı
+        if lang == 'TR':
+            st.warning(f"Bilinmeyen hikaye modu: {story_mode}")
+        else:
+            st.warning(f"Unknown story mode: {story_mode}")
 
 def show_food_waste_crisis_story(df: pd.DataFrame):
     """🥗 Global Food Waste Crisis & Solutions - Premium Edition"""
