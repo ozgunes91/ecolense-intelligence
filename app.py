@@ -142,7 +142,60 @@ I18N = {
         'AI_WELCOME_TIP': 'KPI kartları 2018–2024 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
         'AI_WELCOME_SUGGESTION': 'Öneri: Önce Veri Analizi → sonra Model Performansı → ardından Gelecek Tahminleri ile ülke seçip AI Insights\'a göz at.',
         'FOOTER_COPYRIGHT': '© 2024 Ecolense. Tüm hakları saklıdır. | Gıda israfı analizi ve sürdürülebilirlik çözümleri',
-        'FOOTER_SUBTITLE': 'Sürdürülebilir Gıda Analizi Platformu'
+        'FOOTER_SUBTITLE': 'Sürdürülebilir Gıda Analizi Platformu',
+        # AI Insights sayfası metinleri
+        'AI_INSIGHTS_TITLE': 'AI İÇGÖRÜLERİ',
+        'AI_INSIGHTS_DESC': 'Yapay zeka destekli otomatik içgörüler ve analizler',
+        'AI_PARAMETERS_TITLE': 'AI Analiz Parametreleri',
+        'AI_PARAMETERS_DESC': 'Gerçek veri: ülkeler×yıllar, Robust tahminler: son yıl+1 → 2030',
+        'AI_CHAT_TITLE': 'İnteraktif AI Asistan',
+        'AI_CHAT_DESC': 'Gıda israfı verileri hakkında sorular sorun, gerçek zamanlı içgörüler alın ve kişiselleştirilmiş öneriler alın',
+        'AI_ASK_PLACEHOLDER': "örn., 'Hangi ülkenin en yüksek gıda israfı var?' veya 'Almanya için trendleri göster'",
+        'AI_ASK_BUTTON': 'AI\'ya Sor',
+        'AI_CHAT_HISTORY': 'Sohbet Geçmişi',
+        'AI_QUICK_ACTIONS': 'Hızlı Aksiyonlar',
+        'AI_FIND_TOP': 'En İyi Performans Gösterenleri Bul',
+        'AI_SHOW_TRENDS': 'Trendleri Göster',
+        'AI_GET_RECOMMENDATIONS': 'Öneriler Al',
+        'AI_TARGET_METRIC': 'Hedef Metrik',
+        'AI_COUNTRY_OPTIONAL': 'Ülke (opsiyonel)',
+        'AI_ANALYSIS_BUTTON': 'Analiz Et',
+        'AI_INSIGHTS_RESULTS': 'AI İçgörü Sonuçları',
+        'AI_NO_DATA': 'Analiz için veri bulunamadı',
+        'AI_LOADING': 'AI verilerinizi analiz ediyor...',
+        'AI_ERROR': 'AI analizi sırasında hata oluştu',
+        # Story Mode metinleri
+        'STORY_MODE_TITLE': 'HİKAYE MODU',
+        'STORY_MODE_DESC': 'AI Destekli Veri Anlatımı ve Stratejik İçgörüler Platformu',
+        'STORY_ACTIVE': 'Aktif Hikaye',
+        'STORY_UNKNOWN': 'Bilinmeyen hikaye modu',
+        'STORY_CRISIS_TITLE': 'KÜRESEL GIDA İSRAFI KRİZİ',
+        'STORY_CRISIS_DESC': 'Acil Müdahale Gerektiren Küresel Felaket',
+        'STORY_CRITICAL_METRICS': 'KRİTİK METRİKLER PANELİ',
+        'STORY_TOTAL_WASTE': 'Toplam Gıda İsrafı',
+        'STORY_AVERAGE_WASTE': 'Ortalama İsraf',
+        'STORY_COUNTRIES_ANALYZED': 'Analiz Edilen Ülkeler',
+        'STORY_SOLUTION_POTENTIAL': 'Çözüm Potansiyeli',
+        'STORY_CRISIS_ANALYSIS': 'KRİZ ANALİZİ',
+        'STORY_TREND_ANALYSIS': 'Trend Analizi',
+        'STORY_ECONOMIC_IMPACT': 'Ekonomik Etki',
+        'STORY_ENVIRONMENTAL_IMPACT': 'Çevresel Etki',
+        'STORY_SOLUTION_POTENTIAL_DESC': 'Çözüm Potansiyeli',
+        'STORY_PREMIUM_VISUALIZATIONS': 'PREMIUM VERİ GÖRSELLEŞTİRMELERİ',
+        'STORY_ANNUAL_TREND': 'Yıllık Küresel Gıda İsrafı Trendi',
+        'STORY_COUNTRY_ANALYSIS': 'ÜLKE BAZLI ANALİZ',
+        'STORY_TOP_COUNTRIES': 'Gıda İsrafına Göre İlk 10 Ülke',
+        'STORY_STRATEGIC_SOLUTIONS': 'STRATEJİK ÇÖZÜMLER',
+        'STORY_IMMEDIATE_ACTIONS': 'Acil Aksiyonlar',
+        'STORY_LONG_TERM_STRATEGIES': 'Uzun Vadeli Stratejiler',
+        'STORY_SMART_SUPPLY': 'Akıllı Tedarik Zinciri Yönetimi',
+        'STORY_CONSUMER_EDUCATION': 'Tüketici Eğitim Programları',
+        'STORY_FOOD_REDISTRIBUTION': 'Gıda Yeniden Dağıtım Ağları',
+        'STORY_WASTE_TRACKING': 'Atık Takip Teknolojileri',
+        'STORY_CIRCULAR_ECONOMY': 'Döngüsel Ekonomi Uygulaması',
+        'STORY_POLICY_FRAMEWORK': 'Politika Çerçevesi Geliştirme',
+        'STORY_TECH_INNOVATION': 'Teknoloji İnovasyon Yatırımı',
+        'STORY_GLOBAL_COLLABORATION': 'Küresel İşbirliği Ağları'
     },
     'EN': {
         'PAGE_SELECT': '📱 SELECT PAGE',
@@ -194,7 +247,60 @@ I18N = {
         'AI_WELCOME_TIP': 'KPI cards are based on real 2018–2024 data. You can dive into country details from sub-pages and test forecasts and scenarios.',
         'AI_WELCOME_SUGGESTION': 'Suggestion: First Data Analysis → then Model Performance → then select country with Future Forecasts and check AI Insights.',
         'FOOTER_COPYRIGHT': '© 2024 Ecolense. All rights reserved. | Food waste analysis and sustainability solutions',
-        'FOOTER_SUBTITLE': 'Sustainable Food Analysis Platform'
+        'FOOTER_SUBTITLE': 'Sustainable Food Analysis Platform',
+        # AI Insights sayfası metinleri
+        'AI_INSIGHTS_TITLE': 'AI INSIGHTS',
+        'AI_INSIGHTS_DESC': 'AI-powered automatic insights and analysis',
+        'AI_PARAMETERS_TITLE': 'AI Analysis Parameters',
+        'AI_PARAMETERS_DESC': 'Real data: countries×years, Robust predictions: last year+1 → 2030',
+        'AI_CHAT_TITLE': 'Interactive AI Assistant',
+        'AI_CHAT_DESC': 'Ask questions about food waste data, get real-time insights, and receive personalized recommendations',
+        'AI_ASK_PLACEHOLDER': "e.g., 'Which country has the highest food waste?' or 'Show me trends for Germany'",
+        'AI_ASK_BUTTON': 'Ask AI',
+        'AI_CHAT_HISTORY': 'Chat History',
+        'AI_QUICK_ACTIONS': 'Quick Actions',
+        'AI_FIND_TOP': 'Find Top Performers',
+        'AI_SHOW_TRENDS': 'Show Trends',
+        'AI_GET_RECOMMENDATIONS': 'Get Recommendations',
+        'AI_TARGET_METRIC': 'Target Metric',
+        'AI_COUNTRY_OPTIONAL': 'Country (optional)',
+        'AI_ANALYSIS_BUTTON': 'Analyze',
+        'AI_INSIGHTS_RESULTS': 'AI Insights Results',
+        'AI_NO_DATA': 'No data available for analysis',
+        'AI_LOADING': 'AI is analyzing your data...',
+        'AI_ERROR': 'Error occurred during AI analysis',
+        # Story Mode metinleri
+        'STORY_MODE_TITLE': 'STORY MODE',
+        'STORY_MODE_DESC': 'AI-Powered Data Storytelling & Strategic Insights Platform',
+        'STORY_ACTIVE': 'Active Story',
+        'STORY_UNKNOWN': 'Unknown story mode',
+        'STORY_CRISIS_TITLE': 'GLOBAL FOOD WASTE CRISIS',
+        'STORY_CRISIS_DESC': 'A Global Catastrophe Requiring Immediate Action',
+        'STORY_CRITICAL_METRICS': 'CRITICAL METRICS DASHBOARD',
+        'STORY_TOTAL_WASTE': 'Total Food Waste',
+        'STORY_AVERAGE_WASTE': 'Average Waste',
+        'STORY_COUNTRIES_ANALYZED': 'Countries Analyzed',
+        'STORY_SOLUTION_POTENTIAL': 'Solution Potential',
+        'STORY_CRISIS_ANALYSIS': 'CRISIS ANALYSIS',
+        'STORY_TREND_ANALYSIS': 'Trend Analysis',
+        'STORY_ECONOMIC_IMPACT': 'Economic Impact',
+        'STORY_ENVIRONMENTAL_IMPACT': 'Environmental Impact',
+        'STORY_SOLUTION_POTENTIAL_DESC': 'Solution Potential',
+        'STORY_PREMIUM_VISUALIZATIONS': 'PREMIUM DATA VISUALIZATIONS',
+        'STORY_ANNUAL_TREND': 'Annual Global Food Waste Trend',
+        'STORY_COUNTRY_ANALYSIS': 'COUNTRY-LEVEL ANALYSIS',
+        'STORY_TOP_COUNTRIES': 'Top 10 Countries by Food Waste',
+        'STORY_STRATEGIC_SOLUTIONS': 'STRATEGIC SOLUTIONS',
+        'STORY_IMMEDIATE_ACTIONS': 'Immediate Actions',
+        'STORY_LONG_TERM_STRATEGIES': 'Long-term Strategies',
+        'STORY_SMART_SUPPLY': 'Smart Supply Chain Management',
+        'STORY_CONSUMER_EDUCATION': 'Consumer Education Programs',
+        'STORY_FOOD_REDISTRIBUTION': 'Food Redistribution Networks',
+        'STORY_WASTE_TRACKING': 'Waste Tracking Technologies',
+        'STORY_CIRCULAR_ECONOMY': 'Circular Economy Implementation',
+        'STORY_POLICY_FRAMEWORK': 'Policy Framework Development',
+        'STORY_TECH_INNOVATION': 'Technology Innovation Investment',
+        'STORY_GLOBAL_COLLABORATION': 'Global Collaboration Networks'
     }
 }
 
@@ -3687,7 +3793,7 @@ def generate_ai_response(question, preds_df, real_df):
 def show_ai_insights():
     """🤖 Interactive AI Insights – Real-time AI-powered analysis and recommendations"""
     # Premium başlık
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
                 box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
@@ -3695,10 +3801,10 @@ def show_ai_insights():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">🤖</span>
             </div>
-            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">AI INSIGHTS</h1>
+            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">{_t('AI_INSIGHTS_TITLE')}</h1>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Yapay zeka destekli otomatik içgörüler ve analizler
+            {_t('AI_INSIGHTS_DESC')}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -3727,13 +3833,13 @@ def show_ai_insights():
     """, unsafe_allow_html=True)
     
     # Interactive AI Chat Interface
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
                 padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                 box-shadow: 0 8px 20px rgba(79, 172, 254, 0.2);">
-        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">💬 Interactive AI Assistant</h3>
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">💬 {_t('AI_CHAT_TITLE')}</h3>
         <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
-            Ask questions about food waste data, get real-time insights, and receive personalized recommendations
+            {_t('AI_CHAT_DESC')}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -3744,12 +3850,12 @@ def show_ai_insights():
     
     # Chat input
     user_question = st.text_input(
-        "🤖 Ask AI Assistant:",
-        placeholder="e.g., 'Which country has the highest food waste?' or 'Show me trends for Germany'",
+        f"🤖 {_t('AI_ASK_BUTTON')}:",
+        placeholder=_t('AI_ASK_PLACEHOLDER'),
         key="ai_chat_input"
     )
     
-    if st.button("🚀 Ask AI", key="ai_ask_button"):
+    if st.button(f"🚀 {_t('AI_ASK_BUTTON')}", key="ai_ask_button"):
         if user_question:
             # AI response generation
             ai_response = generate_ai_response(user_question, preds, real_df)
@@ -3762,7 +3868,7 @@ def show_ai_insights():
     
     # Display chat history
     if st.session_state.ai_chat_history:
-        st.markdown("### 💬 Chat History")
+        st.markdown(f"### 💬 {_t('AI_CHAT_HISTORY')}")
         for i, chat in enumerate(st.session_state.ai_chat_history):
             with st.expander(f"Q: {chat['user'][:50]}...", expanded=(i == len(st.session_state.ai_chat_history) - 1)):
                 st.markdown(f"**User:** {chat['user']}")
@@ -3770,11 +3876,11 @@ def show_ai_insights():
                 st.caption(f"Time: {chat['timestamp'].strftime('%H:%M:%S')}")
     
     # Quick action buttons
-    st.markdown("### ⚡ Quick Actions")
+    st.markdown(f"### ⚡ {_t('AI_QUICK_ACTIONS')}")
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("🔍 Find Top Performers", key="quick_top"):
+        if st.button(f"🔍 {_t('AI_FIND_TOP')}", key="quick_top"):
             question = "Which countries have the best sustainability scores?"
             ai_response = generate_ai_response(question, preds, real_df)
             st.session_state.ai_chat_history.append({
@@ -3785,7 +3891,7 @@ def show_ai_insights():
             st.rerun()
     
     with col2:
-        if st.button("📈 Show Trends", key="quick_trends"):
+        if st.button(f"📈 {_t('AI_SHOW_TRENDS')}", key="quick_trends"):
             question = "What are the global food waste trends?"
             ai_response = generate_ai_response(question, preds, real_df)
             st.session_state.ai_chat_history.append({
@@ -3796,7 +3902,7 @@ def show_ai_insights():
             st.rerun()
     
     with col3:
-        if st.button("🎯 Get Recommendations", key="quick_rec"):
+        if st.button(f"🎯 {_t('AI_GET_RECOMMENDATIONS')}", key="quick_rec"):
             question = "What are the top 3 recommendations to reduce food waste?"
             ai_response = generate_ai_response(question, preds, real_df)
             st.session_state.ai_chat_history.append({
