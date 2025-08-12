@@ -111,9 +111,10 @@ EcolenseIntelligence/
 ### 📈 Data Scope
 - **Countries**: 20 nations across 6 continents
 - **Time Period**: 2018-2024 (7 years)
-- **Records**: 504,719 total observations
-- **Features**: 32 variables (demographic, economic, environmental)
-- **Food Categories**: 4 main categories (Fruits & Vegetables, Dairy Products, Prepared Food, Grains)
+- **Records**: 5,000+ enriched observations with ISO codes
+- **Features**: 37 variables (demographic, economic, environmental, geographic)
+- **Food Categories**: 8 main categories (Fruits & Vegetables, Dairy Products, Prepared Food, Grains, Meat & Fish, Beverages, Oils & Fats, Others)
+- **Data Source**: Real FAO and OECD datasets enriched with additional metrics
 
 ### 🔍 Data Quality
 - **Completeness**: 98.5% data completeness
@@ -122,11 +123,13 @@ EcolenseIntelligence/
 - **Timeliness**: Updated quarterly
 
 ### 📋 Feature Categories
-1. **Demographic Features**: Population, household waste percentage
-2. **Economic Features**: Economic loss, GDP per capita proxy
-3. **Environmental Features**: Carbon footprint, material footprint
-4. **Temporal Features**: Year trends, pandemic indicators
-5. **Geographic Features**: Continent, hemisphere, ISO codes
+1. **Demographic Features**: Population, household waste percentage, urbanization rates
+2. **Economic Features**: Economic loss, GDP per capita proxy, economic indicators
+3. **Environmental Features**: Carbon footprint, material footprint, sustainability metrics
+4. **Temporal Features**: Year trends, pandemic indicators, seasonal patterns
+5. **Geographic Features**: Continent, hemisphere, ISO codes, regional classifications
+6. **Food Category Features**: 8 detailed food waste categories with specific metrics
+7. **Derived Features**: Waste per capita, carbon intensity, sustainability scores
 
 ## 🤖 AI Models & Methodology
 
@@ -522,10 +525,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Usage Statistics
 - **Countries Analyzed**: 20
-- **Data Points**: 504,719
-- **Features**: 32
-- **Models**: 4 AI algorithms
-- **Accuracy**: 95%
+- **Data Points**: 5,000+ enriched observations
+- **Features**: 37 variables
+- **Models**: 4 AI algorithms (Gradient Boosting, Random Forest, Linear Regression, Neural Networks)
+- **Accuracy**: 89% average R² score
+- **Data Source**: Real FAO and OECD datasets
 
 ### Impact Metrics
 - **Carbon Reduction Potential**: 40-50%
@@ -580,4 +584,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Last Updated**: August 2025  
 **Version**: 1.0.0  
-**Status**: Production Ready 
+**Status**: Production Ready  
+**Deployment**: Streamlit Cloud (Live) 
