@@ -5851,7 +5851,7 @@ def show_driver_sensitivity():
             df.columns = ['feature', 'score']
         df = df.sort_values('score', ascending=True).tail(15)
         col1.subheader("Permutation Importance")
-        col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
+        col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_chart_perm_{tnorm}_{hash(str(df))}_{hash('driver_sensitivity')}")
     if shapm is not None and not shapm.empty:
         # Kolon isimlerini kontrol et ve standardize et
         if 'feature' in shapm.columns and 'importance' in shapm.columns:
@@ -5863,7 +5863,7 @@ def show_driver_sensitivity():
             df2.columns = ['feature', 'score']
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
-        col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
+        col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(df2))}_{hash('driver_sensitivity')}")
     # AI Asistan
     try:
         lead = None
@@ -5987,7 +5987,7 @@ def show_driver_sensitivity():
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
                     st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True)
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_table_chart_{hash(str(drv_disp))}_{hash('driver_table')}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6078,7 +6078,7 @@ def show_roi_npv():
     r = disc/100.0
     npv = sum([flows[i] / ((1+r)**i) for i in range(len(flows))])
     st.metric("NPV (M$)", f"{npv:,.2f}")
-    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True)
+    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(flows))}_{hash('roi_npv')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6468,7 +6468,7 @@ def show_anomaly_monitor():
     # Zaman serisi izleme (ülke seçimi)
     country = st.selectbox("Ülke", sorted(df[ccol].dropna().unique()), key="anom_country")
     ts = dff[dff[ccol]==country][[ycol, tcol]].groupby(ycol).mean().reset_index()
-    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360), use_container_width=True)
+    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360), use_container_width=True, key=f"anomaly_chart_{hash(str(ts))}_{hash('anomaly_monitor')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6696,7 +6696,7 @@ def show_carbon_flows():
     # Treemap
     st.subheader("Treemap – Karbon dağılımı")
     tre = d.groupby(catcol)[carbon].sum().reset_index()
-    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), use_container_width=True)
+    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), use_container_width=True, key=f"carbon_treemap_{hash(str(tre))}_{hash('carbon_flows')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6748,7 +6748,7 @@ def show_carbon_flows():
         fig = go.Figure(go.Sankey(node=dict(label=labels), link=dict(source=src, target=dst, value=vals)))
         fig.update_layout(template='plotly_white', height=420)
         st.subheader(f"Sankey – {group_option}")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key=f"carbon_sankey_{hash(str(fig))}_{hash('carbon_flows')}")
         
         # Grafik açıklaması
         with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6771,7 +6771,7 @@ def show_carbon_flows():
         seasons['season'] = seasons[ycol].astype(str)
         figR = px.line_polar(seasons, r=carbon, theta='season', line_close=True, template='plotly_white', height=420)
         st.subheader("Radar – Mevsimsel/Yıllık profil")
-        st.plotly_chart(figR, use_container_width=True)
+        st.plotly_chart(figR, use_container_width=True, key=f"carbon_radar_{hash(str(seasons))}_{hash('carbon_flows')}")
         
         with st.expander("📊 Bu grafik ne anlatıyor?"):
             st.markdown("""
