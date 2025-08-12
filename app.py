@@ -3050,7 +3050,7 @@ def show_model_performance():
             <div class='ai-assistant'>
               <h4><span class='ai-emoji'>🤖</span>AI Asistan — Model Performansı</h4>
               <p>“Kısa raporum hazır! Test ve CV skorlarına göre: {rows}.”</p>
-              <p><span class='ai-badge'>💡 Öneri</span> CV ile test arasında fark büyükse (>|0.05|) ilgili hedefte model karmaşıklığını sınırlayıp λ/k ayarını artırmayı düşünebilirsin.</p>
+              <p><span class='ai-badge'>💡 Öneri</span> CV ile test arasında fark büyükse (>|0.05|) ilgili hedefte model karmaşıklığını sınırlayıp regularization parametrelerini artırmayı düşünebilirsin.</p>
             </div>
             """.replace("{rows}", " · ".join(hints)), unsafe_allow_html=True)
     except Exception:
