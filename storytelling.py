@@ -122,20 +122,81 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
 def show_food_waste_crisis_story(df: pd.DataFrame):
     """🥗 Global Food Waste Crisis & Solutions - Premium Edition"""
     
+    # Get language from session state
+    lang = st.session_state.get('lang', 'TR')
+    
+    # Language-specific texts
+    texts = {
+        'TR': {
+            'title': '🚨 KÜRESEL GIDA İSRAFI KRİZİ',
+            'subtitle': 'Acil Eylem Gerektiren Küresel Felaket',
+            'metrics_title': '📊 KRİTİK METRİKLER PANELİ',
+            'total_waste': '🔥 Toplam Gıda İsrafı',
+            'avg_waste': '📊 Ortalama İsraf',
+            'countries': '🌐 Analiz Edilen Ülkeler',
+            'solution_potential': '🎯 Çözüm Potansiyeli',
+            'annual_increase': 'yıllık artış',
+            'tons_country': 'ton/ülke',
+            'new_countries': 'yeni ülke',
+            'reduction_target': 'azaltma hedefi',
+            'crisis_analysis': '🚨 KRİZ ANALİZİ',
+            'trend_analysis': '📈 Trend Analizi',
+            'economic_impact': '💰 Ekonomik Etki',
+            'environmental_impact': '🌍 Çevresel Etki',
+            'solution_potential_analysis': '🎯 Çözüm Potansiyeli',
+            'annual_increase_trend': 'yıllık artış trendi devam ediyor',
+            'economic_loss': 'Her ton israf = $1,000 ekonomik kayıp',
+            'co2_emissions': 'Her ton israf = 1,000 kg CO2e emisyonu',
+            'billion_savings': '50% azalma = $15-20 milyar tasarruf',
+            'visualizations': '📈 PREMIUM VERİ GÖRSELLEŞTİRMELERİ',
+            'trend_chart_title': 'Yıllık Küresel Gıda İsrafı Trendi',
+            'year': 'Yıl',
+            'total_waste_tons': 'Toplam İsraf (Ton)'
+        },
+        'EN': {
+            'title': '🚨 GLOBAL FOOD WASTE CRISIS',
+            'subtitle': 'A Global Catastrophe Requiring Immediate Action',
+            'metrics_title': '📊 CRITICAL METRICS DASHBOARD',
+            'total_waste': '🔥 Total Food Waste',
+            'avg_waste': '📊 Average Waste',
+            'countries': '🌐 Countries Analyzed',
+            'solution_potential': '🎯 Solution Potential',
+            'annual_increase': 'annual increase',
+            'tons_country': 'tons/country',
+            'new_countries': 'new countries',
+            'reduction_target': 'reduction target',
+            'crisis_analysis': '🚨 CRISIS ANALYSIS',
+            'trend_analysis': '📈 Trend Analysis',
+            'economic_impact': '💰 Economic Impact',
+            'environmental_impact': '🌍 Environmental Impact',
+            'solution_potential_analysis': '🎯 Solution Potential',
+            'annual_increase_trend': 'annual increase trend continues',
+            'economic_loss': 'Every ton of waste = $1,000 economic loss',
+            'co2_emissions': 'Every ton of waste = 1,000 kg CO2e emissions',
+            'billion_savings': '50% reduction = $15-20 billion savings',
+            'visualizations': '📈 PREMIUM DATA VISUALIZATIONS',
+            'trend_chart_title': 'Annual Global Food Waste Trend',
+            'year': 'Year',
+            'total_waste_tons': 'Total Waste (Tons)'
+        }
+    }
+    
+    story_texts = texts.get(lang, texts['EN'])
+    
     # Hero section
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🚨 GLOBAL FOOD WASTE CRISIS</h1>
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">{story_texts['title']}</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            A Global Catastrophe Requiring Immediate Action
+            {story_texts['subtitle']}
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     # Key Metrics Dashboard
-    st.markdown("### 📊 CRITICAL METRICS DASHBOARD")
+    st.markdown(f"### {story_texts['metrics_title']}")
     
     waste_col = _resolve_column_name(df, ['Total Waste (Tons)', 'total_waste_tons'])
     if waste_col:
@@ -155,39 +216,39 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
         
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("🔥 Total Food Waste", f"{total_waste/1_000_000:.1f}M tons", 
-                     delta=f"{avg_yearly_growth:.1f}% annual increase", delta_color="inverse")
+            st.metric(story_texts['total_waste'], f"{total_waste/1_000_000:.1f}M tons", 
+                     delta=f"{avg_yearly_growth:.1f}% {story_texts['annual_increase']}", delta_color="inverse")
         with col2:
-            st.metric("📊 Average Waste", f"{avg_waste:,.0f} tons/country",
+            st.metric(story_texts['avg_waste'], f"{avg_waste:,.0f} {story_texts['tons_country']}",
                      delta=f"{(avg_waste * 0.05):,.0f} tons increase", delta_color="inverse")
         with col3:
-            st.metric("🌐 Countries Analyzed", f"{countries_count}",
-                     delta="+5 new countries", delta_color="normal")
+            st.metric(story_texts['countries'], f"{countries_count}",
+                     delta=f"+5 {story_texts['new_countries']}", delta_color="normal")
         with col4:
-            st.metric("🎯 Solution Potential", f"{(total_waste * 0.5)/1_000_000:.1f}M tons",
-                     delta="50% reduction target", delta_color="normal")
+            st.metric(story_texts['solution_potential'], f"{(total_waste * 0.5)/1_000_000:.1f}M tons",
+                     delta=f"50% {story_texts['reduction_target']}", delta_color="normal")
         
         # Crisis Analysis Panel
-        st.markdown("""
+        st.markdown(f"""
         <div style="background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); 
                     padding: 2rem; border-radius: 15px; color: white; margin: 1.5rem 0; 
                     box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">🚨 CRISIS ANALYSIS</h4>
+            <h4 style="margin: 0 0 1rem 0;">{story_texts['crisis_analysis']}</h4>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 <div>
-                    <p><strong>📈 Trend Analysis:</strong> {:.1f}% annual increase trend continues</p>
-                    <p><strong>💰 Economic Impact:</strong> Every ton of waste = $1,000 economic loss</p>
+                    <p><strong>{story_texts['trend_analysis']}:</strong> {avg_yearly_growth:.1f}% {story_texts['annual_increase_trend']}</p>
+                    <p><strong>{story_texts['economic_impact']}:</strong> {story_texts['economic_loss']}</p>
                 </div>
                 <div>
-                    <p><strong>🌍 Environmental Impact:</strong> Every ton of waste = 1,000 kg CO2e emissions</p>
-                    <p><strong>🎯 Solution Potential:</strong> 50% reduction = $15-20 billion savings</p>
+                    <p><strong>{story_texts['environmental_impact']}:</strong> {story_texts['co2_emissions']}</p>
+                    <p><strong>{story_texts['solution_potential_analysis']}:</strong> {story_texts['billion_savings']}</p>
                 </div>
             </div>
         </div>
-        """.format(avg_yearly_growth), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
         # Premium Visualizations
-        st.markdown("### 📈 PREMIUM DATA VISUALIZATIONS")
+        st.markdown(f"### {story_texts['visualizations']}")
         
         # Trend Analysis Chart
         if year_col:
