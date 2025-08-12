@@ -2235,7 +2235,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
 # ANA UYGULAMA
 # =============================================================================
 
-def show_story_mode():
+def show_story_mode_page():
     """📖 Story Mode - Premium Data Storytelling Platform"""
     
     # Import storytelling module
@@ -2494,7 +2494,7 @@ def main():
     elif page == _t('PAGE_JUSTICE'):
         show_justice_impact_panel()
     elif page == _t('PAGE_STORY') or page == "📖 Story Mode":
-        show_story_mode()
+        show_story_mode_page()
     else:
         st.info("🚧 Bu sayfa yakında eklenecek!")
 
