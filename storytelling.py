@@ -198,6 +198,14 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
     st.markdown(f"### {story_texts['metrics_title']}")
     
     waste_col = _resolve_column_name(df, ['Total Waste (Tons)', 'total_waste_tons'])
+    
+    # Default values
+    total_waste = 0
+    avg_waste = 0
+    countries_count = 0
+    annual_increase = 0
+    yearly_waste = None
+    
     if waste_col:
         total_waste = df[waste_col].sum()
         avg_waste = df[waste_col].mean()
