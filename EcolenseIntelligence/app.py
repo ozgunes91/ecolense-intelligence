@@ -3739,7 +3739,7 @@ def show_ai_insights():
             merged = m_ts.merge(m_p, on='feature', how='inner')
             merged['delta'] = merged['ts'] - merged['prof']
             st.subheader("Δ Etki (TS − Profesyonel)")
-                            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False, key="chart_ubgtroqt").head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ab_testing_chart_{hash(str(merged))}_{hash('delta_effect')}")
+                            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ab_testing_chart_{hash(str(merged))}_{hash('delta_effect')}")
             with st.expander("📊 Δ Etki Grafiği Ne Anlatıyor?"):
                 st.markdown("""
                 **Δ Etki (TS − Profesyonel)** grafiği, zaman serisi modeli ile referans model arasındaki özellik etki farklarını gösterir:
@@ -5963,7 +5963,7 @@ def show_driver_sensitivity():
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
                     st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined', key="chart_peb1vh0a").tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}_{hash(lbl)}")
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}_{hash(lbl)}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
