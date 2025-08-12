@@ -59,8 +59,9 @@
 4. **Grains & Cereals**: Fourth highest
 
 ### Country Performance
-- **Highest Waste**: China, USA, India
+- **Highest Waste**: Spain (50K tons), USA (50K tons), India (50K tons)
 - **Lowest Waste**: Australia, Canada, Germany
+- **Highest CO2**: Spain (406 kg), UK (385 kg), Germany (166 kg)
 - **Sustainability Leaders**: China (86.5), Russia (86.2), Spain (84.7)
 
 ### Pandemic Impact

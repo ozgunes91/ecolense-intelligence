@@ -59,8 +59,9 @@
 4. **Grains & Cereals**: Dördüncü sırada
 
 ### Ülke Performansları
-- **En Yüksek İsraf**: Çin, ABD, Hindistan
+- **En Yüksek İsraf**: İspanya (50K ton), ABD (50K ton), Hindistan (50K ton)
 - **En Düşük İsraf**: Avustralya, Kanada, Almanya
+- **En Yüksek CO2**: İspanya (406 kg), İngiltere (385 kg), Almanya (166 kg)
 - **Sürdürülebilirlik Lideri**: Çin (86.5), Rusya (86.2), İspanya (84.7)
 
 ### Pandemi Etkisi
