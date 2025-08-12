@@ -62,105 +62,105 @@ Gıda israfı analitiği ve sürdürülebilirlik değerlendirmesi konusunda önd
 - **İçgörü Kalitesi**: Daha derin ve anlamlı analizler
 - **Aksiyon Önerileri**: Veri odaklı stratejik planlama
 
-## 🚀 Key Features
+## 🚀 Temel Özellikler
 
-### 📈 Analytics & Insights
-- **🌍 Global Coverage**: Analysis of 20 countries across multiple continents
-- **📊 Real-time Analytics**: Live data processing and visualization
-- **🤖 AI-Powered Predictions**: Machine learning models for future forecasting
-- **📋 Sustainability Scoring**: Comprehensive 100-point sustainability index
-- **🎯 Performance Metrics**: R² scores, cross-validation, overfitting analysis
+### 📈 Analitik ve İçgörüler
+- **🌍 Küresel Kapsam**: Çoklu kıtalarda 20 ülke analizi
+- **📊 Gerçek Zamanlı Analitik**: Canlı veri işleme ve görselleştirme
+- **🤖 AI Destekli Tahminler**: Gelecek tahmini için makine öğrenmesi modelleri
+- **📋 Sürdürülebilirlik Skorlama**: Kapsamlı 100 puanlık sürdürülebilirlik indeksi
+- **🎯 Performans Metrikleri**: R² skorları, çapraz doğrulama, overfitting analizi
 
-### 🎛️ Interactive Dashboard
-- **📊 KPI Cards**: Real-time key performance indicators
-- **📈 Interactive Charts**: Plotly-based dynamic visualizations
-- **🤖 AI Insights**: Automated insights and recommendations
-- **📄 Report Generator**: Automated HTML and Markdown reports
-- **🌐 Multi-language Support**: Turkish and English interfaces
+### 🎛️ İnteraktif Dashboard
+- **📊 KPI Kartları**: Gerçek zamanlı anahtar performans göstergeleri
+- **📈 İnteraktif Grafikler**: Plotly tabanlı dinamik görselleştirmeler
+- **🤖 AI İçgörüleri**: Otomatik içgörüler ve öneriler
+- **📄 Rapor Oluşturucu**: Otomatik HTML ve Markdown raporları
+- **🌐 Çok Dilli Destek**: Türkçe ve İngilizce arayüzler
 
-### 🔬 Advanced AI Models
-- **Gradient Boosting**: Primary prediction model (A/B testing winner)
-  - Test R²: 0.957-0.960 across targets
-  - CV R²: 0.954-0.958 across targets
-  - Overfitting: 0.008-0.012 across targets
-- **Random Forest**: Ensemble learning for robust predictions
-  - Test R²: 0.935-0.939 across targets
-  - CV R²: 0.931-0.936 across targets
-  - Overfitting: 0.005-0.009 across targets
-- **Linear Regression**: Baseline model for comparison
-  - Test R²: 0.875-0.889 across targets
-  - CV R²: 0.867-0.879 across targets
-  - Overfitting: 0.006-0.009 across targets
-- **SHAP Analysis**: Model explainability and feature importance
+### 🔬 Gelişmiş AI Modelleri
+- **Gradient Boosting**: Birincil tahmin modeli (A/B testi kazananı)
+  - Test R²: 0.957-0.960 hedefler arası
+  - CV R²: 0.954-0.958 hedefler arası
+  - Overfitting: 0.008-0.012 hedefler arası
+- **Random Forest**: Güçlü tahminler için ensemble öğrenme
+  - Test R²: 0.935-0.939 hedefler arası
+  - CV R²: 0.931-0.936 hedefler arası
+  - Overfitting: 0.005-0.009 hedefler arası
+- **Linear Regression**: Karşılaştırma için temel model
+  - Test R²: 0.875-0.889 hedefler arası
+  - CV R²: 0.867-0.879 hedefler arası
+  - Overfitting: 0.006-0.009 hedefler arası
+- **SHAP Analizi**: Model açıklanabilirliği ve özellik önemi
 
-## 🏆 Results & Achievements
+## 🏆 Sonuçlar ve Başarılar
 
-### 🌍 Global Sustainability Rankings (Top 10)
+### 🌍 Küresel Sürdürülebilirlik Sıralaması (İlk 10)
 
-| Rank | Country | Score | Category | Key Strengths |
+| Sıra | Ülke | Skor | Kategori | Ana Güçlü Yönler |
 |------|---------|-------|----------|---------------|
-| 1 | 🇨🇳 China | 86.7 | 🏭 Industrial Leader | Green technology investments, large-scale efficiency |
-| 2 | 🇷🇺 Russia | 86.2 | ⛽ Energy Power | Natural resources, nuclear technology |
-| 3 | 🇺🇸 USA | 85.2 | 💡 Innovation Hub | Renewable energy leadership, technology innovation |
-| 4 | 🇮🇳 India | 84.7 | 🌱 Emerging Power | Population advantage, green policy focus |
-| 5 | 🇪🇸 Spain | 84.6 | ☀️ Renewable Energy | Solar energy, sustainable agriculture |
-| 6 | 🇨🇦 Canada | 84.1 | 🍁 Natural Resources | Vast forest areas, hydroelectric power |
-| 7 | 🇩🇪 Germany | 84.0 | ⚙️ Technology | Industry 4.0, green transformation |
-| 8 | 🇦🇷 Argentina | 83.8 | 🌾 Agricultural | Biofuels, organic farming |
-| 9 | 🇬🇧 UK | 83.7 | 🏛️ Policy | Net-zero goals, green finance |
-| 10 | 🇧🇷 Brazil | 83.7 | 🌴 Biodiversity | Amazon rainforest, renewable energy |
+| 1 | 🇨🇳 Çin | 86.7 | 🏭 Endüstriyel Lider | Yeşil teknoloji yatırımları, büyük ölçekli verimlilik |
+| 2 | 🇷🇺 Rusya | 86.2 | ⛽ Enerji Gücü | Doğal kaynaklar, nükleer teknoloji |
+| 3 | 🇺🇸 ABD | 85.2 | 💡 İnovasyon Merkezi | Yenilenebilir enerji liderliği, teknoloji inovasyonu |
+| 4 | 🇮🇳 Hindistan | 84.7 | 🌱 Gelişen Güç | Nüfus avantajı, yeşil politika odaklı |
+| 5 | 🇪🇸 İspanya | 84.6 | ☀️ Yenilenebilir Enerji | Güneş enerjisi, sürdürülebilir tarım |
+| 6 | 🇨🇦 Kanada | 84.1 | 🍁 Doğal Kaynaklar | Geniş orman alanları, hidroelektrik güç |
+| 7 | 🇩🇪 Almanya | 84.0 | ⚙️ Teknoloji | Endüstri 4.0, yeşil dönüşüm |
+| 8 | 🇦🇷 Arjantin | 83.8 | 🌾 Tarımsal | Biyoyakıtlar, organik tarım |
+| 9 | 🇬🇧 İngiltere | 83.7 | 🏛️ Politika | Net-sıfır hedefleri, yeşil finans |
+| 10 | 🇧🇷 Brezilya | 83.7 | 🌴 Biyoçeşitlilik | Amazon yağmur ormanı, yenilenebilir enerji |
 
-**🇹🇷 Turkey**: 12th place (83.3 score) - 🌉 Bridge Country category
+**🇹🇷 Türkiye**: 12. sıra (83.3 skor) - 🌉 Köprü Ülke kategorisi
 
-### 📊 Key Performance Indicators
+### 📊 Ana Performans Göstergeleri
 
-#### 🥗 Food Waste Analysis
-- **Best Performer**: 🇨🇳 China (12,791 tons/year)
-- **Needs Improvement**: 🇹🇷 Turkey (26,875 tons/year)
-- **Global Average**: 19,833 tons/year
+#### 🥗 Gıda İsrafı Analizi
+- **En İyi Performans**: 🇨🇳 Çin (12,791 ton/yıl)
+- **İyileştirme Gereken**: 🇹🇷 Türkiye (26,875 ton/yıl)
+- **Küresel Ortalama**: 19,833 ton/yıl
 
-#### 🌍 Carbon Footprint Assessment
-- **Lowest Impact**: 🇨🇳 China (9.95 kg CO2e/year)
-- **Highest Impact**: 🇫🇷 France (93.1 kg CO2e/year)
-- **Global Average**: 51.5 kg CO2e/year
+#### 🌍 Karbon Ayak İzi Değerlendirmesi
+- **En Düşük Etki**: 🇨🇳 Çin (9.95 kg CO2e/yıl)
+- **En Yüksek Etki**: 🇫🇷 Fransa (93.1 kg CO2e/yıl)
+- **Küresel Ortalama**: 51.5 kg CO2e/yıl
 
-#### 💰 Economic Impact
-- **Lowest Loss**: 🇨🇳 China (12,233M $/year)
-- **Highest Loss**: 🇨🇦 Canada (26,748M $/year)
-- **Global Total**: 125.2 trillion USD
+#### 💰 Ekonomik Etki
+- **En Düşük Kayıp**: 🇨🇳 Çin (12,233M $/yıl)
+- **En Yüksek Kayıp**: 🇨🇦 Kanada (26,748M $/yıl)
+- **Küresel Toplam**: 125.2 trilyon USD
 
-## 📁 Project Structure
+## 📁 Proje Yapısı
 
 ```
 EcolenseIntelligence/
-├── 📄 app.py                          # Main Streamlit application
-├── 📄 storytelling.py                 # Premium storytelling module
-├── 📄 requirements.txt                # Python dependencies
-├── 📄 README.md                       # This file
-├── 📄 deployment_guide.md             # Deployment instructions
+├── 📄 app.py                          # Ana Streamlit uygulaması
+├── 📄 storytelling.py                 # Premium hikaye anlatım modülü
+├── 📄 requirements.txt                # Python bağımlılıkları
+├── 📄 README.md                       # Bu dosya
+├── 📄 deployment_guide.md             # Dağıtım talimatları
 ├── 📄 sustainability_ranking_analysis.md
-├── 📁 data/                           # Data files
-│   ├── ecolense_final_enriched_with_iso.csv    # Main dataset (5000 observations)
+├── 📁 data/                           # Veri dosyaları
+│   ├── ecolense_final_enriched_with_iso.csv    # Ana veri seti (5000 gözlem)
 │   ├── global_food_wastage_dataset.csv
 │   └── material_footprint.csv
-├── 📄 01_veri_hazirlama.py            # Data preparation
-├── 📄 02_model_egitimi.py             # Model training
-├── 📄 03_ab_testing_analizi.py        # A/B testing analysis
+├── 📄 01_veri_hazirlama.py            # Veri hazırlama
+├── 📄 02_model_egitimi.py             # Model eğitimi
+├── 📄 03_ab_testing_analizi.py        # A/B test analizi
 
-├── 📄 *.json                          # Model outputs and reports
-├── 📄 *.csv                           # Analysis results
-└── 📄 *.png                           # Visualization assets
+├── 📄 *.json                          # Model çıktıları ve raporlar
+├── 📄 *.csv                           # Analiz sonuçları
+└── 📄 *.png                           # Görselleştirme varlıkları
 ```
 
-## 📊 Dataset Information
+## 📊 Veri Seti Bilgileri
 
-### 📈 Data Scope
-- **Countries**: 20 nations across 6 continents
-- **Time Period**: 2018-2024 (7 years)
-- **Records**: 5,000 observations (enriched with ISO codes)
-- **Features**: 37 variables (demographic, economic, environmental)
-- **Food Categories**: 8 main categories (Fruits & Vegetables, Dairy Products, Prepared Food, Grains, Meat & Fish, Beverages, Oils & Fats, Others)
-- **Data Source**: Real FAO and OECD datasets enriched with additional metrics
+### 📈 Veri Kapsamı
+- **Ülkeler**: 6 kıtada 20 ülke
+- **Zaman Aralığı**: 2018-2024 (7 yıl)
+- **Kayıtlar**: 5,000 gözlem (ISO kodları ile zenginleştirilmiş)
+- **Özellikler**: 37 değişken (demografik, ekonomik, çevresel)
+- **Gıda Kategorileri**: 8 ana kategori (Meyve & Sebze, Süt Ürünleri, Hazır Gıda, Tahıllar, Et & Balık, İçecekler, Yağlar & Yağlar, Diğerleri)
+- **Veri Kaynağı**: Ek metriklerle zenginleştirilmiş gerçek FAO ve OECD veri setleri
 
 ### 🔍 Keşifsel Veri Analizi (EDA) ve Kritik Bulgular
 
