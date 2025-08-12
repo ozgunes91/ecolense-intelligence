@@ -118,9 +118,9 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 7. **Population_Material_Interaction**: Population-material interaction
 
 #### Target-based Importance Ranking:
-- **Total Waste**: Category_Waste_Share > Waste_Efficiency > Population
-- **Economic Loss**: Category_Economic_Share > GDP_Per_Capita_Proxy > Population
-- **Carbon Footprint**: Category_Waste_Share > Waste_Efficiency > Population
+- **Total Waste**: Category_Waste_Share (10,139) > Waste_Efficiency (3,503) > Population (2,596)
+- **Economic Loss**: Category_Economic_Share (10,378) > GDP_Per_Capita_Proxy (2,996) > Population (2,434)
+- **Carbon Footprint**: Category_Waste_Share (10,140,447) > Waste_Efficiency (3,499,738) > Population (2,597,827)
 
 #### Pandemic Impact:
 - **Is_Pandemic_Year**: Low impact on all targets (33-47 importance score)

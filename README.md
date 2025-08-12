@@ -118,9 +118,9 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 7. **Population_Material_Interaction**: Nüfus-malzeme etkileşimi
 
 #### Hedef Bazında Önem Sıralaması:
-- **Toplam İsraf**: Category_Waste_Share > Waste_Efficiency > Population
-- **Ekonomik Kayıp**: Category_Economic_Share > GDP_Per_Capita_Proxy > Population
-- **Karbon Ayak İzi**: Category_Waste_Share > Waste_Efficiency > Population
+- **Toplam İsraf**: Category_Waste_Share (10,139) > Waste_Efficiency (3,503) > Population (2,596)
+- **Ekonomik Kayıp**: Category_Economic_Share (10,378) > GDP_Per_Capita_Proxy (2,996) > Population (2,434)
+- **Karbon Ayak İzi**: Category_Waste_Share (10,140,447) > Waste_Efficiency (3,499,738) > Population (2,597,827)
 
 #### Pandemi Etkisi:
 - **Is_Pandemic_Year**: Tüm hedeflerde düşük etki (33-47 önem skoru)
