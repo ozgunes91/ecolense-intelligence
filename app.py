@@ -2281,45 +2281,87 @@ def show_story_mode():
         </div>
         """, unsafe_allow_html=True)
         
-        # Hikaye seçenekleri
-        stories = [
-            {
-                "title": "🥗 Global Food Waste Crisis & Solutions",
-                "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
-                "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
-                "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-            },
-            {
-                "title": "💰 Economic Impact Analysis",
-                "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
-                "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
-                "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
-            },
-            {
-                "title": "🌍 Environmental Footprint Analysis",
-                "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
-                "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
-                "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
-            },
-            {
-                "title": "🎯 Sustainable Solutions Roadmap",
-                "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
-                "key_metrics": ["2030 targets", "Circular economy", "Technology adoption", "Policy recommendations"],
-                "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-            },
-            {
-                "title": "🚀 2030 Strategic Forecast",
-                "subtitle": "AI-powered strategic insights and actionable recommendations",
-                "key_metrics": ["AI insights", "Strategic planning", "Risk assessment", "Opportunity analysis"],
-                "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
-            },
-            {
-                "title": "📊 Comprehensive Analytics",
-                "subtitle": "Deep dive into patterns, trends, and predictive analytics",
-                "key_metrics": ["Pattern analysis", "Trend forecasting", "Predictive models", "Statistical insights"],
-                "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
-            }
-        ]
+        # Hikaye seçenekleri - Dil desteği ile
+        lang = st.session_state.get('lang', 'TR')
+        
+        if lang == 'EN':
+            stories = [
+                {
+                    "title": "🥗 Global Food Waste Crisis & Solutions",
+                    "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
+                    "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
+                    "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                },
+                {
+                    "title": "💰 Economic Impact Analysis",
+                    "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
+                    "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
+                    "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+                },
+                {
+                    "title": "🌍 Environmental Footprint Analysis",
+                    "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
+                    "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
+                    "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+                },
+                {
+                    "title": "🎯 Sustainable Solutions Roadmap",
+                    "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
+                    "key_metrics": ["2030 targets", "Circular economy", "Technology adoption", "Policy recommendations"],
+                    "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+                },
+                {
+                    "title": "🚀 2030 Strategic Forecast",
+                    "subtitle": "AI-powered strategic insights and actionable recommendations",
+                    "key_metrics": ["AI insights", "Strategic planning", "Risk assessment", "Opportunity analysis"],
+                    "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+                },
+                {
+                    "title": "📊 Comprehensive Analytics",
+                    "subtitle": "Deep dive into patterns, trends, and predictive analytics",
+                    "key_metrics": ["Pattern analysis", "Trend forecasting", "Predictive models", "Statistical insights"],
+                    "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+                }
+            ]
+        else:  # TR
+            stories = [
+                {
+                    "title": "🥗 Gıda İsrafı Krizi ve Çözüm Yolları",
+                    "subtitle": "Gıda israfı kalıplarının kapsamlı analizi ve stratejik müdahaleler",
+                    "key_metrics": ["5,002 veri noktası", "20 ülke", "7 yıl", "9 kategori"],
+                    "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                },
+                {
+                    "title": "💰 Ekonomik Etki Analizi",
+                    "subtitle": "Atık azaltım stratejilerinin finansal etkileri ve ROI analizi",
+                    "key_metrics": ["$29.2B yıllık kayıp", "GSYİH etkisi", "Yatırım fırsatları", "Maliyet-fayda analizi"],
+                    "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+                },
+                {
+                    "title": "🌍 Çevresel Ayak İzi Analizi",
+                    "subtitle": "Karbon emisyonları, sürdürülebilirlik skorları ve çevresel etki değerlendirmesi",
+                    "key_metrics": ["71.3M ton CO2e", "Sürdürülebilirlik skorları", "Karbon fiyatlandırması", "Çevresel hedefler"],
+                    "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+                },
+                {
+                    "title": "🎯 Sürdürülebilir Çözümler Yol Haritası",
+                    "subtitle": "2030 sürdürülebilirlik hedeflerine stratejik yol ve döngüsel ekonomi",
+                    "key_metrics": ["2030 hedefleri", "Döngüsel ekonomi", "Teknoloji benimseme", "Politika önerileri"],
+                    "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+                },
+                {
+                    "title": "🚀 2030 Stratejik Tahmin",
+                    "subtitle": "AI destekli stratejik içgörüler ve uygulanabilir öneriler",
+                    "key_metrics": ["AI içgörüleri", "Stratejik planlama", "Risk değerlendirmesi", "Fırsat analizi"],
+                    "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+                },
+                {
+                    "title": "📊 Kapsamlı Analitik",
+                    "subtitle": "Kalıplar, trendler ve tahminsel analitikte derinlemesine inceleme",
+                    "key_metrics": ["Kalıp analizi", "Trend tahmini", "Tahminsel modeller", "İstatistiksel içgörüler"],
+                    "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+                }
+            ]
         
         # Hikaye kartları
         cols = st.columns(2)

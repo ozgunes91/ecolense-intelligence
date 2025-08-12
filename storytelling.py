@@ -103,18 +103,18 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
             st.session_state['page'] = 'PAGE_FORECASTS'
             st.rerun()
     
-    # Story content based on selection
-    if story_mode == "🥗 Global Food Waste Crisis & Solutions":
+    # Story content based on selection - Support both languages
+    if story_mode in ["🥗 Global Food Waste Crisis & Solutions", "🥗 Gıda İsrafı Krizi ve Çözüm Yolları"]:
         show_food_waste_crisis_story(df)
-    elif story_mode == "💰 Economic Impact Analysis":
+    elif story_mode in ["💰 Economic Impact Analysis", "💰 Ekonomik Etki Analizi"]:
         show_economic_impact_story(df)
-    elif story_mode == "🌍 Environmental Footprint Analysis":
+    elif story_mode in ["🌍 Environmental Footprint Analysis", "🌍 Çevresel Ayak İzi Analizi"]:
         show_environmental_impact_story(df)
-    elif story_mode == "🎯 Sustainable Solutions Roadmap":
+    elif story_mode in ["🎯 Sustainable Solutions Roadmap", "🎯 Sürdürülebilir Çözümler Yol Haritası"]:
         show_sustainable_solutions_story(df)
-    elif story_mode == "🚀 2030 Strategic Forecast":
+    elif story_mode in ["🚀 2030 Strategic Forecast", "🚀 2030 Stratejik Tahmin"]:
         show_2030_strategy_story(df)
-    elif story_mode == "📊 Comprehensive Analytics":
+    elif story_mode in ["📊 Comprehensive Analytics", "📊 Kapsamlı Analitik"]:
         show_comprehensive_analytics_story(df)
     else:
         st.warning(f"Unknown story mode: {story_mode}")
