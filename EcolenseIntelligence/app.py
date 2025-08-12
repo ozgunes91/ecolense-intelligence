@@ -3661,7 +3661,7 @@ def show_ai_insights():
         sm = shapm.head(20)
         # Kolon isimlerini kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in sm.columns else 'mean_abs_shap'
-                    col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_chart_{hash(str(sm))}")
+                    col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_chart_{hash(str(sm))}_{hash('ai_insights')}")
 
     st.markdown("---")
     st.subheader("🧠 SHAP – Özellik Etkileri (Profesyonel, referans)")
@@ -4263,7 +4263,7 @@ def show_model_card():
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
                 c2.subheader("Ortalama |SHAP|")
-                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True)
+                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"shap_ts_chart_{hash(str(shap_ts))}_{hash('model_card')}")
                 
                 # SHAP açıklaması
                 with c2.expander("📊 SHAP Değerleri Nedir?"):
@@ -5963,7 +5963,7 @@ def show_driver_sensitivity():
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
                     st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}_{hash(lbl)}")
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}_{hash(lbl)}_{hash('driver_sensitivity')}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
