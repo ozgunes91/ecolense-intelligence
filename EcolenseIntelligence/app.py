@@ -211,30 +211,7 @@ def _t(key: str) -> str:
     lang = st.session_state.get('lang', 'TR')  # Varsayılan dil Türkçe
     return I18N.get(lang, I18N['TR']).get(key, key)  # Anahtar bulunamazsa kendisini döndür
 
-def add_page_footer(page_name: str):
-    """Sayfa sonu yazısı ekler - Profesyonel footer"""
-    st.markdown("---")
-    
-    footer_html = f"""
-                    <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%); 
-                            padding: 1.5rem 2rem; border-radius: 0; color: white; margin: 2rem -2rem 12rem -2rem; 
-                            box-shadow: 0 8px 25px rgba(35, 46, 92, 0.3); text-align: center; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; max-width: none;">
-        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.8rem;">
-            <div style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
-                <span style="font-size: 1.5rem;">🌱</span>
-            </div>
-            <div>
-                <div style="font-size: 1.4rem; font-weight: 700; color: #90EE90; margin-bottom: 0.3rem;">ECOLENSE</div>
-                <div style="font-size: 1rem; opacity: 0.8;">Ultra Premium Dashboard</div>
-            </div>
-        </div>
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem;">
-            <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.4rem; font-weight: 600;">{page_name}</div>
-            <div style="font-size: 1.3rem; opacity: 0.9; font-weight: 500;">© 2025 Ecolense | Sürdürülebilir Gıda Analizi Platformu</div>
-        </div>
-    </div>
-    """
-    st.components.v1.html(footer_html, height=180)
+# Footer fonksiyonu kaldırıldı - küçük görünüyordu
 
 # Renk paleti (Ultra Premium)
 COLORS = {
@@ -1372,7 +1349,7 @@ def create_trend_chart(df: pd.DataFrame, target_column: str):
         showlegend=True
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_u628l7ue")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -1411,7 +1388,7 @@ def create_correlation_matrix(df: pd.DataFrame):
         template="plotly_white"
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_2ldl8214")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -1642,7 +1619,7 @@ def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFra
                 fig.add_trace(go.Scatter(x=sR[year_col], y=sR[mcol], mode='lines+markers', name='Gerçek', line=dict(color='#11E6C1')))
                 # Sentetik veri çizgisi kaldırıldı
                 fig.update_layout(height=360, template='plotly_white')
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True, key="chart_ytg1aapu")
 
 def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFrame]) -> None:
     # Premium başlık
@@ -1701,7 +1678,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                                     hover_name='country', color_continuous_scale='RdYlGn_r',
                                     labels={'per_capita_waste_kg':'kg/kişi'})
                 fig.update_layout(height=480, template='plotly_white')
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True, key="chart_nvykwwe5")
                 
                 # Grafik açıklaması - Premium tasarım
                 st.markdown("""
@@ -1765,7 +1742,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
         dyn_h = max(360, 28 * max(1, len(df_top)) + 160)
         fig.update_layout(height=dyn_h, template='plotly_white')
         fig.update_yaxes(categoryorder='array', categoryarray=list(df_top['country']))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_nq4skf7d")
         
         # Grafik açıklaması - Premium tasarım
         st.markdown(f"""
@@ -1823,7 +1800,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
             for _, r in merged.iterrows():
                 fig.add_trace(go.Scatter(x=[2018, 2024], y=[r[f'{mcol}_2018'], r[f'{mcol}_2024']], mode='lines+markers', name=r[country_col]))
             fig.update_layout(height=520, template='plotly_white', xaxis=dict(dtick=6))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="chart_mbi466ke")
             
             # Grafik açıklaması - Premium tasarım
             st.markdown(f"""
@@ -1868,7 +1845,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                 pass
             fig = px.treemap(agg, path=[cont_col, cat_col], values=waste_col, color=cont_col, color_discrete_sequence=px.colors.qualitative.Set3)
             fig.update_layout(height=520, template='plotly_white')
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="chart_tqo0kcbc")
             
             # Grafik açıklaması - Premium tasarım
             st.markdown("""
@@ -1908,7 +1885,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
             fig = px.scatter(df, x='per_capita_waste_kg', y='sustainability_score_avg', size=size_col, color='Outlier', hover_name='country',
                              labels={'per_capita_waste_kg':'kg/kişi','sustainability_score_avg':'Sürdürülebilirlik'})
             fig.update_layout(height=520, template='plotly_white')
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="chart_fzhl2p89")
             
             # Grafik açıklaması - Premium tasarım
             st.markdown("""
@@ -2211,7 +2188,7 @@ def show_home_page():
             st.rerun()
     
     # Sayfa sonu yazısı
-    add_page_footer("Ana Sayfa")
+    # Footer kaldırıldı
 
 
 
@@ -2442,7 +2419,7 @@ def show_data_analysis():
             height=500
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_ih13ws7v")
     
 
     
@@ -2809,7 +2786,7 @@ def show_data_analysis():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("Veri Analizi")
+    # Footer kaldırıldı
 
 def show_model_performance():
     """Model performansı sayfası - Premium tasarım"""
@@ -2988,7 +2965,7 @@ def show_model_performance():
             font=dict(size=18, color='#232E5C')
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_s5gs4ckt")
 
     # Not: Kaynak {src_name}. Robust yedek olarak kullanılabilir.
 
@@ -3059,7 +3036,7 @@ def show_model_performance():
     # Model karşılaştırma bölümü kaldırıldı - Sadece GradientBoosting kullanılıyor
     
     # Sayfa sonu yazısı
-    add_page_footer("Model Performansı")
+    # Footer kaldırıldı
 
 def show_forecasts():
     """Gelecek tahminleri sayfası - Premium tasarım"""
@@ -3319,7 +3296,7 @@ def show_forecasts():
         except Exception as e:
             st.warning(f"⚠️ Belirsizlik bantları hesaplanamadı: {str(e)}")
     fig.update_layout(title=f"{country} – {label}", xaxis_title='Yıl', yaxis_title=label, template='plotly_white', height=500)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_j45isemj")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -3366,7 +3343,7 @@ def show_forecasts():
         """, unsafe_allow_html=True)
     
     # Sayfa sonu yazısı
-    add_page_footer("Gelecek Tahminleri")
+    # Footer kaldırıldı
 
 
 def show_target_based_forecasts():
@@ -3425,7 +3402,7 @@ def show_target_based_forecasts():
     fig.add_trace(go.Scatter(x=dfc['Year'], y=base, mode='lines+markers', name='Tahmin (baz)', line=dict(color='#11E6C1', width=3)))
     fig.add_trace(go.Scatter(x=xs, y=lin, mode='lines+markers', name='Hedef rotası', line=dict(color='#A9FF4F', width=3, dash='dash')))
     fig.update_layout(title=f"{country} – {tlabel}", xaxis_title='Yıl', yaxis_title=tlabel, template='plotly_white', height=480)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_hs1iya8h")
     # AI Asistan
     try:
         diff2030 = (goal - cur)
@@ -3441,7 +3418,7 @@ def show_target_based_forecasts():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("Hedef Bazlı Tahminler")
+    # Footer kaldırıldı
 
 
 def show_ai_insights():
@@ -3762,7 +3739,7 @@ def show_ai_insights():
             merged = m_ts.merge(m_p, on='feature', how='inner')
             merged['delta'] = merged['ts'] - merged['prof']
             st.subheader("Δ Etki (TS − Profesyonel)")
-            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
+                            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False, key="chart_ubgtroqt").head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ab_testing_chart_{hash(str(merged))}")
             with st.expander("📊 Δ Etki Grafiği Ne Anlatıyor?"):
                 st.markdown("""
                 **Δ Etki (TS − Profesyonel)** grafiği, zaman serisi modeli ile referans model arasındaki özellik etki farklarını gösterir:
@@ -3828,7 +3805,7 @@ def show_ai_insights():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("AI Insights")
+    # Footer kaldırıldı
 
 def show_ab_testing():
     """A/B Testing – Model ve özellik kombinasyonları karşılaştırması"""
@@ -3920,7 +3897,7 @@ def show_ab_testing():
         
         fig = px.bar(feature_df, x='Ortalama Test R²', y='Özellik Grubu', 
                     orientation='h', title='Özellik Gruplarına Göre Performans')
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_rpjm179j")
     
     # En iyi model türleri
     st.markdown("### 🤖 En İyi Model Türleri")
@@ -3933,7 +3910,7 @@ def show_ab_testing():
         
         fig = px.bar(model_df, x='Ortalama Test R²', y='Model Türü', 
                     orientation='h', title='Model Türlerine Göre Performans')
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_s7fgyrce")
     
     # A/B Testing Grafikleri
     st.markdown("### 📊 A/B Testing Görsel Analizi")
@@ -3954,7 +3931,7 @@ def show_ab_testing():
     
     # Özellik grupları grafiği
     try:
-        st.image('ab_testing_feature_groups.png', caption='Özellik Grupları Karşılaştırması', use_column_width=True)
+                                         st.image('ab_testing_feature_groups.png', caption='Özellik Grupları Karşılaştırması', use_column_width=True)
     except:
         st.warning("Özellik grupları grafiği yüklenemedi")
     
@@ -4011,7 +3988,7 @@ def show_ab_testing():
             hover_data=['feature_group'],
             title='Model Performansı: Test R² vs Overfitting'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_9cg4s9rn")
 
     # AI Asistan – A/B Testing yorumu
     try:
@@ -4033,7 +4010,7 @@ def show_ab_testing():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("A/B Testing")
+    # Footer kaldırıldı
 
 def show_policy_simulator():
     """Politika Simülatörü – müdahalelerin 2030'a etkisi"""
@@ -4146,7 +4123,7 @@ def show_policy_simulator():
         pass
 
     # Sayfa sonu yazısı
-    add_page_footer("Politika Simülatörü")
+    # Footer kaldırıldı
 
 
 def show_model_card():
@@ -4265,7 +4242,7 @@ def show_model_card():
             if imp_ts is not None and not imp_ts.empty:
                 col_imp = imp_ts.columns[1]
                 c1.subheader("Permutation Importance")
-                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_perm_{label}_{hash(label)}")
+                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), use_container_width=True)
                 
                 # Permutation Importance açıklaması
                 with c1.expander("📊 Permutation Importance Nedir?"):
@@ -4286,7 +4263,7 @@ def show_model_card():
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
                 c2.subheader("Ortalama |SHAP|")
-                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_shap_{label}_{hash(label)}")
+                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True)
                 
                 # SHAP açıklaması
                 with c2.expander("📊 SHAP Değerleri Nedir?"):
@@ -4323,7 +4300,7 @@ def show_model_card():
         pass
 
     # Sayfa sonu yazısı
-    add_page_footer("Model Kartı")
+    # Footer kaldırıldı
 
 
 def show_risk_opportunity():
@@ -4486,7 +4463,7 @@ def show_risk_opportunity():
     figq.add_vline(x=x_thr, line_dash='dash', line_color='#94A3B8')
     figq.add_hline(y=y_thr, line_dash='dash', line_color='#94A3B8')
     figq.update_layout(xaxis_title='Risk Skoru (sağ = risk artar)', yaxis_title='2030 Sürdürülebilirlik (yukarı = iyi)')
-    st.plotly_chart(figq, use_container_width=True)
+    st.plotly_chart(figq, use_container_width=True, key="chart_5vnb2t2e")
     
     # Grafik açıklaması
     with st.expander("📊 2×2 Risk & Fırsat Radarı Ne Anlatıyor?", expanded=False):
@@ -4579,7 +4556,7 @@ def show_risk_opportunity():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("Risk & Fırsat")
+    # Footer kaldırıldı
 
 def show_target_planner():
     """🎯 Hedef Planlayıcı – 2030 hedefini seç, gerekli yıllık değişimi (CAGR) gör"""
@@ -4694,7 +4671,7 @@ def show_target_planner():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("Hedef Planlayıcı")
+    # Footer kaldırıldı
 
 def show_report_builder():
     """📄 Sade Rapor Oluşturucu"""
@@ -4788,7 +4765,7 @@ def show_report_builder():
         pass
     
     # Sayfa sonu
-    add_page_footer("Rapor Oluşturucu")
+    # Footer kaldırıldı
         lines = [
 
 
@@ -5670,7 +5647,7 @@ def show_what_if_advanced():
     except Exception:
         pass
     fig.update_layout(template='plotly_white', height=480)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_a6eqxqbg")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -5697,7 +5674,7 @@ def show_what_if_advanced():
         pass
     
     # Sayfa sonu yazısı
-    add_page_footer("What-If Analizi")
+    # Footer kaldırıldı
 
 
 def show_country_deep_dive():
@@ -5747,7 +5724,7 @@ def show_country_deep_dive():
     except Exception:
         pass
     fig.update_layout(template='plotly_white', height=420)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_7qrht6nn")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -5798,7 +5775,7 @@ def show_country_deep_dive():
         pass
 
     # Sayfa sonu yazısı
-    add_page_footer("Ülke Derin Analizi")
+    # Footer kaldırıldı
 
 
 
@@ -5850,7 +5827,7 @@ def show_driver_sensitivity():
             df.columns = ['feature', 'score']
         df = df.sort_values('score', ascending=True).tail(15)
         col1.subheader("Permutation Importance")
-                    col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_perm_imp_{target_norm}_{hash(target_norm)}")
+                    col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
     if shapm is not None and not shapm.empty:
         # Kolon isimlerini kontrol et ve standardize et
         if 'feature' in shapm.columns and 'importance' in shapm.columns:
@@ -5862,7 +5839,7 @@ def show_driver_sensitivity():
             df2.columns = ['feature', 'score']
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
-                    col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_shap_mean_{target_norm}_{hash(target_norm)}")
+                    col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True)
     # AI Asistan
     try:
         lead = None
@@ -5986,7 +5963,7 @@ def show_driver_sensitivity():
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
                     st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True)
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined', key="chart_peb1vh0a").tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(drv_disp))}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6018,7 +5995,7 @@ def show_driver_sensitivity():
         st.info("Sürücü tablosu oluşturulamadı.")
     
     # Sayfa sonu yazısı
-    add_page_footer("Sürücü Hassasiyeti")
+    # Footer kaldırıldı
 
 
 def show_roi_npv():
@@ -6077,7 +6054,7 @@ def show_roi_npv():
     r = disc/100.0
     npv = sum([flows[i] / ((1+r)**i) for i in range(len(flows))])
     st.metric("NPV (M$)", f"{npv:,.2f}")
-    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True)
+                    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$, key="chart_sm0o5760")'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(years_arr))}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6120,7 +6097,7 @@ def show_roi_npv():
 
 
     # Sayfa sonu yazısı
-    add_page_footer("ROI / NPV Hesaplayıcı")
+    # Footer kaldırıldı
 
 def show_benchmark_league():
     """🏁 Benchmark & Lig – benzer ülkeler, kümeler ve lig tablosu"""
@@ -6159,14 +6136,19 @@ def show_benchmark_league():
         return
     agg = df.groupby(country_col)[cols].mean().dropna()
     # Ölçekleme ve k-means
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.cluster import KMeans
-    scaler = StandardScaler()
-    X = scaler.fit_transform(agg.values.astype(float))
-    k = st.slider("Küme sayısı (Lig)", 3, 8, 5)
-    km = KMeans(n_clusters=k, n_init=10, random_state=42)
-    labels = km.fit_predict(X)
-    agg['cluster'] = labels
+    try:
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.cluster import KMeans
+        scaler = StandardScaler()
+        X = scaler.fit_transform(agg.values.astype(float))
+        k = st.slider("Küme sayısı (Lig)", 3, 8, 5)
+        km = KMeans(n_clusters=k, n_init=10, random_state=42)
+        labels = km.fit_predict(X)
+        agg['cluster'] = labels
+    except ImportError:
+        st.error("scikit-learn kütüphanesi yüklü değil. Kümeleme özelliği kullanılamıyor.")
+        agg['cluster'] = 0  # Varsayılan küme
+        X = agg.values.astype(float)
     # Lig tablosu
     st.subheader("Lig Tablosu (ilk 10)")
     rank_metric = st.selectbox("Sıralama metriği", cols, index=cols.index('sustainability_score') if 'sustainability_score' in cols else 0)
@@ -6194,7 +6176,11 @@ def show_benchmark_league():
         dplot = pd.DataFrame({'x': XY[:,0], 'y': XY[:,1], 'Country': agg.index, 'Cluster': agg['cluster'].astype(str)})
         fig = px.scatter(dplot, x='x', y='y', color='Cluster', hover_name='Country', template='plotly_white', height=460)
         st.subheader("Küme Haritası (PCA 2D)")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_yfmov6wu")
+    except ImportError:
+        st.warning("PCA görselleştirmesi için scikit-learn gerekli.")
+    except Exception as e:
+        st.warning(f"PCA görselleştirmesi yüklenemedi: {str(e)}")
         
         # Grafik açıklaması
         with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6310,11 +6296,14 @@ def show_benchmark_league():
             ycol = 'Year' if 'Year' in dfb.columns else ('year' if 'year' in dfb.columns else None)
             if dfb is not None and not dfb.empty and cols and ccol and ycol:
                 agg = dfb.groupby(ccol)[cols].mean().dropna()
-                from sklearn.preprocessing import StandardScaler
-                from sklearn.cluster import KMeans
-                X = StandardScaler().fit_transform(agg.values.astype(float))
-                km = KMeans(n_clusters=5, n_init=10, random_state=42)
-                agg['cluster'] = km.fit_predict(X)
+                try:
+                    from sklearn.preprocessing import StandardScaler
+                    from sklearn.cluster import KMeans
+                    X = StandardScaler().fit_transform(agg.values.astype(float))
+                    km = KMeans(n_clusters=5, n_init=10, random_state=42)
+                    agg['cluster'] = km.fit_predict(X)
+                except ImportError:
+                    agg['cluster'] = 0  # Varsayılan küme
                 html_parts.append("<h2>Benchmark & Lig</h2>")
                 # Lig tablosu kısa
                 league = agg.sort_values('sustainability_score' if 'sustainability_score' in cols else cols[0], ascending=False).reset_index()
@@ -6402,7 +6391,7 @@ def show_benchmark_league():
         st.caption("PDF desteklenmiyorsa HTML indirip tarayıcıdan 'Yazdır→PDF' olarak kaydedebilirsiniz.")
 
     # Sayfa sonu yazısı
-    add_page_footer("Benchmark & Lig")
+    # Footer kaldırıldı
 
 
 def show_anomaly_monitor():
@@ -6467,7 +6456,7 @@ def show_anomaly_monitor():
     # Zaman serisi izleme (ülke seçimi)
     country = st.selectbox("Ülke", sorted(df[ccol].dropna().unique()), key="anom_country")
     ts = dff[dff[ccol]==country][[ycol, tcol]].groupby(ycol).mean().reset_index()
-    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360), use_container_width=True)
+                    st.plotly_chart(px.line(ts, x=ycol, y=tcol, markers=True, template='plotly_white', height=360, key="chart_13ib636o"), use_container_width=True, key=f"anomaly_chart_{hash(str(ts))}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6490,7 +6479,7 @@ def show_anomaly_monitor():
     """, unsafe_allow_html=True)
 
     # Sayfa sonu yazısı
-    add_page_footer("Anomali & İzleme")
+    # Footer kaldırıldı
 
 
 def show_data_lineage_quality():
@@ -6569,7 +6558,7 @@ def show_data_lineage_quality():
     """, unsafe_allow_html=True)
 
     # Sayfa sonu yazısı
-    add_page_footer("Veri Hattı & Kalite")
+    # Footer kaldırıldı
 
 
 def show_carbon_flows():
@@ -6659,7 +6648,7 @@ def show_carbon_flows():
             )])
             fig.update_layout(title_text=f"Karbon Akışları: {group_option}", font_size=10, height=500)
             st.subheader(f"Sankey – {group_option}")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="chart_elkanf5s")
             
             # Grafik açıklaması
             with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6695,7 +6684,7 @@ def show_carbon_flows():
     # Treemap
     st.subheader("Treemap – Karbon dağılımı")
     tre = d.groupby(catcol)[carbon].sum().reset_index()
-    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), use_container_width=True)
+                    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420, key="chart_37ss73w5"), use_container_width=True, key=f"carbon_treemap_{hash(str(tre))}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6747,7 +6736,7 @@ def show_carbon_flows():
         fig = go.Figure(go.Sankey(node=dict(label=labels), link=dict(source=src, target=dst, value=vals)))
         fig.update_layout(template='plotly_white', height=420)
         st.subheader(f"Sankey – {group_option}")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_75sg49g5")
         
         # Grafik açıklaması
         with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6770,7 +6759,7 @@ def show_carbon_flows():
         seasons['season'] = seasons[ycol].astype(str)
         figR = px.line_polar(seasons, r=carbon, theta='season', line_close=True, template='plotly_white', height=420)
         st.subheader("Radar – Mevsimsel/Yıllık profil")
-        st.plotly_chart(figR, use_container_width=True)
+        st.plotly_chart(figR, use_container_width=True, key="chart_c3jj4rz7")
         
         with st.expander("📊 Bu grafik ne anlatıyor?"):
             st.markdown("""
@@ -6793,7 +6782,7 @@ def show_carbon_flows():
         """, unsafe_allow_html=True)
     
     # Sayfa sonu yazısı
-    add_page_footer("Karbon Akışları")
+    # Footer kaldırıldı
 
 
 def show_justice_impact_panel():
@@ -6899,7 +6888,7 @@ def show_justice_impact_panel():
         ),
         margin=dict(l=60, r=60, t=80, b=60)
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_gntyavz5")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6947,7 +6936,7 @@ def show_justice_impact_panel():
             opacity=0.8
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_ty8y4hf7")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6995,7 +6984,7 @@ def show_justice_impact_panel():
             opacity=0.7
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_1j57vqs0")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7017,7 +7006,7 @@ def show_justice_impact_panel():
     """, unsafe_allow_html=True)
     
     # Sayfa sonu yazısı
-    add_page_footer("Adalet/Etki Paneli")
+    # Footer kaldırıldı
 
 
 # =============================================================================

@@ -3,10 +3,4 @@ pandas
 plotly
 numpy
 scikit-learn
-shap
-matplotlib
-seaborn
-requests
-openpyxl
-xlrd
-python-dotenv 
+scipy 
