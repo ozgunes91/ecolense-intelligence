@@ -218,19 +218,106 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
             else:
                 avg_yearly_growth = 0
         
-        col1, col2, col3, col4 = st.columns(4)
+        # Premium Metrics Cards
+        col1, col2 = st.columns(2)
+        
         with col1:
-            st.metric(story_texts['total_waste'], f"{total_waste/1_000_000:.1f}M tons", 
-                     delta=f"{avg_yearly_growth:.1f}% {story_texts['annual_increase']}", delta_color="inverse")
+            # Toplam İsraf Kartı
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
+                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
+                        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
+                        <span style="font-size: 2rem;">🔥</span>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['total_waste']}</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Küresel Toplam</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{total_waste/1_000_000:.1f}M</h2>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{resp['tons']}</p>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                        <span style="font-size: 0.9rem;">📈 {avg_yearly_growth:.1f}% {story_texts['annual_increase']}</span>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Ortalama İsraf Kartı
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
+                        box-shadow: 0 10px 25px rgba(253, 203, 110, 0.3);">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
+                        <span style="font-size: 2rem;">📊</span>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['avg_waste']}</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Ülke Başına</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{avg_waste:,.0f}</h2>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts['tons_country']}</p>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                        <span style="font-size: 0.9rem;">📈 {(avg_waste * 0.05):,.0f} {resp['tons']} artış</span>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with col2:
-            st.metric(story_texts['avg_waste'], f"{avg_waste:,.0f} {story_texts['tons_country']}",
-                     delta=f"{(avg_waste * 0.05):,.0f} tons increase", delta_color="inverse")
-        with col3:
-            st.metric(story_texts['countries'], f"{countries_count}",
-                     delta=f"+5 {story_texts['new_countries']}", delta_color="normal")
-        with col4:
-            st.metric(story_texts['solution_potential'], f"{(total_waste * 0.5)/1_000_000:.1f}M tons",
-                     delta=f"50% {story_texts['reduction_target']}", delta_color="normal")
+            # Ülke Sayısı Kartı
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
+                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
+                        box-shadow: 0 10px 25px rgba(116, 185, 255, 0.3);">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
+                        <span style="font-size: 2rem;">🌐</span>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['countries']}</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Analiz Kapsamı</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{countries_count}</h2>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">Ülke</p>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                        <span style="font-size: 0.9rem;">✨ +5 {story_texts['new_countries']}</span>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Çözüm Potansiyeli Kartı
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
+                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
+                        box-shadow: 0 10px 25px rgba(0, 184, 148, 0.3);">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
+                        <span style="font-size: 2rem;">🎯</span>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['solution_potential']}</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Tasarruf Potansiyeli</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{(total_waste * 0.5)/1_000_000:.1f}M</h2>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{resp['tons']}</p>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                        <span style="font-size: 0.9rem;">🎯 50% {story_texts['reduction_target']}</span>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
         
         # Crisis Analysis Panel
         st.markdown(f"""
@@ -257,9 +344,13 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
         # Trend Analysis Chart
         if year_col:
             yearly_waste_df = yearly_waste.reset_index()
+            chart_title = story_texts['trend_chart_title'] if lang == 'TR' else "Annual Global Food Waste Trend"
+            x_label = story_texts['year'] if lang == 'TR' else 'Year'
+            y_label = story_texts['total_waste_tons'] if lang == 'TR' else 'Total Waste (Tons)'
+            
             fig = px.line(yearly_waste_df, x=year_col, y=waste_col, 
-                         title="Annual Global Food Waste Trend",
-                         labels={'x': 'Year', 'y': 'Total Waste (Tons)'})
+                         title=chart_title,
+                         labels={'x': x_label, 'y': y_label})
             fig.update_layout(
                 plot_bgcolor='rgba(0,0,0,0)', 
                 paper_bgcolor='rgba(0,0,0,0)',
@@ -270,16 +361,21 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
             st.plotly_chart(fig, use_container_width=True)
         
         # Country Analysis
-        st.markdown("### 🌍 COUNTRY-LEVEL ANALYSIS")
+        country_analysis_title = "🌍 ÜLKE BAZINDA ANALİZ" if lang == 'TR' else "🌍 COUNTRY-LEVEL ANALYSIS"
+        st.markdown(f"### {country_analysis_title}")
         
         top_countries = df.groupby('Country')[waste_col].sum().sort_values(ascending=False).head(10)
+        
+        bar_title = "En Yüksek Gıda İsrafı Olan 10 Ülke" if lang == 'TR' else "Top 10 Countries by Food Waste"
+        x_label = story_texts['total_waste_tons'] if lang == 'TR' else 'Total Waste (Tons)'
+        y_label = "Ülke" if lang == 'TR' else 'Country'
         
         fig = px.bar(
             x=top_countries.values,
             y=top_countries.index,
             orientation='h',
-            title="Top 10 Countries by Food Waste",
-            labels={'x': 'Total Waste (Tons)', 'y': 'Country'}
+            title=bar_title,
+            labels={'x': x_label, 'y': y_label}
         )
         fig.update_layout(
             plot_bgcolor='rgba(0,0,0,0)', 
@@ -291,36 +387,47 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
         st.plotly_chart(fig, use_container_width=True)
         
         # Solutions Panel
-        st.markdown("### 💡 STRATEGIC SOLUTIONS")
+        solutions_title = "💡 STRATEJİK ÇÖZÜMLER" if lang == 'TR' else "💡 STRATEGIC SOLUTIONS"
+        st.markdown(f"### {solutions_title}")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("""
+            immediate_title = "🎯 Acil Eylemler" if lang == 'TR' else "🎯 Immediate Actions"
+            immediate_actions = [
+                "Akıllı Tedarik Zinciri Yönetimi" if lang == 'TR' else "Smart Supply Chain Management",
+                "Tüketici Eğitim Programları" if lang == 'TR' else "Consumer Education Programs",
+                "Gıda Yeniden Dağıtım Ağları" if lang == 'TR' else "Food Redistribution Networks",
+                "Atık Takip Teknolojileri" if lang == 'TR' else "Waste Tracking Technologies"
+            ]
+            
+            st.markdown(f"""
             <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
                         padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                         box-shadow: 0 8px 25px rgba(116, 185, 255, 0.3);">
-                <h4 style="margin: 0 0 1rem 0;">🎯 Immediate Actions</h4>
+                <h4 style="margin: 0 0 1rem 0;">{immediate_title}</h4>
                 <ul style="margin: 0; padding-left: 1.5rem;">
-                    <li>Smart Supply Chain Management</li>
-                    <li>Consumer Education Programs</li>
-                    <li>Food Redistribution Networks</li>
-                    <li>Waste Tracking Technologies</li>
+                    {''.join([f'<li>{action}</li>' for action in immediate_actions])}
                 </ul>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("""
+            longterm_title = "🚀 Uzun Vadeli Stratejiler" if lang == 'TR' else "🚀 Long-term Strategies"
+            longterm_actions = [
+                "Döngüsel Ekonomi Uygulaması" if lang == 'TR' else "Circular Economy Implementation",
+                "Politika Çerçevesi Geliştirme" if lang == 'TR' else "Policy Framework Development",
+                "Teknoloji İnovasyon Yatırımı" if lang == 'TR' else "Technology Innovation Investment",
+                "Küresel İşbirliği Ağları" if lang == 'TR' else "Global Collaboration Networks"
+            ]
+            
+            st.markdown(f"""
             <div style="background: linear-gradient(135deg, #55a3ff 0%, #0066cc 100%); 
                         padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                         box-shadow: 0 8px 25px rgba(85, 163, 255, 0.3);">
-                <h4 style="margin: 0 0 1rem 0;">🚀 Long-term Strategies</h4>
+                <h4 style="margin: 0 0 1rem 0;">{longterm_title}</h4>
                 <ul style="margin: 0; padding-left: 1.5rem;">
-                    <li>Circular Economy Implementation</li>
-                    <li>Policy Framework Development</li>
-                    <li>Technology Innovation Investment</li>
-                    <li>Global Collaboration Networks</li>
+                    {''.join([f'<li>{action}</li>' for action in longterm_actions])}
                 </ul>
             </div>
             """, unsafe_allow_html=True)
