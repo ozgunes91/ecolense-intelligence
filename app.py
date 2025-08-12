@@ -4793,16 +4793,6 @@ def show_report_builder():
 
 
 
-
-
-
-
-            "Politika: What‑if ve A/B ile atık azaltımı, karbon fiyatı ve teknoloji benimsemeyi test edip ROI’yi rapora taşıyoruz.",
-
-
-
-
-
     # Rapor oluşturma butonu
 
 
