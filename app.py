@@ -6063,19 +6063,43 @@ def show_roi_npv():
     with prof_col2:
         pol_end = st.slider("2030 Azaltımı (%)", 0, 70, max(pol_reduct, 30))
     with np.errstate(invalid='ignore'):
+        # Daha gerçekçi politika profili: başlangıç düşük, kademeli artış
         prof = np.linspace(pol_start/100.0, pol_end/100.0, len(base))
-        delta_mton = np.maximum(0.0, base * prof / 1e6)  # Mton cinsine çevir
+        # Atık azaltımı hesaplama (ton cinsinden)
+        waste_reduction_tons = base * prof
+        delta_mton = waste_reduction_tons / 1e6  # Mton cinsine çevir
+        
     years_arr = dfc['Year'].astype(int).values
+    
     # Nakit akışları: fayda - maliyet
     flows = []
+    cumulative_benefit = 0
     for i, y in enumerate(years_arr):
+        # Fayda hesaplama: azaltılan atık miktarı * birim fayda
         benefit = float(delta_mton[i]) * float(benefit_per_mton)
+        cumulative_benefit += benefit
+        
+        # Net nakit akışı: fayda - maliyet
         net = benefit - cost
         flows.append(net)
-    # NPV
+    
+    # NPV hesaplama (daha doğru formül)
     r = disc/100.0
-    npv = sum([flows[i] / ((1+r)**i) for i in range(len(flows))])
-    st.metric("NPV (M$)", f"{npv:,.2f}")
+    npv = sum([flows[i] / ((1+r)**(i+1)) for i in range(len(flows))])  # i+1 çünkü ilk yıl 1. yıl
+    
+    # ROI hesaplama
+    total_cost = cost * len(flows)
+    total_benefit = cumulative_benefit
+    roi = ((total_benefit - total_cost) / total_cost * 100) if total_cost > 0 else 0
+    
+    # Metrikleri göster
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("NPV (M$)", f"{npv:,.2f}")
+    with col2:
+        st.metric("ROI (%)", f"{roi:.1f}%")
+    with col3:
+        st.metric("Toplam Fayda (M$)", f"{total_benefit:,.2f}")
     st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(flows))}_{hash('roi_npv')}")
     
     # Grafik açıklaması
@@ -6091,11 +6115,14 @@ def show_roi_npv():
         Politika parametrelerini ayarlayarak NPV'yi optimize edebilirsiniz.
         """)
     tip = "negatif" if npv < 0 else "pozitif"
+    roi_tip = "düşük" if roi < 10 else "iyi" if roi < 30 else "mükemmel"
     action = "maliyeti düşür / faydayı artır / azaltımı kademeli yükselt" if npv < 0 else "azaltımı optimize ederek ek getiri ara"
+    
     st.markdown(f"""
     <div class='ai-assistant'>
       <h4><span class='ai-emoji'>🤖</span>AI Asistan — ROI</h4>
-      <p><span class='ai-badge'>NPV</span> {npv:,.2f} M$ → {tip}. Varsayımlar: % {pol_start}–{pol_end} azaltım profili, iskonto {disc:.1f}%, 1 Mton = {benefit_per_mton:.1f} M$ fayda, yıllık maliyet {cost:.1f} M$.</p>
+      <p><span class='ai-badge'>NPV</span> {npv:,.2f} M$ → {tip} | <span class='ai-badge'>ROI</span> {roi:.1f}% → {roi_tip}</p>
+      <p>Varsayımlar: % {pol_start}–{pol_end} azaltım profili, iskonto {disc:.1f}%, 1 Mton = {benefit_per_mton:.1f} M$ fayda, yıllık maliyet {cost:.1f} M$.</p>
       <p>Öneri: {action}. Ülke bazlı baz israfı yüksek olanlarda etki artar.</p>
     </div>
     """, unsafe_allow_html=True)
