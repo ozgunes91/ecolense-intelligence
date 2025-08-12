@@ -75,29 +75,58 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 
 ## 📈 Kritik Bulgular ve Çıkarımlar
 
-### Gıda Kategorilerine Göre İsraf (Veri Setinden)
-1. **Prepared Food**: En yüksek israf oranı
-2. **Fruits & Vegetables**: İkinci sırada
-3. **Dairy Products**: Üçüncü sırada
-4. **Grains & Cereals**: Dördüncü sırada
-5. **Beverages**: Beşinci sırada
-6. **Meat & Seafood**: Altıncı sırada
-7. **Frozen Food**: Yedinci sırada
-8. **Bakery Items**: Sekizinci sırada
+### Gıda Kategorilerine Göre İsraf (Dashboard Analizinden)
+1. **Prepared Food**: 17.9M ton (en yüksek)
+2. **Beverages**: 16.4M ton
+3. **Bakery Items**: 15.6M ton
+4. **Fruits & Vegetables**: 15.5M ton
+5. **Meat & Seafood**: 15.4M ton
+6. **Dairy Products**: 15.3M ton
+7. **Frozen Food**: 15.0M ton
+8. **Grains & Cereals**: 14.2M ton (en düşük)
 
 ### Ülke Performansları (Dashboard Analizinden)
-- **En Yüksek İsraf**: İspanya (50K ton), ABD (50K ton), Hindistan (50K ton)
-- **En Düşük İsraf**: Avustralya, Kanada, Almanya
-- **En Yüksek CO2**: İspanya (406 kg), İngiltere (385 kg), Almanya (166 kg)
-- **Sürdürülebilirlik Lideri**: Çin (86.5), Rusya (86.2), İspanya (84.7)
+- **En Yüksek İsraf**: Türkiye (6.9M ton), Kanada (6.8M ton), İspanya (6.8M ton)
+- **En Düşük İsraf**: Endonezya, Brezilya, Çin
+- **En Yüksek CO2**: Türkiye (6.9B kg), Kanada (6.8B kg), İspanya (6.8B kg)
+- **Sürdürülebilirlik Lideri**: Çin (86.7), Rusya (86.2), ABD (85.2)
 
-### Pandemi Etkisi
-- 2020-2021 döneminde %15-20 artış
-- Ev tipi israfın %30 artması
-- Restoran israfının %40 azalması
+### Pandemi Etkisi (Dashboard Analizinden)
+- **Genel Etki**: Pandemi döneminde hafif azalma (%1.0 israf, %1.6 ekonomik kayıp)
+- **Sürdürülebilirlik**: Pandemi sırasında %0.4 artış (83.6 → 83.9)
+- **Gıda Kategorileri**: 
+  - **Beverages**: %6.5 artış (en çok etkilenen)
+  - **Dairy Products**: %10.3 azalış (en çok azalan)
+  - **Prepared Food**: %4.8 azalış (hazır gıda tüketimi düşüşü)
+- **Ülke Bazında Etki**:
+  - **En çok artan**: Endonezya (%24.3), Arjantin (%23.3), İngiltere (%14.5)
+  - **En çok azalan**: Suudi Arabistan (%13.1), Çin (%10.4), ABD (%9.7)
+- **Sonrası Trend**: 2022-2024'te hafif toparlanma (%1.1 artış)
 
 ### Model Başarısı ve Çıkarımlar
 - **%96.0 Test R²**: Model çok yüksek doğrulukla tahmin yapıyor
+
+### Dashboard Çıktılarının Analizi ve Nedenleri
+
+#### Sürdürülebilirlik Skorları (0-100 Arası)
+- **Çin (86.7)**: Düşük kişi başı israf (0.22 kg) ve karbon (0.22 kg CO2e) değerleri
+- **Rusya (86.2)**: Nüfus avantajı ve doğal kaynak zenginliği
+- **ABD (85.2)**: Teknoloji ve verimlilik odaklı yaklaşım
+
+#### En Yüksek İsraf Yapan Ülkeler
+- **Türkiye (6.9M ton)**: Nüfus yoğunluğu ve gelişmekte olan ekonomi
+- **Kanada (6.8M ton)**: Geniş coğrafya ve soğuk iklim etkisi
+- **İspanya (6.8M ton)**: Turizm sektörü ve gıda kültürü
+
+#### Gıda Kategorileri Dağılımı
+- **Prepared Food (17.9M ton)**: Hazır gıda tüketim alışkanlıkları
+- **Beverages (16.4M ton)**: İçecek sektörünün büyük hacmi
+- **Bakery Items (15.6M ton)**: Taze ürün israfı yüksekliği
+
+#### CO2 Ayak İzi Etkisi
+- **Türkiye (6.9B kg)**: Endüstriyel üretim ve enerji tüketimi
+- **Kanada (6.8B kg)**: Doğal kaynak çıkarımı ve işleme
+- **İspanya (6.8B kg)**: Tarım ve turizm sektörü etkisi
 - **%0.8 Overfitting Gap**: Model genelleme yeteneği çok iyi
 - **%10.2 MAPE**: Ortalama mutlak yüzde hata düşük
 - **Gradient Boosting**: En iyi performans gösteren model

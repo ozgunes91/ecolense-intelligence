@@ -76,28 +76,57 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 ## 📈 Critical Findings and Insights
 
 ### Food Waste by Category (from Dataset)
-1. **Prepared Food**: Highest waste rate
-2. **Fruits & Vegetables**: Second highest
-3. **Dairy Products**: Third highest
-4. **Grains & Cereals**: Fourth highest
-5. **Beverages**: Fifth highest
-6. **Meat & Seafood**: Sixth highest
-7. **Frozen Food**: Seventh highest
-8. **Bakery Items**: Eighth highest
+1. **Prepared Food**: 17.9M tons (highest)
+2. **Beverages**: 16.4M tons
+3. **Bakery Items**: 15.6M tons
+4. **Fruits & Vegetables**: 15.5M tons
+5. **Meat & Seafood**: 15.4M tons
+6. **Dairy Products**: 15.3M tons
+7. **Frozen Food**: 15.0M tons
+8. **Grains & Cereals**: 14.2M tons (lowest)
 
 ### Country Performance (from Dashboard Analysis)
-- **Highest Waste**: Spain (50K tons), USA (50K tons), India (50K tons)
-- **Lowest Waste**: Australia, Canada, Germany
-- **Highest CO2**: Spain (406 kg), UK (385 kg), Germany (166 kg)
-- **Sustainability Leaders**: China (86.5), Russia (86.2), Spain (84.7)
+- **Highest Waste**: Turkey (6.9M tons), Canada (6.8M tons), Spain (6.8M tons)
+- **Lowest Waste**: Indonesia, Brazil, China
+- **Highest CO2**: Turkey (6.9B kg), Canada (6.8B kg), Spain (6.8B kg)
+- **Sustainability Leaders**: China (86.7), Russia (86.2), USA (85.2)
 
-### Pandemic Impact
-- 15-20% increase in 2020-2021 period
-- 30% increase in household waste
-- 40% decrease in restaurant waste
+### Pandemic Impact (from Dashboard Analysis)
+- **General Effect**: Slight decrease during pandemic (%1.0 waste, %1.6 economic loss)
+- **Sustainability**: %0.4 increase during pandemic (83.6 → 83.9)
+- **Food Categories**: 
+  - **Beverages**: %6.5 increase (most affected)
+  - **Dairy Products**: %10.3 decrease (most decreased)
+  - **Prepared Food**: %4.8 decrease (ready-to-eat consumption decline)
+- **Country-based Impact**:
+  - **Most increased**: Indonesia (%24.3), Argentina (%23.3), UK (%14.5)
+  - **Most decreased**: Saudi Arabia (%13.1), China (%10.4), USA (%9.7)
+- **Post-pandemic Trend**: Slight recovery in 2022-2024 (%1.1 increase)
 
 ### Model Success and Insights
 - **96.0% Test R²**: Model makes predictions with very high accuracy
+
+### Dashboard Output Analysis and Reasons
+
+#### Sustainability Scores (0-100 Range)
+- **China (86.7)**: Low per capita waste (0.22 kg) and carbon (0.22 kg CO2e) values
+- **Russia (86.2)**: Population advantage and natural resource wealth
+- **USA (85.2)**: Technology and efficiency-focused approach
+
+#### Highest Waste Producing Countries
+- **Turkey (6.9M tons)**: Population density and developing economy
+- **Canada (6.8M tons)**: Large geography and cold climate effect
+- **Spain (6.8M tons)**: Tourism sector and food culture
+
+#### Food Category Distribution
+- **Prepared Food (17.9M tons)**: Ready-to-eat food consumption habits
+- **Beverages (16.4M tons)**: Large volume of beverage sector
+- **Bakery Items (15.6M tons)**: High fresh product waste
+
+#### CO2 Footprint Impact
+- **Turkey (6.9B kg)**: Industrial production and energy consumption
+- **Canada (6.8B kg)**: Natural resource extraction and processing
+- **Spain (6.8B kg)**: Agriculture and tourism sector impact
 - **0.8% Overfitting Gap**: Model has excellent generalization ability
 - **10.2% MAPE**: Low mean absolute percentage error
 - **Gradient Boosting**: Best performing model
@@ -177,7 +206,7 @@ sustainability = (waste_score * 0.4 + economic_score * 0.3 + carbon_score * 0.3)
 - **Normalized scores** in 0-100 range
 
 #### 4. **Country Performance**
-- **Spain, USA, India** highest waste
+- **Turkey, Canada, Spain** highest waste
 - **China, Russia, Spain** highest sustainability
 - **Geographic differences** significant
 
