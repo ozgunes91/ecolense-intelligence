@@ -2597,6 +2597,123 @@ def show_home_page():
     with col4:
         if st.button(f"🔮 {_t('FUTURE_FORECASTS_BTN')}\n", use_container_width=True, key="quick_future"):
             st.session_state['page'] = _t('PAGE_FORECASTS')
+    
+    # AI Chat Interface - Ana sayfada görünür
+    st.markdown("---")
+    st.markdown(f"""
+    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+                padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
+                box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
+                <span style="font-size: 2rem;">🤖</span>
+            </div>
+            <div>
+                <h2 style="margin: 0; font-size: 2rem; font-weight: 700;">AI Asistan</h2>
+                <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem; opacity: 0.9;">
+                    Gıda israfı verileri hakkında sorular sorun, gerçek zamanlı içgörüler alın
+                </p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # AI Chat Interface
+    if 'ai_chat_history' not in st.session_state:
+        st.session_state.ai_chat_history = []
+    
+    # Chat input - Ana sayfada daha görünür
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        user_question = st.text_input(
+            "🤖 AI'ya sorun:",
+            placeholder="Örn: 'Hangi ülkenin en yüksek gıda israfı var?' veya 'Almanya için trendleri göster'",
+            key="home_ai_chat_input"
+        )
+    with col2:
+        if st.button("🚀 Sor", key="home_ai_ask_button", use_container_width=True):
+            if user_question:
+                # Load data for AI response
+                real_df = load_data(REAL_DATA_PATH, announce=False)
+                preds = load_predictions_dashboard()
+                
+                if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
+                    # AI response generation
+                    ai_response = generate_ai_response(user_question, preds, real_df)
+                    st.session_state.ai_chat_history.append({
+                        "user": user_question,
+                        "ai": ai_response,
+                        "timestamp": pd.Timestamp.now()
+                    })
+                    st.rerun()
+                else:
+                    st.error("Veri yüklenemedi. AI yanıtı için gerekli veriler mevcut değil.")
+    
+    # Quick action buttons - Ana sayfada daha görünür
+    st.markdown("### ⚡ Hızlı Sorular")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🔍 En İyi Performans Gösterenleri Bul", key="home_quick_top", use_container_width=True):
+            question = "Hangi ülkelerin en iyi sürdürülebilirlik skorları var?"
+            real_df = load_data(REAL_DATA_PATH, announce=False)
+            preds = load_predictions_dashboard()
+            if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
+                ai_response = generate_ai_response(question, preds, real_df)
+                st.session_state.ai_chat_history.append({
+                    "user": question,
+                    "ai": ai_response,
+                    "timestamp": pd.Timestamp.now()
+                })
+                st.rerun()
+    
+    with col2:
+        if st.button("📈 Trendleri Göster", key="home_quick_trends", use_container_width=True):
+            question = "Küresel gıda israfı trendleri nelerdir?"
+            real_df = load_data(REAL_DATA_PATH, announce=False)
+            preds = load_predictions_dashboard()
+            if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
+                ai_response = generate_ai_response(question, preds, real_df)
+                st.session_state.ai_chat_history.append({
+                    "user": question,
+                    "ai": ai_response,
+                    "timestamp": pd.Timestamp.now()
+                })
+                st.rerun()
+    
+    with col3:
+        if st.button("💡 Öneriler Al", key="home_quick_recs", use_container_width=True):
+            question = "Gıda israfını azaltmak için en iyi 3 öneri nedir?"
+            real_df = load_data(REAL_DATA_PATH, announce=False)
+            preds = load_predictions_dashboard()
+            if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
+                ai_response = generate_ai_response(question, preds, real_df)
+                st.session_state.ai_chat_history.append({
+                    "user": question,
+                    "ai": ai_response,
+                    "timestamp": pd.Timestamp.now()
+                })
+                st.rerun()
+    
+    # Display chat history - Ana sayfada daha görünür
+    if st.session_state.ai_chat_history:
+        st.markdown("### 💬 AI Sohbet Geçmişi")
+        for i, chat in enumerate(st.session_state.ai_chat_history):
+            with st.expander(f"Q: {chat['user'][:50]}...", expanded=(i == len(st.session_state.ai_chat_history) - 1)):
+                st.markdown(f"**Soru:** {chat['user']}")
+                st.markdown(f"**AI Yanıtı:** {chat['ai']}")
+                st.caption(f"Zaman: {chat['timestamp'].strftime('%H:%M:%S')}")
+    
+    # AI Tips - Ana sayfada daha görünür
+    st.markdown(f"""
+    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); 
+                padding: 1.5rem; border-radius: 15px; margin: 1rem 0; 
+                border-left: 4px solid #ff6b6b;">
+        <h4 style="margin: 0 0 0.5rem 0; color: #d63031;">💡 {_t('AI_TIP')}</h4>
+        <p style="margin: 0; color: #2d3436; line-height: 1.6;">{_t('AI_WELCOME_TIP')}</p>
+        <p style="margin: 0.5rem 0 0 0; color: #2d3436; line-height: 1.6; font-weight: 600;">{_t('AI_WELCOME_SUGGESTION')}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     # AI Asistan – Ana Sayfa kısa yorumu
     try:
