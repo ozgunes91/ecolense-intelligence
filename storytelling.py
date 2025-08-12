@@ -181,64 +181,72 @@ def show_storytelling_section():
             st.info("Seçilen hikayenin hızlı özeti ve ana noktaları gösterilecek.")
 
 def show_story_mode():
-    """Storytelling modu sayfası - premium tasarım"""
+    """📖 Premium Data Storytelling Platform - Jury Edition"""
     
     # Debug bilgisi
     story_mode = st.session_state.get('story_mode', '')
     if not story_mode:
-        st.error("❌ Hikaye modu seçilmedi. Ana sayfadan bir hikaye seçin.")
-        if st.button("🏠 Ana Sayfaya Dön"):
+        st.error("❌ Story mode not selected. Please select a story from the main page.")
+        if st.button("🏠 Return to Home"):
             st.session_state['page'] = 'PAGE_HOME'
             st.rerun()
         return
     
-    # Sayfa başlığı ve navigasyon
+    # Premium başlık ve navigasyon
     st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #232E5C 0%, #90EE90 100%); 
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                 padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="margin: 0; font-size: 2.5rem; font-weight: 700;">📖 HİKAYE MODU</h1>
+                <h1 style="margin: 0; font-size: 2.5rem; font-weight: 700;">📖 PREMIUM STORY MODE</h1>
                 <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem; opacity: 0.9;">
-                    Veri odaklı analiz ve çözüm önerileri
+                    AI-Powered Data Storytelling & Strategic Insights Platform
                 </p>
             </div>
             <div style="text-align: right;">
-                <div style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
-                    <span style="font-size: 0.9rem; opacity: 0.8;">Aktif Hikaye</span><br>
-                    <span style="font-weight: 600;">{story_mode}</span>
+                <div style="background: rgba(255,255,255,0.2); padding: 0.8rem 1.2rem; border-radius: 12px; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.9rem; opacity: 0.8;">Active Story</span><br>
+                    <span style="font-weight: 600; font-size: 1.1rem;">{story_mode}</span>
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Navigasyon butonları
+    # Premium navigasyon butonları
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+                padding: 1rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);">
+        <h4 style="margin: 0 0 1rem 0; text-align: center;">🚀 Quick Navigation</h4>
+    </div>
+    """, unsafe_allow_html=True)
+    
     col1, col2, col3, col4, col5 = st.columns(5)
     
     with col1:
-        if st.button("🏠 Ana Sayfa", key="nav_home", use_container_width=True):
+        if st.button("🏠 Home", key="nav_home", use_container_width=True):
             st.session_state['page'] = 'PAGE_HOME'
             st.rerun()
     
     with col2:
-        if st.button("📊 Veri Analizi", key="nav_data", use_container_width=True):
-            st.session_state['page'] = 'PAGE_DATA'
+        if st.button("📊 Analysis", key="nav_data", use_container_width=True):
+            st.session_state['page'] = 'PAGE_ANALYSIS'
             st.rerun()
     
     with col3:
-        if st.button("🎯 Hedef Planlayıcı", key="nav_target", use_container_width=True):
-            st.session_state['page'] = 'PAGE_TARGET'
+        if st.button("🎯 Targets", key="nav_target", use_container_width=True):
+            st.session_state['page'] = 'PAGE_TARGET_FORECASTS'
             st.rerun()
     
     with col4:
-        if st.button("🤖 AI İçgörüler", key="nav_ai", use_container_width=True):
+        if st.button("🤖 AI Insights", key="nav_ai", use_container_width=True):
             st.session_state['page'] = 'PAGE_AI'
             st.rerun()
     
     with col5:
-        if st.button("📈 Tahminler", key="nav_forecasts", use_container_width=True):
+        if st.button("📈 Forecasts", key="nav_forecasts", use_container_width=True):
             st.session_state['page'] = 'PAGE_FORECASTS'
             st.rerun()
     
@@ -270,13 +278,17 @@ def show_story_mode():
         st.warning(f"Bilinmeyen hikaye modu: {story_mode}")
 
 def show_food_waste_story(df):
-    """Gıda israfı hikayesi - Premium Edition"""
+    """🥗 Global Food Waste Crisis & Solutions - Premium Jury Edition"""
     
-    # Hero section
+    # Hero section - Premium design
     st.markdown("""
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
-                box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);">
+                box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; 
+                    background: rgba(255,255,255,0.1); border-radius: 50%; transform: translate(50%, -50%);"></div>
+        <div style="position: absolute; bottom: 0; left: 0; width: 150px; height: 150px; 
+                    background: rgba(255,255,255,0.05); border-radius: 50%; transform: translate(-50%, 50%);"></div>
         <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🚨 GIDA İSRAFI KRİZİ</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
             Küresel bir felaket, yerel çözümler
@@ -1234,4 +1246,5 @@ def show_comprehensive_analysis_story(df):
             </div>
         </div>
     </div>
+    """, unsafe_allow_html=True)
     """, unsafe_allow_html=True)

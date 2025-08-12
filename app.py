@@ -1937,13 +1937,121 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
 # =============================================================================
 
 def show_story_mode():
-    """Storytelling modu sayfası"""
-    try:
-        from storytelling import show_story_mode as show_story_mode_helper
-        show_story_mode_helper()
-    except Exception as e:
-        st.error(f"Storytelling modülü yüklenemedi: {str(e)}")
-        st.info("Bu sayfa geçici olarak devre dışı.")
+    """📖 Story Mode - Premium Data Storytelling Platform"""
+    
+    # Premium başlık
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
+                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
+                <span style="font-size: 1.8rem;">📖</span>
+            </div>
+            <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">STORY MODE</h1>
+        </div>
+        <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
+            Premium Data Storytelling & Strategic Insights Platform
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Hikaye seçimi
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+                padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);">
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">🎯 Select Your Story</h3>
+        <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
+            Choose a compelling data story to explore insights and strategic recommendations
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Hikaye seçenekleri
+    stories = [
+        {
+            "title": "🥗 Global Food Waste Crisis & Solutions",
+            "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
+            "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
+            "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+        },
+        {
+            "title": "💰 Economic Impact of Food Waste",
+            "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
+            "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
+            "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+        },
+        {
+            "title": "🌍 Environmental Footprint Analysis",
+            "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
+            "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
+            "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+        },
+        {
+            "title": "🎯 Sustainable Food Systems Roadmap",
+            "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
+            "key_metrics": ["2030 targets", "Circular economy", "Technology adoption", "Policy recommendations"],
+            "color": "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+        },
+        {
+            "title": "🚀 2030 Future Strategy & Recommendations",
+            "subtitle": "AI-powered strategic insights and actionable recommendations",
+            "key_metrics": ["AI insights", "Strategic planning", "Risk assessment", "Opportunity analysis"],
+            "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+        },
+        {
+            "title": "📊 Comprehensive Data Analytics & Insights",
+            "subtitle": "Deep dive into patterns, trends, and predictive analytics",
+            "key_metrics": ["Pattern analysis", "Trend forecasting", "Predictive models", "Statistical insights"],
+            "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+        }
+    ]
+    
+    # Hikaye kartları
+    cols = st.columns(2)
+    for i, story in enumerate(stories):
+        with cols[i % 2]:
+            st.markdown(f"""
+            <div style="background: {story['color']}; 
+                        padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                        box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s;"
+                        onmouseover="this.style.transform='scale(1.02)'" 
+                        onmouseout="this.style.transform='scale(1)'">
+                <h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 600;">{story['title']}</h4>
+                <p style="margin: 0 0 1rem 0; font-size: 0.9rem; opacity: 0.9;">{story['subtitle']}</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    {''.join([f'<span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">{metric}</span>' for metric in story['key_metrics']])}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button(f"📖 Explore {story['title'].split()[0]}", key=f"story_{i}", use_container_width=True):
+                st.session_state['selected_story'] = story['title']
+                st.session_state['story_mode'] = story['title']
+                st.rerun()
+    
+    # Seçili hikaye varsa göster
+    if 'selected_story' in st.session_state:
+        st.markdown("---")
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
+                    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
+            <h2 style="margin: 0 0 1rem 0; font-size: 1.8rem;">📖 {st.session_state['selected_story']}</h2>
+            <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">Premium data storytelling in action</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        try:
+            from storytelling import show_story_mode as show_story_mode_helper
+            show_story_mode_helper()
+        except Exception as e:
+            st.error(f"Storytelling modülü yüklenemedi: {str(e)}")
+            st.info("Bu sayfa geçici olarak devre dışı.")
+    
+    # Sayfa sonu
+    add_page_footer("Story Mode")
 
 def main():
     """Ana uygulama"""
