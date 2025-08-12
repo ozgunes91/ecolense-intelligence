@@ -2346,20 +2346,6 @@ def show_story_mode():
     else:
         # Show selected story using storytelling module
         show_story_mode_helper(df, story_mode)
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0; 
-                    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);">
-            <h2 style="margin: 0 0 1rem 0; font-size: 1.8rem;">📖 {st.session_state['selected_story']}</h2>
-            <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">Premium data storytelling in action</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        try:
-            from storytelling import show_story_mode as show_story_mode_helper
-            show_story_mode_helper()
-        except Exception as e:
-            st.error(f"Storytelling modülü yüklenemedi: {str(e)}")
-            st.info("Bu sayfa geçici olarak devre dışı.")
     
     # Sayfa sonu
     add_page_footer("Story Mode")
