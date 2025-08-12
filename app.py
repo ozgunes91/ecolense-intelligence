@@ -4789,8 +4789,6 @@ def show_report_builder():
     
     # Sayfa sonu
     add_page_footer("Rapor Oluşturucu")
-    try:
-        lines = [
 
 
 
@@ -4799,13 +4797,10 @@ def show_report_builder():
 
 
             "Politika: What‑if ve A/B ile atık azaltımı, karbon fiyatı ve teknoloji benimsemeyi test edip ROI’yi rapora taşıyoruz.",
-            "Kapanış: Jüri için şeffaf metodoloji, açıklanabilirlik (SHAP) ve indirilebilir rapor hazır."
-        ]
-        script_text = "\n".join(lines)
-        st.text_area("Sunum Metni (kopyala)", value=script_text, height=260)
-        st.download_button("Sunum Metnini İndir (.md)", data=script_text.encode('utf-8'), file_name="ecolense_sunum_metni.md", mime="text/markdown")
-    except Exception as e:
-        st.info(f"Sunum metni üretilemedi: {e}")
+
+
+
+
 
     # Rapor oluşturma butonu
 
