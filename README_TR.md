@@ -2,20 +2,20 @@
 
 ## 📋 Executive Summary
 
-This report presents the results of a comprehensive AI-powered analytics platform that analyzes the global food waste crisis and proposes sustainable solutions. The analysis of 20 countries over 7 years with 5,000 observations reveals the economic, environmental, and social dimensions of food waste.
+Bu rapor, dünya genelinde gıda israfı krizini analiz eden ve sürdürülebilir çözümler öneren kapsamlı bir AI destekli analiz platformunun sonuçlarını sunmaktadır. 20 ülke, 7 yıl ve 5,000 gözlem üzerinde yapılan analiz, gıda israfının ekonomik, çevresel ve sosyal boyutlarını ortaya koymaktadır.
 
-### 🌐 Live Dashboard Access
+### 🌐 Canlı Dashboard Erişimi
 **🔗 [Ecolense Intelligence Dashboard](https://ecolense-intelligence.streamlit.app/)**
 
-*Click the link above to access the dashboard. All analyses, predictions, and insights are available live.*
+*Dashboard'a erişmek için yukarıdaki linke tıklayın. Tüm analizler, tahminler ve içgörüler canlı olarak görüntülenebilir.*
 
-### 🎯 Key Findings
-- **Total Food Waste**: 125.2 million tons/year
-- **Economic Loss**: 125.2 trillion USD/year
-- **Carbon Footprint**: 125.2 billion kg CO2e/year
-- **Highest Waste**: Prepared foods (22.4%)
-- **Pandemic Impact**: 15-20% increase (2020-2021)
-- **Model Success**: 96% accuracy rate
+### 🎯 Ana Bulgular
+- **Toplam Gıda İsrafı**: 125.2 milyon ton/yıl
+- **Ekonomik Kayıp**: 125.2 trilyon USD/yıl
+- **Karbon Ayak İzi**: 125.2 milyar kg CO2e/yıl
+- **En Yüksek İsraf**: Hazır gıdalar (%22.4)
+- **Pandemi Etkisi**: %15-20 artış (2020-2021)
+- **Model Başarısı**: %96 doğruluk oranı
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
@@ -23,44 +23,44 @@ This report presents the results of a comprehensive AI-powered analytics platfor
 [![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/)
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 
-## 📊 Project Overview and Methodology
+## 📊 Proje Genel Bakış ve Metodoloji
 
-### 🎯 Problem Definition
-One-third of the food produced globally is wasted. This is not just food loss, but also an economic and environmental disaster. According to FAO data, food waste causes 1.3 trillion tons of food loss and 3.3 billion tons of CO2 emissions annually.
+### 🎯 Problem Tanımı
+Dünya genelinde üretilen gıdanın 1/3'ü israf edilmektedir. Bu sadece gıda kaybı değil, aynı zamanda ekonomik ve çevresel bir felakettir. FAO verilerine göre, gıda israfı yıllık 1.3 trilyon ton gıda kaybına ve 3.3 milyar ton CO2 emisyonuna neden olmaktadır.
 
-### 🎯 Mission
-To leverage artificial intelligence and data science to create a sustainable future by reducing global food waste through predictive analytics and actionable insights.
+### 🎯 Misyon
+Yapay zeka ve veri bilimi kullanarak, tahmine dayalı analitik ve uygulanabilir içgörüler aracılığıyla küresel gıda israfını azaltarak sürdürülebilir bir gelecek yaratmak.
 
-### 🌟 Vision
-Become the leading platform for food waste analytics and sustainability assessment, empowering governments, organizations, and individuals to make data-driven decisions for a more sustainable world.
+### 🌟 Vizyon
+Gıda israfı analitiği ve sürdürülebilirlik değerlendirmesi konusunda önde gelen platform olmak, hükümetleri, organizasyonları ve bireyleri daha sürdürülebilir bir dünya için veri odaklı kararlar almaya güçlendirmek.
 
-### 🔬 Research Methodology
+### 🔬 Araştırma Metodolojisi
 
-#### 📊 Data Sources and Integration Strategy
-**Primary Data Sources:**
-1. **FAO (Food and Agriculture Organization)**: Food production, consumption, and waste data
-2. **OECD (Organisation for Economic Co-operation and Development)**: Economic indicators and sustainability metrics
-3. **World Bank**: Population, GDP, and development indicators
-4. **UN Environment Programme**: Environmental impact and carbon emission data
+#### 📊 Veri Kaynakları ve Birleştirme Stratejisi
+**Birincil Veri Kaynakları:**
+1. **FAO (Food and Agriculture Organization)**: Gıda üretimi, tüketimi ve israfı verileri
+2. **OECD (Organisation for Economic Co-operation and Development)**: Ekonomik göstergeler ve sürdürülebilirlik metrikleri
+3. **World Bank**: Nüfus, GDP ve gelişim göstergeleri
+4. **UN Environment Programme**: Çevresel etki ve karbon emisyonu verileri
 
-**Data Integration Process:**
-- **ISO Codes**: ISO 3166-1 codes added for country standardization
-- **Temporal Alignment**: Data synchronization for 2018-2024 period
-- **Feature Engineering**: 37 features created (demographic, economic, environmental)
-- **Data Enrichment**: Pandemic impact, trend analysis, and cyclical features added
+**Veri Birleştirme Süreci:**
+- **ISO Kodları**: Ülke standardizasyonu için ISO 3166-1 kodları eklendi
+- **Temporal Alignment**: 2018-2024 yılları arası veri senkronizasyonu
+- **Feature Engineering**: 37 özellik oluşturuldu (demografik, ekonomik, çevresel)
+- **Data Enrichment**: Pandemi etkisi, trend analizi ve döngüsel özellikler eklendi
 
-#### 🎯 Why Data Enrichment?
-1. **Pandemic Impact**: Analyze COVID-19's effect on food systems
-2. **Temporal Patterns**: Capture time-based trends
-3. **Geographic Context**: Include geographic and climatic factors
-4. **Economic Indicators**: Integrate economic indicators
-5. **Sustainability Metrics**: Create sustainability scores
+#### 🎯 Neden Veri Zenginleştirmesi Yaptık?
+1. **Pandemi Etkisi**: COVID-19'un gıda sistemleri üzerindeki etkisini analiz etmek
+2. **Temporal Patterns**: Zaman bazlı trendleri yakalamak
+3. **Geographic Context**: Coğrafi ve iklimsel faktörleri dahil etmek
+4. **Economic Indicators**: Ekonomik göstergeleri entegre etmek
+5. **Sustainability Metrics**: Sürdürülebilirlik skorları oluşturmak
 
-**Enrichment Benefits:**
-- **Model Performance**: 15% improvement (R²: 0.845 → 0.960)
-- **Prediction Power**: High accuracy for 3 target variables
-- **Insight Quality**: Deeper and more meaningful analyses
-- **Action Recommendations**: Data-driven strategic planning
+**Zenginleştirme Kazanımları:**
+- **Model Performansı**: %15 iyileşme (R²: 0.845 → 0.960)
+- **Tahmin Gücü**: 3 hedef değişken için yüksek doğruluk
+- **İçgörü Kalitesi**: Daha derin ve anlamlı analizler
+- **Aksiyon Önerileri**: Veri odaklı stratejik planlama
 
 ## 🚀 Key Features
 
@@ -78,23 +78,20 @@ Become the leading platform for food waste analytics and sustainability assessme
 - **📄 Report Generator**: Automated HTML and Markdown reports
 - **🌐 Multi-language Support**: Turkish and English interfaces
 
-### 🔬 Advanced AI Models & Methodology
+### 🔬 Advanced AI Models
 - **Gradient Boosting**: Primary prediction model (A/B testing winner)
   - Test R²: 0.957-0.960 across targets
   - CV R²: 0.954-0.958 across targets
   - Overfitting: 0.008-0.012 across targets
-  - Parameters: n_estimators=100, max_depth=4, learning_rate=0.05, subsample=0.8
 - **Random Forest**: Ensemble learning for robust predictions
   - Test R²: 0.935-0.939 across targets
   - CV R²: 0.931-0.936 across targets
   - Overfitting: 0.005-0.009 across targets
-  - Parameters: n_estimators=100, max_depth=6, min_samples_split=15, min_samples_leaf=5
 - **Linear Regression**: Baseline model for comparison
   - Test R²: 0.875-0.889 across targets
   - CV R²: 0.867-0.879 across targets
   - Overfitting: 0.006-0.009 across targets
 - **SHAP Analysis**: Model explainability and feature importance
-- **A/B Testing**: 27 comprehensive model-feature combinations tested
 
 ## 🏆 Results & Achievements
 
@@ -164,149 +161,6 @@ EcolenseIntelligence/
 - **Features**: 37 variables (demographic, economic, environmental)
 - **Food Categories**: 8 main categories (Fruits & Vegetables, Dairy Products, Prepared Food, Grains, Meat & Fish, Beverages, Oils & Fats, Others)
 - **Data Source**: Real FAO and OECD datasets enriched with additional metrics
-
-## 🔄 Veri Seti Zenginleştirme Süreci ve Metodolojisi
-
-### 📋 Orijinal Veri Setleri ve Değişkenleri
-
-#### 1. **Global Food Wastage Dataset** (Ana Veri Seti)
-**Orijinal Değişkenler:**
-- `Country`: Ülke adı
-- `Year`: Yıl (2018-2024)
-- `Food Category`: Gıda kategorisi (8 kategori)
-- `Total Waste (Tons)`: Toplam gıda israfı (ton)
-- `Economic Loss (Million $)`: Ekonomik kayıp (milyon USD)
-- `Avg Waste per Capita (Kg)`: Kişi başı ortalama israf (kg)
-- `Population (Million)`: Nüfus (milyon)
-- `Household Waste (%)`: Evsel atık yüzdesi
-
-#### 2. **Material Footprint Dataset** (Malzeme Ayak İzi Veri Seti)
-**Orijinal Değişkenler:**
-- `ISO3`: ISO 3 harfli ülke kodu
-- `Country`: Ülke adı
-- `Continent`: Kıta bilgisi
-- `Hemisphere`: Yarıküre bilgisi
-- `Human Development Groups`: İnsani gelişim grupları
-- `UNDP Developing Regions`: UNDP gelişmekte olan bölgeler
-- `HDI Rank (2021)`: İnsani Gelişim Endeksi sıralaması (2021)
-- `Material footprint per capita (tonnes) (1990-2021)`: Kişi başı malzeme ayak izi (1990-2021 yılları)
-
-#### 3. **Referans Veri Setleri ve Literatür**
-**Kullanılan Kaynaklar:**
-- **FAO (Food and Agriculture Organization)**: Gıda israfı istatistikleri ve metodolojisi
-- **OECD (Organisation for Economic Co-operation and Development)**: Ekonomik ve çevresel göstergeler
-- **World Bank**: Ekonomik ve sosyal göstergeler
-- **UN Environment Programme**: Sürdürülebilirlik metrikleri
-- **Academic Literature**: Gıda israfı ve sürdürülebilirlik araştırmaları
-
-### 🎯 Veri Zenginleştirme Metodolojisi
-
-#### **Neden Veri Zenginleştirme Yaptık?**
-
-1. **Model Performansını Artırma**: Daha fazla özellik ile daha iyi tahmin
-2. **Gizli Kalıpları Keşfetme**: Yeni değişkenler ile gizli ilişkileri bulma
-3. **Sürdürülebilirlik Analizi**: Çevresel ve sosyal faktörleri dahil etme
-4. **Pandemi Etkisi Analizi**: COVID-19'un etkisini ölçme
-5. **Coğrafi ve Temporal Özellikler**: Mekan ve zaman faktörlerini ekleme
-
-#### **Zenginleştirme Metodolojisi:**
-
-**1. Veri Birleştirme (Data Integration)**
-- **Inner Join**: Global Food Wastage Dataset ve Material Footprint verilerini ülke bazında birleştirme
-- **Data Quality Check**: Eksik veri, tutarsızlık kontrolü
-- **Standardization**: Birim standardizasyonu ve format uyumluluğu
-- **ISO Code Mapping**: Ülke isimlerini ISO kodları ile eşleştirme
-
-**2. Özellik Mühendisliği (Feature Engineering)**
-
-**A. Demografik Özellikler:**
-- `Waste_Per_Capita_kg`: Kişi başı israf (kg) = Total Waste (Tons) / Population (Million) * 1000000
-- `Population_Material_Interaction`: Nüfus-malzeme etkileşimi = Population (Million) * Material_Footprint_Per_Capita
-- `Year_Population_Interaction`: Yıl-nüfus etkileşimi = Year * Population (Million)
-
-**B. Ekonomik Özellikler:**
-- `Economic_Loss_Per_Capita_USD`: Kişi başı ekonomik kayıp = Economic Loss (Million $) / Population (Million) * 1000000
-- `GDP_Per_Capita_Proxy`: GSYİH proxy = Economic Loss (Million $) / Population (Million) * 1000
-- `Economic_Intensity`: Ekonomik yoğunluk = Economic Loss (Million $) / Total Waste (Tons)
-
-**C. Çevresel Özellikler:**
-- `Carbon_Footprint_kgCO2e`: Karbon ayak izi = Total Waste (Tons) * 1000 (tahmini dönüşüm)
-- `Carbon_Per_Capita_kgCO2e`: Kişi başı karbon ayak izi = Carbon_Footprint_kgCO2e / Population (Million)
-- `Sustainability_Score`: Sürdürülebilirlik skoru = (100 - Household Waste (%)) + (Material_Footprint_Per_Capita * 10)
-
-**D. Pandemi Özellikleri:**
-- `Is_Pandemic_Year`: Pandemi yılı dummy (2020-2021 = 1, diğer = 0)
-- `Is_Post_Pandemic`: Pandemi sonrası dummy (2022-2024 = 1, diğer = 0)
-- `Pandemic_Impact`: Pandemi etkisi = Total Waste (Tons) * Is_Pandemic_Year
-
-**E. Temporal Özellikler:**
-- `Years_From_2018`: 2018'den itibaren geçen yıl sayısı = Year - 2018
-- `Year_Trend`: Yıl trendi = (Year - 2018) / 7
-- `Year_Cycle`: Yıl döngüsü = sin(2π * (Year - 2018) / 4)
-- `Year_Cycle_Cos`: Yıl döngüsü kosinüs = cos(2π * (Year - 2018) / 4)
-
-**F. Coğrafi Özellikler:**
-- `Continent`: Kıta bilgisi (Asia, Europe, Americas, Africa, Oceania)
-- `Hemisphere`: Yarıküre (Northern, Southern)
-- `ISO_Code`: ISO ülke kodu
-- `Country_Trend`: Ülke trendi = Material_Footprint_Per_Capita * Years_From_2018
-
-**G. Kategori Bazlı Özellikler:**
-- `Category_Waste_Share`: Kategori israf payı = Total Waste (Tons) / toplam kategori israfı
-- `Category_Economic_Share`: Kategori ekonomik payı = Economic Loss (Million $) / toplam kategori kaybı
-- `Waste_Efficiency`: İsraf verimliliği = 1 / (Total Waste (Tons) / Population (Million))
-
-**H. Trend ve Etkileşim Özellikleri:**
-- `Waste_Trend`: İsraf trendi = Total Waste (Tons) * Year_Trend
-- `Economic_Trend`: Ekonomik trend = Economic Loss (Million $) * Year_Trend
-
-**3. Veri Kalitesi İyileştirmeleri**
-- **Outlier Handling**: IQR ve Z-score yöntemleri ile aykırı değer tespiti
-- **Missing Data Imputation**: KNN ve median imputation
-- **Feature Scaling**: StandardScaler ile normalizasyon
-- **Encoding**: Label encoding kategorik değişkenler için
-
-### 📊 Zenginleştirme Sonuçları
-
-#### **Önceki Durum:**
-- **Orijinal Değişkenler**: 8 temel değişken (Global Food Wastage Dataset)
-- **Gözlem Sayısı**: 5,002 (başlık dahil)
-- **Analiz Kapasitesi**: Sınırlı
-
-#### **Zenginleştirme Sonrası:**
-- **Toplam Değişkenler**: 37 özellik (8 orijinal + 29 mühendislik)
-- **Gözlem Sayısı**: 5,001 (veri kalitesi iyileştirmeleri ile)
-- **Analiz Kapasitesi**: Kapsamlı AI analizi
-
-#### **Eklenen Özellik Kategorileri:**
-1. **Demografik Özellikler**: 3 yeni değişken
-2. **Ekonomik Özellikler**: 3 yeni değişken  
-3. **Çevresel Özellikler**: 3 yeni değişken
-4. **Pandemi Özellikleri**: 3 yeni değişken
-5. **Temporal Özellikler**: 4 yeni değişken
-6. **Coğrafi Özellikler**: 4 yeni değişken
-7. **Kategori Bazlı Özellikler**: 3 yeni değişken
-8. **Trend ve Etkileşim Özellikleri**: 2 yeni değişken
-9. **Encoding Özellikleri**: 4 yeni değişken (Country_Encoded, Food_Category_Encoded, Continent_Encoded, Hemisphere_Encoded)
-
-### 🎯 Zenginleştirmenin Faydaları
-
-#### **1. Model Performansı Artışı:**
-- **Test R² Skoru**: %87 → %96 (9 puan artış)
-- **Cross-Validation R²**: %85 → %95.8 (10.8 puan artış)
-- **Overfitting Azalması**: %12 → %0.8 (11.2 puan azalma)
-
-#### **2. Analiz Derinliği:**
-- **SHAP Analizi**: 20+ önemli faktör tespiti
-- **Korelasyon Analizi**: 37×37 korelasyon matrisi
-- **Temporal Analiz**: Pandemi etkisi ölçümü
-- **Coğrafi Analiz**: Bölgesel karşılaştırmalar
-
-#### **3. İş Değeri:**
-- **Daha İyi Tahminler**: %96 doğruluk ile gelecek projeksiyonları
-- **Stratejik İçgörüler**: 27 A/B test kombinasyonu
-- **Risk Yönetimi**: Anomali tespiti ve erken uyarı
-- **Politika Desteği**: Senaryo analizi ve etki değerlendirmesi
 
 ### 🔍 Keşifsel Veri Analizi (EDA) ve Kritik Bulgular
 
@@ -483,15 +337,6 @@ EcolenseIntelligence/
 
 ## 🎛️ Dashboard Modülleri ve Özellikleri
 
-### 🤖 AI Asistan Sistemi
-**Amaç**: Her modülde otomatik olarak akıllı öneriler ve içgörüler sunan AI sistemi
-**Özellikler**:
-- Her modülde otomatik AI önerileri ve ipuçları
-- Veri analizi konusunda akıllı rehberlik
-- Model performansı hakkında otomatik yorumlar
-- SHAP analizi ve feature importance için akıllı açıklamalar
-- Dashboard kullanımı konusunda otomatik öneriler
-
 ### 🏠 Ana Sayfa (Home Page)
 **Amaç**: Dashboard'un genel bakış ve hızlı erişim merkezi
 **Kullanıcı Ne Yapabilir**:
@@ -499,11 +344,6 @@ EcolenseIntelligence/
 - Premium özelliklere hızlı erişim
 - Hikaye modu seçenekleri
 - Veri seti genel istatistikleri
-**Faydaları**:
-- Hızlı genel bakış ve dashboard navigasyonu
-- Temel metriklerin tek bakışta görülmesi
-- Premium özelliklere kolay erişim
-- Kullanıcı dostu arayüz ve rehberlik
 
 ### 📊 Veri Analizi (Data Analysis)
 **Amaç**: Kapsamlı veri keşfi ve görselleştirme
@@ -513,11 +353,6 @@ EcolenseIntelligence/
 - Korelasyon matrisi analizi
 - Trend analizi ve zaman serisi görselleştirme
 - Veri dağılımları ve istatistikler
-**Faydaları**:
-- Kapsamlı veri keşfi ve anlayışı
-- Gizli kalıpların tespiti
-- Veri kalitesi değerlendirmesi
-- İnteraktif görselleştirme ile kolay analiz
 
 ### 🤖 Model Performansı (Model Performance)
 **Amaç**: AI modellerinin performans değerlendirmesi
@@ -527,11 +362,6 @@ EcolenseIntelligence/
 - Overfitting analizi
 - SHAP ve permutation importance grafikleri
 - Model parametreleri ve konfigürasyonu
-**Faydaları**:
-- Model güvenilirliği değerlendirmesi
-- En iyi modelin seçimi
-- Overfitting riskinin kontrolü
-- Model performansının sürekli izlenmesi
 
 ### 🔮 Gelecek Tahminleri (Future Forecasts)
 **Amaç**: 2025-2030 yılları için tahmin ve projeksiyonlar
@@ -540,38 +370,6 @@ EcolenseIntelligence/
 - Senaryo analizi (optimistik, gerçekçi, pesimistik)
 - Güven aralıkları ve belirsizlik analizi
 - Trend görselleştirme ve projeksiyonlar
-**Faydaları**:
-- Gelecek planlaması için veri desteği
-- Risk yönetimi ve stratejik karar verme
-- Senaryo bazlı planlama
-- Belirsizlik yönetimi
-
-### 🔬 A/B Testing Analizi
-**Amaç**: Model ve özellik kombinasyonlarının karşılaştırmalı analizi
-**Kullanıcı Ne Yapabilir**:
-- 27 kapsamlı model-özellik kombinasyonu testi
-- En iyi model seçimi (Gradient Boosting: Test R²: 0.957)
-- En iyi özellik grubu analizi (Core + Trends: Test R²: 0.927)
-- Model sıralaması ve performans karşılaştırması
-- Özellik grubu sıralaması
-**Faydaları**:
-- En optimal model-özellik kombinasyonunun bulunması
-- Model performansının sistematik değerlendirmesi
-- Veri odaklı model seçimi
-- Sürekli iyileştirme için temel
-
-### 🛠️ Politika Simülatörü (Policy Simulator)
-**Amaç**: Farklı politika senaryolarının etkisini simüle etme
-**Kullanıcı Ne Yapabilir**:
-- Politika değişikliklerinin etkisini test etme
-- Farklı senaryoların sonuçlarını karşılaştırma
-- Politika optimizasyonu ve planlama
-- Risk değerlendirmesi ve maliyet analizi
-**Faydaları**:
-- Politika kararları için veri desteği
-- Risk azaltma ve maliyet optimizasyonu
-- Senaryo bazlı politika planlaması
-- Etki analizi ve değerlendirme
 
 ### 💡 AI Insights (Yapay Zeka İçgörüleri)
 **Amaç**: Otomatik AI destekli analiz ve öneriler
@@ -581,194 +379,6 @@ EcolenseIntelligence/
 - Anomali tespiti ve outlier analizi
 - CAGR (Bileşik Yıllık Büyüme Oranı) analizi
 - Akıllı içgörüler ve aksiyon önerileri
-**Faydaları**:
-- Otomatik içgörü üretimi
-- Gizli kalıpların keşfi
-- Anomali tespiti ve erken uyarı
-- Akıllı öneriler ve rehberlik
-
-### ⚠️ Risk & Fırsat (Risk & Opportunity)
-**Amaç**: Risk ve fırsat analizi ile stratejik planlama
-**Kullanıcı Ne Yapabilir**:
-- Risk faktörlerini tanımlama ve analiz etme
-- Fırsat alanlarını belirleme
-- Risk-fırsat matrisi oluşturma
-- Stratejik karar verme desteği
-**Faydaları**:
-- Risk yönetimi ve azaltma
-- Fırsat değerlendirmesi ve yakalama
-- Stratejik planlama desteği
-- Proaktif karar verme
-
-### 🎯 Hedef Planlayıcı (Target Planner)
-**Amaç**: Hedef bazlı planlama ve strateji geliştirme
-**Kullanıcı Ne Yapabilir**:
-- Hedef belirleme ve planlama
-- Hedef takibi ve performans ölçümü
-- Stratejik hedef analizi
-- Hedef optimizasyonu
-**Faydaları**:
-- Hedef odaklı planlama
-- Performans takibi ve ölçümü
-- Stratejik hedef optimizasyonu
-- Sürekli iyileştirme
-
-### 📄 Rapor Oluşturucu (Report Builder)
-**Amaç**: Otomatik rapor oluşturma ve dışa aktarma
-**Kullanıcı Ne Yapabilir**:
-- HTML ve Markdown formatında otomatik raporlar
-- Özelleştirilebilir rapor bölümleri
-- Çoklu format desteği (HTML, Markdown)
-- Profesyonel rapor şablonları
-- İndirilebilir raporlar
-**Faydaları**:
-- Otomatik rapor üretimi
-- Zaman tasarrufu ve verimlilik
-- Profesyonel rapor formatları
-- Kolay paylaşım ve dağıtım
-
-### 📑 Model Kartı (Model Card)
-**Amaç**: Model metodolojisi ve performans özeti
-**Kullanıcı Ne Yapabilir**:
-- Model detaylarını görüntüleme
-- Performans metriklerini inceleme
-- Model metodolojisini anlama
-- Model güvenilirliği değerlendirmesi
-**Faydaları**:
-- Model şeffaflığı ve anlaşılabilirlik
-- Güvenilirlik değerlendirmesi
-- Metodoloji dokümantasyonu
-- Model karşılaştırması
-
-### 🎯 Hedef Bazlı Tahminler (Target-based Forecasts)
-**Amaç**: Özel hedeflere göre tahmin ve planlama
-**Kullanıcı Ne Yapabilir**:
-- Belirli hedeflere göre tahmin oluşturma
-- Hedef bazlı senaryo planlaması
-- Performans hedefleri ve takip
-- Stratejik planlama ve optimizasyon
-**Faydaları**:
-- Hedef odaklı tahmin ve planlama
-- Stratejik hedef optimizasyonu
-- Performans hedefi belirleme
-- Kaynak optimizasyonu
-
-### 🧩 What-if (İleri) Analizi
-**Amaç**: Gelişmiş senaryo analizi ve simülasyon
-**Kullanıcı Ne Yapabilir**:
-- Gelişmiş what-if senaryoları
-- Karmaşık simülasyonlar
-- Çoklu değişken analizi
-- Stratejik planlama simülasyonları
-**Faydaları**:
-- Senaryo bazlı planlama
-- Risk değerlendirmesi
-- Stratejik karar verme
-- Belirsizlik yönetimi
-
-### 🔎 Country Deep Dive (Ülke Derinlemesine Analizi)
-**Amaç**: Ülke bazında detaylı analiz ve karşılaştırma
-**Kullanıcı Ne Yapabilir**:
-- Ülke bazında detaylı performans analizi
-- Ülke karşılaştırmaları
-- Bölgesel analizler
-- Ülke özel trendler ve içgörüler
-**Faydaları**:
-- Ülke bazında detaylı analiz
-- Benchmark karşılaştırmaları
-- Bölgesel trend analizi
-- Ülke özel stratejiler
-
-### 🌪️ Driver Sensitivity (Sürücü Hassasiyeti)
-**Amaç**: Değişken hassasiyet analizi ve risk değerlendirmesi
-**Kullanıcı Ne Yapabilir**:
-- Tornado grafikleri ile değişken hassasiyet analizi
-- En etkili değişkenlerin tespiti
-- Senaryo testleri (what-if analizi)
-- Risk değerlendirmesi ve belirsizlik analizi
-**Faydaları**:
-- Kritik faktörlerin tespiti
-- Risk yönetimi
-- Değişken hassasiyet analizi
-- Stratejik odaklanma
-
-### 💹 ROI / NPV Analizi
-**Amaç**: Yatırım getirisi ve net bugünkü değer analizi
-**Kullanıcı Ne Yapabilir**:
-- Yatırım projelerinin ROI analizi
-- NPV hesaplamaları
-- Finansal performans değerlendirmesi
-- Yatırım kararları için veri desteği
-**Faydaları**:
-- Finansal karar verme desteği
-- Yatırım değerlendirmesi
-- Risk-getiri analizi
-- Finansal planlama
-
-### 🏁 Benchmark & League (Kıyaslama ve Lig)
-**Amaç**: Performans kıyaslama ve sıralama
-**Kullanıcı Ne Yapabilir**:
-- Ülke performans sıralaması
-- Benchmark analizi
-- Lig tablosu görüntüleme
-- Performans karşılaştırması
-**Faydaları**:
-- Performans karşılaştırması
-- Benchmark analizi
-- Rekabet analizi
-- İyileştirme fırsatları
-
-### 🚨 Anomali & İzleme (Anomaly & Monitoring)
-**Amaç**: Anomali tespiti ve sürekli izleme
-**Kullanıcı Ne Yapabilir**:
-- Anomali tespiti ve uyarılar
-- Sürekli veri izleme
-- Trend sapmaları analizi
-- Erken uyarı sistemleri
-**Faydaları**:
-- Erken uyarı sistemi
-- Anomali tespiti
-- Sürekli izleme
-- Proaktif müdahale
-
-### 🧬 Veri Hattı & Kalite (Data Lineage & Quality)
-**Amaç**: Veri kalitesi ve hattı analizi
-**Kullanıcı Ne Yapabilir**:
-- Veri kalitesi değerlendirmesi
-- Veri hattı takibi
-- Veri doğruluk analizi
-- Veri güvenilirlik kontrolü
-**Faydaları**:
-- Veri kalitesi güvencesi
-- Veri güvenilirliği
-- Veri hattı şeffaflığı
-- Kalite kontrolü
-
-### 🌿 Karbon Akışları (Carbon Flows)
-**Amaç**: Karbon emisyonu akış analizi
-**Kullanıcı Ne Yapabilir**:
-- Karbon akışı görselleştirme
-- Emisyon kaynakları analizi
-- Karbon ayak izi takibi
-- Sürdürülebilirlik hedefleri
-**Faydaları**:
-- Karbon emisyonu analizi
-- Sürdürülebilirlik takibi
-- Çevresel etki değerlendirmesi
-- Hedef belirleme
-
-### ⚖️ Adalet/Etki Paneli (Justice/Impact Panel)
-**Amaç**: Sosyal adalet ve etki analizi
-**Kullanıcı Ne Yapabilir**:
-- Sosyal etki değerlendirmesi
-- Adalet analizi
-- Etki ölçümü
-- Sosyal sorumluluk değerlendirmesi
-**Faydaları**:
-- Sosyal etki değerlendirmesi
-- Adalet analizi
-- Sosyal sorumluluk
-- Etki ölçümü
 
 ### 📖 Hikaye Modu (Story Mode)
 **Amaç**: Premium veri hikayeleştirme ve anlatım
@@ -778,11 +388,17 @@ EcolenseIntelligence/
 - Çevresel ayak izi hikayesi
 - Sürdürülebilir sistemler hikayesi
 - 2030 gelecek önerileri ve stratejiler
-**Faydaları**:
-- Veri hikayeleştirme
-- Eğitici içerik
-- Farkındalık artırma
-- Stratejik anlatım
+
+### 📄 Rapor Oluşturucu (Report Builder)
+**Amaç**: Otomatik rapor oluşturma ve dışa aktarma
+**Kullanıcı Ne Yapabilir**:
+- HTML ve Markdown formatında otomatik raporlar
+- Özelleştirilebilir rapor bölümleri
+- Çoklu format desteği (HTML, Markdown)
+- Profesyonel rapor şablonları
+- İndirilebilir raporlar
+
+### 🔬 A/B Testing Analizi
 **Amaç**: Model ve özellik kombinasyonlarının karşılaştırmalı analizi
 **Kullanıcı Ne Yapabilir**:
 - 27 kapsamlı model-özellik kombinasyonu testi
@@ -1096,16 +712,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👥 Team
 
 ### Core Team
-- **Özge Güneş**: Data Scientist
+- **Özge Güneş**: Data Scientist & Full Stack Developer
   - AI model development and optimization
   - Dashboard design and user experience
   - Data analysis and visualization
   - Project management and deployment
-- **Kübra Saruhan**: Data Scientist
-  - Data preprocessing and feature engineering
-  - Model validation and testing
-  - Statistical analysis and insights
-  - Documentation and reporting
 
 ### Contributors
 - **Academic Advisors**: Research methodology and validation
@@ -1156,7 +767,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Dependencies**: 12 packages
 - **Test Coverage**: 85%+
 - **Documentation**: 100% covered
-- **Dashboard Modules**: 22 kapsamlı modül
+- **Dashboard Modules**: 18 kapsamlı modül
 - **SHAP Analysis**: 20+ özellik analizi
 - **Model Performance**: 96% doğruluk
 - **A/B Testing**: 27 kombinasyon testi
@@ -1171,7 +782,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **A/B Tests**: 27 model-feature combinations
 - **Best Accuracy**: 96.0% (Gradient Boosting)
 - **Average CV R²**: 95.8%
-- **Dashboard Modules**: 22 kapsamlı modül
+- **Dashboard Modules**: 18 kapsamlı modül
 - **SHAP Features**: 20+ özellik analizi
 - **Prediction Targets**: 3 ana hedef değişken
 
@@ -1328,19 +939,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Last Updated**: August 2025  
 **Version**: 1.0.0  
 **Status**: Production Ready  
-**Deployment**: Streamlit Cloud (Live)
-
----
-
-## 🎓 Academic Project Information
-
-**📚 Miuul Data Scientist Bootcamp Final Project**  
-**🏫 Institution**: Miuul  
-**📅 Project Period**: 2025  
-**👥 Team Members**: 
-- Özge Güneş (Data Scientist)
-- Kübra Saruhan (Data Scientist)
-
-**🎯 Project Objective**: Development of an AI-powered global food waste analytics platform using advanced machine learning techniques and data science methodologies learned during the bootcamp.
-
-**📊 Technologies Used**: Python, Streamlit, Scikit-learn, Pandas, Plotly, SHAP, A/B Testing, Statistical Analysis 
+**Deployment**: Streamlit Cloud (Live) 
