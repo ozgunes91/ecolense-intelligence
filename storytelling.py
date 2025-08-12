@@ -236,13 +236,13 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
                         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Küresel Toplam</p>
                     </div>
                 </div>
-                <div style="text-align: center;">
-                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{total_waste/1_000_000:.1f}M</h2>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{resp['tons']}</p>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                        <span style="font-size: 0.9rem;">📈 {avg_yearly_growth:.1f}% {story_texts['annual_increase']}</span>
+                                    <div style="text-align: center;">
+                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{total_waste/1_000_000:.1f}M</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts.get('tons', 'ton')}</p>
+                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                            <span style="font-size: 0.9rem;">📈 {avg_yearly_growth:.1f}% {story_texts['annual_increase']}</span>
+                        </div>
                     </div>
-                </div>
             </div>
             """, unsafe_allow_html=True)
             
@@ -260,13 +260,13 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
                         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Ülke Başına</p>
                     </div>
                 </div>
-                <div style="text-align: center;">
-                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{avg_waste:,.0f}</h2>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts['tons_country']}</p>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                        <span style="font-size: 0.9rem;">📈 {(avg_waste * 0.05):,.0f} {resp['tons']} artış</span>
+                                    <div style="text-align: center;">
+                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{avg_waste:,.0f}</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts['tons_country']}</p>
+                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                            <span style="font-size: 0.9rem;">📈 {(avg_waste * 0.05):,.0f} {story_texts.get('tons', 'ton')} artış</span>
+                        </div>
                     </div>
-                </div>
             </div>
             """, unsafe_allow_html=True)
         
@@ -309,13 +309,13 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
                         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Tasarruf Potansiyeli</p>
                     </div>
                 </div>
-                <div style="text-align: center;">
-                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{(total_waste * 0.5)/1_000_000:.1f}M</h2>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{resp['tons']}</p>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                        <span style="font-size: 0.9rem;">🎯 50% {story_texts['reduction_target']}</span>
+                                    <div style="text-align: center;">
+                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{(total_waste * 0.5)/1_000_000:.1f}M</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts.get('tons', 'ton')}</p>
+                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
+                            <span style="font-size: 0.9rem;">🎯 50% {story_texts['reduction_target']}</span>
+                        </div>
                     </div>
-                </div>
             </div>
             """, unsafe_allow_html=True)
         
