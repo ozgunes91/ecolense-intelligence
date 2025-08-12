@@ -4789,15 +4789,6 @@ def show_report_builder():
     
     # Sayfa sonu
     add_page_footer("Rapor Oluşturucu")
-    try:
-        st.markdown("""
-        <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>🤖</span>AI Asistan — Rapor Önerisi</h4>
-          <p>Sunum akışı: (1) KPI ve veri kaynağı, (2) Model Performansı (R², CV, |Test−CV|), (3) Tahminler + Senaryolar, (4) AI Insights (CAGR & SHAP).</p>
-        </div>
-        """, unsafe_allow_html=True)
-    except Exception:
-        pass
         lines = [
 
 
