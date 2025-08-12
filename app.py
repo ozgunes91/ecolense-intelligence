@@ -7075,7 +7075,7 @@ def show_roi_npv():
     # Metrikleri göster
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("NPV (M$)", f"{npv:,.2f}")
+    st.metric("NPV (M$)", f"{npv:,.2f}")
     with col2:
         st.metric("ROI (%)", f"{roi:.1f}%")
     with col3:
