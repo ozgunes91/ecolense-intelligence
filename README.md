@@ -53,10 +53,10 @@
 ## 📈 Kritik Bulgular
 
 ### Gıda Kategorilerine Göre İsraf
-1. **Hazır Gıdalar**: En yüksek israf oranı
-2. **Meyve & Sebzeler**: İkinci sırada
-3. **Süt Ürünleri**: Üçüncü sırada
-4. **Tahıl Ürünleri**: Dördüncü sırada
+1. **Prepared Food**: En yüksek israf oranı
+2. **Fruits & Vegetables**: İkinci sırada
+3. **Dairy Products**: Üçüncü sırada
+4. **Grains & Cereals**: Dördüncü sırada
 
 ### Ülke Performansları
 - **En Yüksek İsraf**: Çin, ABD, Hindistan

@@ -53,7 +53,7 @@
 ## 📈 Critical Findings
 
 ### Food Waste by Category
-1. **Prepared Foods**: Highest waste rate
+1. **Prepared Food**: Highest waste rate
 2. **Fruits & Vegetables**: Second highest
 3. **Dairy Products**: Third highest
 4. **Grains & Cereals**: Fourth highest
