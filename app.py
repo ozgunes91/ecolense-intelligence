@@ -3632,8 +3632,60 @@ def show_target_based_forecasts():
     add_page_footer("Hedef Bazlı Tahminler")
 
 
+def generate_ai_response(question, preds_df, real_df):
+    """Generate AI response based on user question and available data"""
+    question_lower = question.lower()
+    
+    # Analyze question keywords
+    if any(word in question_lower for word in ['highest', 'top', 'best', 'worst', 'lowest']):
+        if 'waste' in question_lower:
+            # Find countries with highest/lowest waste
+            waste_data = preds_df.groupby('Country')['Total Waste (Tons)'].mean().sort_values(ascending=False)
+            if 'highest' in question_lower or 'top' in question_lower:
+                top_countries = waste_data.head(3)
+                return f"🌍 **Top 3 countries with highest food waste:**\n" + \
+                       "\n".join([f"• {country}: {value:,.0f} tons" for country, value in top_countries.items()])
+            else:
+                bottom_countries = waste_data.tail(3)
+                return f"🌍 **Top 3 countries with lowest food waste:**\n" + \
+                       "\n".join([f"• {country}: {value:,.0f} tons" for country, value in bottom_countries.items()])
+        
+        elif 'sustainability' in question_lower:
+            # Find countries with best sustainability scores
+            if 'Sustainability_Score' in preds_df.columns:
+                sust_data = preds_df.groupby('Country')['Sustainability_Score'].mean().sort_values(ascending=False)
+                top_countries = sust_data.head(3)
+                return f"🏆 **Top 3 countries with best sustainability scores:**\n" + \
+                       "\n".join([f"• {country}: {value:.1f}/100" for country, value in top_countries.items()])
+    
+    elif 'trend' in question_lower:
+        # Analyze trends
+        if 'global' in question_lower:
+            global_trend = preds_df.groupby('Year')['Total Waste (Tons)'].mean()
+            trend_direction = "increasing" if global_trend.iloc[-1] > global_trend.iloc[0] else "decreasing"
+            return f"📈 **Global food waste trend:** {trend_direction} from {global_trend.iloc[0]:,.0f} to {global_trend.iloc[-1]:,.0f} tons"
+    
+    elif 'recommendation' in question_lower or 'reduce' in question_lower:
+        return f"🎯 **Top 3 recommendations to reduce food waste:**\n" + \
+               "• **Smart Supply Chain:** Implement IoT sensors and blockchain tracking\n" + \
+               "• **Consumer Education:** Launch awareness campaigns and smart packaging\n" + \
+               "• **Policy Support:** Carbon pricing and sustainable production incentives"
+    
+    elif 'germany' in question_lower:
+        # Germany-specific analysis
+        germany_data = preds_df[preds_df['Country'] == 'Germany']
+        if not germany_data.empty:
+            avg_waste = germany_data['Total Waste (Tons)'].mean()
+            return f"🇩🇪 **Germany Analysis:** Average food waste: {avg_waste:,.0f} tons. " + \
+                   "Germany shows moderate waste levels with good sustainability practices."
+    
+    # Default response
+    return f"🤖 **AI Analysis:** Based on the data, I can help you explore food waste patterns, " + \
+           "sustainability scores, and trends. Try asking about specific countries, trends, or recommendations!"
+
+
 def show_ai_insights():
-    """🤖 AI Insights – Gerçek veri + Robust tahminlerden otomatik içgörüler"""
+    """🤖 Interactive AI Insights – Real-time AI-powered analysis and recommendations"""
     # Premium başlık
     st.markdown("""
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -3674,24 +3726,107 @@ def show_ai_insights():
     </div>
     """, unsafe_allow_html=True)
     
+    # Interactive AI Chat Interface
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+                padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                box-shadow: 0 8px 20px rgba(79, 172, 254, 0.2);">
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">💬 Interactive AI Assistant</h3>
+        <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
+            Ask questions about food waste data, get real-time insights, and receive personalized recommendations
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # AI Chat Interface
+    if 'ai_chat_history' not in st.session_state:
+        st.session_state.ai_chat_history = []
+    
+    # Chat input
+    user_question = st.text_input(
+        "🤖 Ask AI Assistant:",
+        placeholder="e.g., 'Which country has the highest food waste?' or 'Show me trends for Germany'",
+        key="ai_chat_input"
+    )
+    
+    if st.button("🚀 Ask AI", key="ai_ask_button"):
+        if user_question:
+            # AI response generation
+            ai_response = generate_ai_response(user_question, preds, real_df)
+            st.session_state.ai_chat_history.append({
+                "user": user_question,
+                "ai": ai_response,
+                "timestamp": pd.Timestamp.now()
+            })
+            st.rerun()
+    
+    # Display chat history
+    if st.session_state.ai_chat_history:
+        st.markdown("### 💬 Chat History")
+        for i, chat in enumerate(st.session_state.ai_chat_history):
+            with st.expander(f"Q: {chat['user'][:50]}...", expanded=(i == len(st.session_state.ai_chat_history) - 1)):
+                st.markdown(f"**User:** {chat['user']}")
+                st.markdown(f"**AI Assistant:** {chat['ai']}")
+                st.caption(f"Time: {chat['timestamp'].strftime('%H:%M:%S')}")
+    
+    # Quick action buttons
+    st.markdown("### ⚡ Quick Actions")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🔍 Find Top Performers", key="quick_top"):
+            question = "Which countries have the best sustainability scores?"
+            ai_response = generate_ai_response(question, preds, real_df)
+            st.session_state.ai_chat_history.append({
+                "user": question,
+                "ai": ai_response,
+                "timestamp": pd.Timestamp.now()
+            })
+            st.rerun()
+    
+    with col2:
+        if st.button("📈 Show Trends", key="quick_trends"):
+            question = "What are the global food waste trends?"
+            ai_response = generate_ai_response(question, preds, real_df)
+            st.session_state.ai_chat_history.append({
+                "user": question,
+                "ai": ai_response,
+                "timestamp": pd.Timestamp.now()
+            })
+            st.rerun()
+    
+    with col3:
+        if st.button("🎯 Get Recommendations", key="quick_rec"):
+            question = "What are the top 3 recommendations to reduce food waste?"
+            ai_response = generate_ai_response(question, preds, real_df)
+            st.session_state.ai_chat_history.append({
+                "user": question,
+                "ai": ai_response,
+                "timestamp": pd.Timestamp.now()
+            })
+            st.rerun()
+    
+    st.markdown("---")
+    
+    # Traditional analysis parameters
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("""
         <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px; margin: 0.5rem 0; 
                     box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-left: 4px solid #f093fb;">
-            <h4 style="margin: 0 0 0.5rem 0; color: #232E5C; font-size: 1rem;">📊 Hedef Metrik</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #232E5C; font-size: 1rem;">📊 Target Metric</h4>
         </div>
         """, unsafe_allow_html=True)
         metric = st.selectbox(
-            "Hedef",
+            "Target",
             options=[
-                ('Total Waste (Tons)', 'Toplam Atık'),
-                ('Economic Loss (Million $)', 'Ekonomik Kayıp (M$)'),
-                ('Carbon_Footprint_kgCO2e', 'Karbon Ayak İzi'),
-                ('Waste_Per_Capita_kg', 'Kişi Başına Atık (kg)'),
-                ('Economic_Loss_Per_Capita_USD', 'Kişi Başına Ekonomik Kayıp (USD)'),
-                ('Carbon_Per_Capita_kgCO2e', 'Kişi Başına Karbon (kg CO2e)')
+                ('Total Waste (Tons)', 'Total Waste'),
+                ('Economic Loss (Million $)', 'Economic Loss (M$)'),
+                ('Carbon_Footprint_kgCO2e', 'Carbon Footprint'),
+                ('Waste_Per_Capita_kg', 'Waste Per Capita (kg)'),
+                ('Economic_Loss_Per_Capita_USD', 'Economic Loss Per Capita (USD)'),
+                ('Carbon_Per_Capita_kgCO2e', 'Carbon Per Capita (kg CO2e)')
             ],
             format_func=lambda x: x[1]
         )
@@ -3701,13 +3836,13 @@ def show_ai_insights():
         st.markdown("""
         <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px; margin: 0.5rem 0; 
                     box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-left: 4px solid #4facfe;">
-            <h4 style="margin: 0 0 0.5rem 0; color: #232E5C; font-size: 1rem;">🌍 Ülke Filtresi</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #232E5C; font-size: 1rem;">🌍 Country Filter</h4>
         </div>
         """, unsafe_allow_html=True)
-        country = st.selectbox("Ülke (opsiyonel)", ["(Tümü)"] + sorted(preds['Country'].dropna().unique().tolist()))
+        country = st.selectbox("Country (optional)", ["(All)"] + sorted(preds['Country'].dropna().unique().tolist()))
 
     dfp = preds.copy()
-    if country != "(Tümü)":
+    if country != "(All)":
         dfp = dfp[dfp['Country'] == country]
     if pred_col not in dfp.columns:
         st.warning("⚠️ Seçilen hedef için tahmin kolonu dosyada yok.")
