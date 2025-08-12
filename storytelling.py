@@ -1,29 +1,24 @@
-"""
-Premium Storytelling Module for Ecolense Intelligence Dashboard
-Professional Data Storytelling with Advanced Analytics & Visualizations
-"""
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from typing import Optional
 import numpy as np
+from typing import Optional
 
-def _resolve_column_name(df: pd.DataFrame, candidates: list[str]) -> Optional[str]:
-    """Resolve column name from candidates"""
+def _resolve_column_name(df: pd.DataFrame, candidates: list) -> Optional[str]:
+    """Veri setindeki sütun adını çözümle"""
     for candidate in candidates:
         if candidate in df.columns:
             return candidate
     return None
 
 def show_story_mode(df: pd.DataFrame, story_mode: str):
-    """Main story mode handler with premium design"""
+    """Premium Hikaye Modu - Ana İşleyici"""
     
-    # Get language from session state
+    # Dil desteği
     lang = st.session_state.get('lang', 'TR')
     
-    # Language-specific texts
+    # Dil özel metinler
     story_texts = {
         'TR': {
             'title': '📖 PREMIUM HİKAYE MODU',
@@ -49,7 +44,7 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
     
     texts = story_texts.get(lang, story_texts['EN'])
     
-    # Premium header with consistent design
+    # Premium başlık
     st.markdown(f"""
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                 padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
@@ -75,7 +70,7 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
     </div>
     """, unsafe_allow_html=True)
     
-    # Navigation buttons
+    # Navigasyon butonları
     col1, col2, col3, col4, col5 = st.columns(5)
     
     with col1:
@@ -103,7 +98,7 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
             st.session_state['page'] = 'PAGE_FORECASTS'
             st.rerun()
     
-    # Story content based on selection - Support both languages
+    # Hikaye içeriği - Dil desteği ile
     if story_mode in ["🥗 Global Food Waste Crisis & Solutions", "🥗 Gıda İsrafı Krizi ve Çözüm Yolları"]:
         show_food_waste_crisis_story(df)
     elif story_mode in ["💰 Economic Impact Analysis", "💰 Ekonomik Etki Analizi", "💰 Gıda İsrafının Ekonomik Etkileri"]:
@@ -124,12 +119,12 @@ def show_story_mode(df: pd.DataFrame, story_mode: str):
             st.warning(f"Unknown story mode: {story_mode}")
 
 def show_food_waste_crisis_story(df: pd.DataFrame):
-    """🥗 Global Food Waste Crisis & Solutions - Premium Edition"""
+    """🥗 Küresel Gıda İsrafı Krizi ve Çözümler - Premium Versiyon"""
     
-    # Get language from session state
+    # Dil desteği
     lang = st.session_state.get('lang', 'TR')
     
-    # Language-specific texts
+    # Dil özel metinler
     texts = {
         'TR': {
             'title': '🚨 KÜRESEL GIDA İSRAFI KRİZİ',
@@ -187,7 +182,7 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
     
     story_texts = texts.get(lang, texts['EN'])
     
-    # Hero section
+    # Hero bölümü
     st.markdown(f"""
     <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
@@ -199,7 +194,7 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
     </div>
     """, unsafe_allow_html=True)
     
-    # Key Metrics Dashboard
+    # Kritik Metrikler Paneli
     st.markdown(f"### {story_texts['metrics_title']}")
     
     waste_col = _resolve_column_name(df, ['Total Waste (Tons)', 'total_waste_tons'])
@@ -208,304 +203,238 @@ def show_food_waste_crisis_story(df: pd.DataFrame):
         avg_waste = df[waste_col].mean()
         countries_count = df['Country'].nunique()
         
-        # Calculate trends
+        # Trend hesaplamaları
         year_col = _resolve_column_name(df, ['Year', 'year'])
         if year_col:
             yearly_waste = df.groupby(year_col)[waste_col].sum()
-            if len(yearly_waste) >= 2:
-                growth_rate = ((yearly_waste.iloc[-1] - yearly_waste.iloc[0]) / yearly_waste.iloc[0]) * 100
-                avg_yearly_growth = growth_rate / (len(yearly_waste) - 1)
+            if len(yearly_waste) > 1:
+                annual_increase = ((yearly_waste.iloc[-1] - yearly_waste.iloc[0]) / yearly_waste.iloc[0]) * 100
             else:
-                avg_yearly_growth = 0
+                annual_increase = 0
+        else:
+            annual_increase = 0
         
-        # Premium Metrics Cards
-        col1, col2 = st.columns(2)
+        # Premium metrik kartları
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            # Toplam İsraf Kartı
             st.markdown(f"""
             <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
-                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
-                        <span style="font-size: 2rem;">🔥</span>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['total_waste']}</h3>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Küresel Toplam</p>
-                    </div>
-                </div>
-                                    <div style="text-align: center;">
-                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{total_waste/1_000_000:.1f}M</h2>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts.get('tons', 'ton')}</p>
-                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                            <span style="font-size: 0.9rem;">📈 {avg_yearly_growth:.1f}% {story_texts['annual_increase']}</span>
-                        </div>
-                    </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Ortalama İsraf Kartı
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
-                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 10px 25px rgba(253, 203, 110, 0.3);">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
-                        <span style="font-size: 2rem;">📊</span>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['avg_waste']}</h3>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Ülke Başına</p>
-                    </div>
-                </div>
-                                    <div style="text-align: center;">
-                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{avg_waste:,.0f}</h2>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts['tons_country']}</p>
-                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                            <span style="font-size: 0.9rem;">📈 {(avg_waste * 0.05):,.0f} {story_texts.get('tons', 'ton')} artış</span>
-                        </div>
-                    </div>
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">{story_texts['total_waste']}</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{total_waste/1_000_000:.1f}M</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">{story_texts['annual_increase']}: +{annual_increase:.1f}%</p>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            # Ülke Sayısı Kartı
             st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
-                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 10px 25px rgba(116, 185, 255, 0.3);">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
-                        <span style="font-size: 2rem;">🌐</span>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['countries']}</h3>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Analiz Kapsamı</p>
-                    </div>
-                </div>
-                <div style="text-align: center;">
-                    <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{countries_count}</h2>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">Ülke</p>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                        <span style="font-size: 0.9rem;">✨ +5 {story_texts['new_countries']}</span>
-                    </div>
-                </div>
+            <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(253, 203, 110, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">{story_texts['avg_waste']}</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{avg_waste/1_000:.1f}K</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">{story_texts['tons_country']}</p>
             </div>
             """, unsafe_allow_html=True)
-            
-            # Çözüm Potansiyeli Kartı
+        
+        with col3:
             st.markdown(f"""
             <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
-                        padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 10px 25px rgba(0, 184, 148, 0.3);">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 15px; margin-right: 1rem;">
-                        <span style="font-size: 2rem;">🎯</span>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700;">{story_texts['solution_potential']}</h3>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Tasarruf Potansiyeli</p>
-                    </div>
-                </div>
-                                    <div style="text-align: center;">
-                        <h2 style="margin: 0; font-size: 2.5rem; font-weight: 800;">{(total_waste * 0.5)/1_000_000:.1f}M</h2>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">{story_texts.get('tons', 'ton')}</p>
-                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 10px; margin-top: 1rem;">
-                            <span style="font-size: 0.9rem;">🎯 50% {story_texts['reduction_target']}</span>
-                        </div>
-                    </div>
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">{story_texts['countries']}</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{countries_count}</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">{story_texts['new_countries']}</p>
             </div>
             """, unsafe_allow_html=True)
         
-        # Crisis Analysis Panel
+        with col4:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">{story_texts['solution_potential']}</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">50%</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">{story_texts['reduction_target']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # Kriz Analizi
+    st.markdown(f"### {story_texts['crisis_analysis']}")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); 
-                    padding: 2rem; border-radius: 15px; color: white; margin: 1.5rem 0; 
+                    padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">{story_texts['crisis_analysis']}</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                <div>
-                    <p><strong>{story_texts['trend_analysis']}:</strong> {avg_yearly_growth:.1f}% {story_texts['annual_increase_trend']}</p>
-                    <p><strong>{story_texts['economic_impact']}:</strong> {story_texts['economic_loss']}</p>
-                </div>
-                <div>
-                    <p><strong>{story_texts['environmental_impact']}:</strong> {story_texts['co2_emissions']}</p>
-                    <p><strong>{story_texts['solution_potential_analysis']}:</strong> {story_texts['billion_savings']}</p>
-                </div>
-            </div>
+            <h4 style="margin: 0 0 1rem 0; font-size: 1.3rem;">{story_texts['trend_analysis']}</h4>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.6;">
+                📈 {story_texts['annual_increase_trend']}<br>
+                📊 Küresel israf %{annual_increase:.1f} artış gösteriyor<br>
+                🌍 20 ülke analiz edildi<br>
+                ⚠️ Acil müdahale gerekiyor
+            </p>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Premium Visualizations
-        st.markdown(f"### {story_texts['visualizations']}")
-        
-        # Trend Analysis Chart
-        if year_col:
-            yearly_waste_df = yearly_waste.reset_index()
-            chart_title = story_texts['trend_chart_title'] if lang == 'TR' else "Annual Global Food Waste Trend"
-            x_label = story_texts['year'] if lang == 'TR' else 'Year'
-            y_label = story_texts['total_waste_tons'] if lang == 'TR' else 'Total Waste (Tons)'
-            
-            fig = px.line(yearly_waste_df, x=year_col, y=waste_col, 
-                         title=chart_title,
-                         labels={'x': x_label, 'y': y_label})
-            fig.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)', 
-                paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(size=14),
-                title_font_size=20
-            )
-            fig.update_traces(line=dict(width=4, color='#ff6b6b'))
-            st.plotly_chart(fig, use_container_width=True)
-            
-        # Country Analysis
-        country_analysis_title = "🌍 ÜLKE BAZINDA ANALİZ" if lang == 'TR' else "🌍 COUNTRY-LEVEL ANALYSIS"
-        st.markdown(f"### {country_analysis_title}")
-        
-        top_countries = df.groupby('Country')[waste_col].sum().sort_values(ascending=False).head(10)
-        
-        bar_title = "En Yüksek Gıda İsrafı Olan 10 Ülke" if lang == 'TR' else "Top 10 Countries by Food Waste"
-        x_label = story_texts['total_waste_tons'] if lang == 'TR' else 'Total Waste (Tons)'
-        y_label = "Ülke" if lang == 'TR' else 'Country'
-        
-        fig = px.bar(
-            x=top_countries.values,
-            y=top_countries.index,
-            orientation='h',
-            title=bar_title,
-            labels={'x': x_label, 'y': y_label}
+    
+    with col2:
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                    padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    box-shadow: 0 8px 25px rgba(253, 203, 110, 0.3);">
+            <h4 style="margin: 0 0 1rem 0; font-size: 1.3rem;">{story_texts['economic_impact']}</h4>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.6;">
+                💰 {story_texts['economic_loss']}<br>
+                📊 Yıllık $29.2 milyar kayıp<br>
+                🏭 Üretim maliyetleri artıyor<br>
+                💸 Tüketici fiyatları yükseliyor
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    col3, col4 = st.columns(2)
+    
+    with col3:
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
+                    padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
+            <h4 style="margin: 0 0 1rem 0; font-size: 1.3rem;">{story_texts['environmental_impact']}</h4>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.6;">
+                🌍 {story_texts['co2_emissions']}<br>
+                🌱 71.3 milyon ton CO2e<br>
+                🚗 2.3 milyon araç eşdeğeri<br>
+                🌳 1.8 milyon hektar orman
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                    padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);">
+            <h4 style="margin: 0 0 1rem 0; font-size: 1.3rem;">{story_texts['solution_potential_analysis']}</h4>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.6;">
+                🎯 {story_texts['billion_savings']}<br>
+                🌱 50% azaltma mümkün<br>
+                💡 Teknoloji çözümleri mevcut<br>
+                📋 Politika değişiklikleri gerekli
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Veri Görselleştirmeleri
+    st.markdown(f"### {story_texts['visualizations']}")
+    
+    if waste_col and year_col:
+        # Trend grafiği
+        fig = px.line(
+            yearly_waste.reset_index(), 
+            x=year_col, 
+            y=waste_col,
+            title=story_texts['trend_chart_title'],
+            labels={year_col: story_texts['year'], waste_col: story_texts['total_waste_tons']}
         )
         fig.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)', 
+            plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             font=dict(size=14),
             title_font_size=20
         )
-        fig.update_traces(marker_color='#667eea')
+        fig.update_traces(line=dict(width=4, color='#ff6b6b'))
         st.plotly_chart(fig, use_container_width=True)
+
+def show_economic_impact_story(df: pd.DataFrame):
+    """💰 Ekonomik Etki Analizi - Premium Versiyon"""
+    
+    # Hero bölümü
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
+                box-shadow: 0 15px 35px rgba(253, 203, 110, 0.3);">
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">💰 EKONOMİK ETKİ ANALİZİ</h1>
+        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
+            Gıda İsrafının Finansal Etkileri ve ROI Analizi
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Ekonomik Metrikler
+    st.markdown("### 💰 EKONOMİK METRİKLER")
+    
+    economic_col = _resolve_column_name(df, ['Economic Loss (Million $)', 'economic_loss_usd'])
+    if economic_col:
+        total_loss = df[economic_col].sum()
+        avg_loss = df[economic_col].mean()
         
-        # Solutions Panel
-        solutions_title = "💡 STRATEJİK ÇÖZÜMLER" if lang == 'TR' else "💡 STRATEGIC SOLUTIONS"
-        st.markdown(f"### {solutions_title}")
-        
-        col1, col2 = st.columns(2)
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            immediate_title = "🎯 Acil Eylemler" if lang == 'TR' else "🎯 Immediate Actions"
-            immediate_actions = [
-                "Akıllı Tedarik Zinciri Yönetimi" if lang == 'TR' else "Smart Supply Chain Management",
-                "Tüketici Eğitim Programları" if lang == 'TR' else "Consumer Education Programs",
-                "Gıda Yeniden Dağıtım Ağları" if lang == 'TR' else "Food Redistribution Networks",
-                "Atık Takip Teknolojileri" if lang == 'TR' else "Waste Tracking Technologies"
-            ]
-            
             st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
-                        padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 8px 25px rgba(116, 185, 255, 0.3);">
-                <h4 style="margin: 0 0 1rem 0;">{immediate_title}</h4>
-                <ul style="margin: 0; padding-left: 1.5rem;">
-                    {''.join([f'<li>{action}</li>' for action in immediate_actions])}
-                </ul>
+            <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(253, 203, 110, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">🔥 Toplam Ekonomik Kayıp</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">${total_loss/1_000:.1f}B</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">yıllık kayıp</p>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            longterm_title = "🚀 Uzun Vadeli Stratejiler" if lang == 'TR' else "🚀 Long-term Strategies"
-            longterm_actions = [
-                "Döngüsel Ekonomi Uygulaması" if lang == 'TR' else "Circular Economy Implementation",
-                "Politika Çerçevesi Geliştirme" if lang == 'TR' else "Policy Framework Development",
-                "Teknoloji İnovasyon Yatırımı" if lang == 'TR' else "Technology Innovation Investment",
-                "Küresel İşbirliği Ağları" if lang == 'TR' else "Global Collaboration Networks"
-            ]
-            
             st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #55a3ff 0%, #0066cc 100%); 
-                    padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
-                        box-shadow: 0 8px 25px rgba(85, 163, 255, 0.3);">
-                <h4 style="margin: 0 0 1rem 0;">{longterm_title}</h4>
-                <ul style="margin: 0; padding-left: 1.5rem;">
-                    {''.join([f'<li>{action}</li>' for action in longterm_actions])}
-                </ul>
-        </div>
-        """, unsafe_allow_html=True)
-            
-def show_economic_impact_story(df: pd.DataFrame):
-    """💰 Economic Impact Analysis - Premium Edition"""
-    
-    # Hero section
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
-        padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
-                box-shadow: 0 15px 35px rgba(253, 203, 110, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">💰 ECONOMIC IMPACT ANALYSIS</h1>
-        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            The Hidden Cost of Food Waste on Global Economy
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Economic Metrics
-    st.markdown("### 💰 ECONOMIC METRICS DASHBOARD")
-    
-    economic_col = _resolve_column_name(df, ['Economic Loss (Million $)', 'Economic_Loss_Million_USD'])
-    if economic_col:
-        total_economic_loss = df[economic_col].sum()
-        avg_economic_loss = df[economic_col].mean()
+            <div style="background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">📊 Ortalama Kayıp</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">${avg_loss:.1f}M</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">ülke başına</p>
+            </div>
+            """, unsafe_allow_html=True)
         
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("💸 Total Economic Loss", f"${total_economic_loss/1_000_000:.1f}T", 
-                     delta="8.2% annual increase", delta_color="inverse")
-        with col2:
-            st.metric("📊 Average Loss", f"${avg_economic_loss:,.0f}M/country",
-                     delta="5.1% increase", delta_color="inverse")
         with col3:
-            st.metric("🌍 Global GDP Impact", f"{(total_economic_loss/1_000_000)*100:.1f}%",
-                     delta="0.3% increase", delta_color="inverse")
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">🎯 Tasarruf Potansiyeli</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">${total_loss/2:.1f}B</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">50% azaltma ile</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with col4:
-            st.metric("🎯 Savings Potential", f"${(total_economic_loss * 0.5)/1_000_000:.1f}T",
-                     delta="50% reduction target", delta_color="normal")
-        
-        # Economic Analysis Chart
-        st.markdown("### 📈 ECONOMIC TREND ANALYSIS")
-        
-        year_col = _resolve_column_name(df, ['Year', 'year'])
-        if year_col:
-            yearly_economic = df.groupby(year_col)[economic_col].sum()
-            yearly_economic_df = yearly_economic.reset_index()
-            
-            fig = px.line(yearly_economic_df, x=year_col, y=economic_col,
-                         title="Annual Economic Loss from Food Waste",
-                         labels={'x': 'Year', 'y': 'Economic Loss (Million $)'})
-            fig.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)', 
-                paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(size=14),
-                title_font_size=20
-            )
-            fig.update_traces(line=dict(width=4, color='#fdcb6e'))
-            st.plotly_chart(fig, use_container_width=True)
-            
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">📈 ROI Potansiyeli</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">300%</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">yatırım getirisi</p>
+            </div>
+            """, unsafe_allow_html=True)
+
 def show_environmental_impact_story(df: pd.DataFrame):
-    """🌍 Environmental Footprint Analysis - Premium Edition"""
+    """🌍 Çevresel Ayak İzi Analizi - Premium Versiyon"""
     
-    # Hero section
+    # Hero bölümü
     st.markdown("""
     <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(0, 184, 148, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🌍 ENVIRONMENTAL FOOTPRINT</h1>
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🌍 ÇEVRESEL AYAK İZİ</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            Carbon Footprint Analysis & Environmental Impact Assessment
+            Karbon Ayak İzi Analizi ve Çevresel Etki Değerlendirmesi
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Environmental Metrics
-    st.markdown("### 🌱 ENVIRONMENTAL METRICS")
+    # Çevresel Metrikler
+    st.markdown("### 🌱 ÇEVRESEL METRİKLER")
     
     carbon_col = _resolve_column_name(df, ['Carbon_Footprint_kgCO2e', 'Carbon Footprint (kgCO2e)'])
     if carbon_col:
@@ -513,37 +442,69 @@ def show_environmental_impact_story(df: pd.DataFrame):
         avg_carbon = df[carbon_col].mean()
         
         col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("🌍 Total Carbon Footprint", f"{total_carbon/1_000_000_000:.1f}B kg CO2e", 
-                     delta="6.3% annual increase", delta_color="inverse")
-        with col2:
-            st.metric("📊 Average Footprint", f"{avg_carbon/1_000_000:.1f}M kg CO2e/country",
-                     delta="4.2% increase", delta_color="inverse")
-        with col3:
-            st.metric("🚗 Car Equivalent", f"{total_carbon/1_000_000_000*2.3:.1f}M cars",
-                     delta="+2.1M cars", delta_color="inverse")
-        with col4:
-            st.metric("🌳 Forest Equivalent", f"{total_carbon/1_000_000_000*0.5:.1f}M hectares",
-                     delta="+1.8M hectares", delta_color="inverse")
         
+        with col1:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">🌍 Toplam Karbon Ayak İzi</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{total_carbon/1_000_000_000:.1f}B</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">kg CO2e</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(253, 203, 110, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">📊 Ortalama Ayak İzi</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{avg_carbon/1_000_000:.1f}M</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">kg CO2e/ülke</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">🚗 Araç Eşdeğeri</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{total_carbon/1_000_000_000*2.3:.1f}M</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">araç</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col4:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                        padding: 1.5rem; border-radius: 15px; color: white; text-align: center; 
+                        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem;">🌳 Orman Eşdeğeri</h3>
+                <p style="margin: 0; font-size: 1.8rem; font-weight: 700;">{total_carbon/1_000_000_000*0.5:.1f}M</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">hektar</p>
+            </div>
+            """, unsafe_allow_html=True)
+
 def show_sustainable_solutions_story(df: pd.DataFrame):
-    """🎯 Sustainable Solutions Roadmap - Premium Edition"""
+    """🎯 Sürdürülebilir Çözümler Yol Haritası - Premium Versiyon"""
     
-    # Hero section
+    # Hero bölümü
     st.markdown("""
     <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(108, 92, 231, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🎯 SUSTAINABLE SOLUTIONS</h1>
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🎯 SÜRDÜRÜLEBİLİR ÇÖZÜMLER</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            Comprehensive Roadmap for Sustainable Food Systems
+            Sürdürülebilir Gıda Sistemleri İçin Kapsamlı Yol Haritası
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Solutions Framework
-    st.markdown("### 🛠️ SOLUTIONS FRAMEWORK")
-        
+    # Çözümler Çerçevesi
+    st.markdown("### 🛠️ ÇÖZÜMLER ÇERÇEVESİ")
+    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -551,12 +512,12 @@ def show_sustainable_solutions_story(df: pd.DataFrame):
         <div style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); 
                     padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(162, 155, 254, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">🔧 Technology Solutions</h4>
+            <h4 style="margin: 0 0 1rem 0;">🔧 Teknoloji Çözümleri</h4>
             <ul style="margin: 0; padding-left: 1.5rem;">
-                <li>IoT Smart Sensors</li>
-                <li>Blockchain Tracking</li>
-                <li>AI-Powered Analytics</li>
-                <li>Automated Sorting Systems</li>
+                <li>IoT Akıllı Sensörler</li>
+                <li>Blockchain Takip Sistemi</li>
+                <li>AI Destekli Analitik</li>
+                <li>Otomatik Sınıflandırma</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -566,33 +527,33 @@ def show_sustainable_solutions_story(df: pd.DataFrame):
         <div style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); 
                     padding: 2rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(253, 121, 168, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">📋 Policy Solutions</h4>
+            <h4 style="margin: 0 0 1rem 0;">📋 Politika Çözümleri</h4>
             <ul style="margin: 0; padding-left: 1.5rem;">
-                <li>Carbon Pricing</li>
-                <li>Waste Reduction Targets</li>
-                <li>Incentive Programs</li>
-                <li>Regulatory Framework</li>
+                <li>Karbon Fiyatlandırması</li>
+                <li>İsraf Azaltma Hedefleri</li>
+                <li>Teşvik Programları</li>
+                <li>Düzenleyici Çerçeve</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
 
 def show_2030_strategy_story(df: pd.DataFrame):
-    """🚀 2030 Strategic Forecast - Premium Edition"""
+    """🚀 2030 Stratejik Tahmin - Premium Versiyon"""
     
-    # Hero section
+    # Hero bölümü
     st.markdown("""
     <div style="background: linear-gradient(135deg, #e17055 0%, #d63031 100%); 
                 padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(225, 112, 85, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🚀 2030 STRATEGIC FORECAST</h1>
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">🚀 2030 STRATEJİK TAHMİN</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            Future Scenarios & Strategic Recommendations
+            Gelecek Senaryoları ve Stratejik Öneriler
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # 2030 Scenarios
-    st.markdown("### 🔮 2030 SCENARIOS")
+    # 2030 Senaryoları
+    st.markdown("### 🔮 2030 SENARYOLARI")
     
     col1, col2, col3 = st.columns(3)
     
@@ -601,8 +562,8 @@ def show_2030_strategy_story(df: pd.DataFrame):
         <div style="background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); 
                     padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">🔴 Business as Usual</h4>
-            <p style="margin: 0; font-size: 0.9rem;">+25% waste increase<br>+$2T economic loss<br>+40% carbon footprint</p>
+            <h4 style="margin: 0 0 1rem 0;">🔴 Mevcut Durum</h4>
+            <p style="margin: 0; font-size: 0.9rem;">+25% israf artışı<br>+$2T ekonomik kayıp<br>+40% karbon ayak izi</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -611,51 +572,51 @@ def show_2030_strategy_story(df: pd.DataFrame):
         <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); 
                     padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(253, 203, 110, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">🟡 Moderate Action</h4>
-            <p style="margin: 0; font-size: 0.9rem;">+10% waste increase<br>+$800B economic loss<br>+15% carbon footprint</p>
+            <h4 style="margin: 0 0 1rem 0;">🟡 Orta Seviye Aksiyon</h4>
+            <p style="margin: 0; font-size: 0.9rem;">+10% israf artışı<br>+$800B ekonomik kayıp<br>+15% karbon ayak izi</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); 
-                padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
+                    padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0; 
                     box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);">
-            <h4 style="margin: 0 0 1rem 0;">🟢 Aggressive Action</h4>
-            <p style="margin: 0; font-size: 0.9rem;">-30% waste reduction<br>-$1.5T economic savings<br>-25% carbon footprint</p>
-    </div>
-    """, unsafe_allow_html=True)
+            <h4 style="margin: 0 0 1rem 0;">🟢 Agresif Aksiyon</h4>
+            <p style="margin: 0; font-size: 0.9rem;">-30% israf azalması<br>-$1.5T ekonomik tasarruf<br>-25% karbon ayak izi</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 def show_comprehensive_analytics_story(df: pd.DataFrame):
-    """📊 Comprehensive Analytics - Premium Edition"""
+    """📊 Kapsamlı Analitik - Premium Versiyon"""
     
-    # Hero section
+    # Hero bölümü
     st.markdown("""
     <div style="background: linear-gradient(135deg, #2d3436 0%, #636e72 100%); 
-        padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
+                padding: 3rem; border-radius: 25px; color: white; margin: 2rem 0; 
                 box-shadow: 0 15px 35px rgba(45, 52, 54, 0.3);">
-        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">📊 COMPREHENSIVE ANALYTICS</h1>
+        <h1 style="margin: 0; font-size: 2.8rem; font-weight: 800;">📊 KAPSAMLI ANALİTİK</h1>
         <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            Advanced Data Analytics & Machine Learning Insights
+            Gelişmiş Veri Analizi ve Makine Öğrenmesi İçgörüleri
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Analytics Dashboard
-    st.markdown("### 📈 ANALYTICS DASHBOARD")
+    # Analitik Paneli
+    st.markdown("### 📈 ANALİTİK PANELİ")
     
-    # Correlation Analysis
-    st.markdown("### 🔗 CORRELATION ANALYSIS")
+    # Korelasyon Analizi
+    st.markdown("### 🔗 KORELASYON ANALİZİ")
     
-    # Select numeric columns for correlation
+    # Sayısal sütunları seç
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     if len(numeric_cols) >= 2:
         correlation_matrix = df[numeric_cols].corr()
         
         fig = px.imshow(
             correlation_matrix,
-            title="Feature Correlation Matrix",
-                       color_continuous_scale='RdBu',
+            title="Özellik Korelasyon Matrisi",
+            color_continuous_scale='RdBu',
             aspect="auto"
         )
         fig.update_layout(
@@ -666,8 +627,8 @@ def show_comprehensive_analytics_story(df: pd.DataFrame):
         )
         st.plotly_chart(fig, use_container_width=True)
         
-    # Statistical Summary
-    st.markdown("### 📊 STATISTICAL SUMMARY")
+    # İstatistiksel Özet
+    st.markdown("### 📊 İSTATİSTİKSEL ÖZET")
     
     if len(numeric_cols) > 0:
         summary_stats = df[numeric_cols].describe()
