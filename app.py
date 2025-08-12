@@ -4193,10 +4193,10 @@ def show_model_card():
     <div style="background: rgba(255,255,255,0.9); padding: 1.5rem; border-radius: 15px; margin: 1rem 0; 
                 box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-left: 4px solid #f093fb;">
         <ul style="margin: 0; padding-left: 1.5rem; color: #232E5C; line-height: 1.8;">
-            <li><strong>Zaman serisi güvenli özellikler:</strong> Ülke×Yıl lag/rolling, Years_From_2018, pandemi dummylari</li>
-            <li><strong>Değerlendirme:</strong> Expanding‑window CV (son 3 yıl) ve 2024 test</li>
-            <li><strong>Stabilizasyon:</strong> Damping (λ) + yıllık delta clipping (k·σ)</li>
-                            <li><strong>Model:</strong> GradientBoostingRegressor (Single Model)</li>
+            <li><strong>Veri Zenginleştirme:</strong> ISO kodları, coğrafi özellikler, pandemi dummyları, temporal özellikler</li>
+            <li><strong>Değerlendirme:</strong> Train-Test Split (80/20) + 5-fold Cross-Validation</li>
+            <li><strong>Regularization:</strong> Learning rate, max_depth, subsample parametreleri</li>
+            <li><strong>Model:</strong> GradientBoostingRegressor (A/B test kazananı)</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -4247,7 +4247,7 @@ def show_model_card():
             <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">AÇIKLANABİLİRLİK</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Model kararlarını etkileyen faktörlerin analizi (İlk 10 - TS)
+            Model kararlarını etkileyen faktörlerin analizi (İlk 10 özellik)
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -6370,10 +6370,10 @@ def show_benchmark_league():
     html_parts.append("""
         <h2>Notlar / Yöntem</h2>
         <ul>
-          <li>Zaman serisi güvenli (TS‑safe) Profesyonel‑TS model: Ülke×Yıl lag/rolling + zaman kovaryatları</li>
-          <li>Değerlendirme: Expanding‑window CV (son 3 yıl) ve 2024 test</li>
-          <li>Stabilizasyon: Damping (λ) ve yıllık delta clipping (k·σ)</li>
-          <li>Açıklanabilirlik: Permutation Importance + Ortalama |SHAP|</li>
+          <li>Regresyon tabanlı Gradient Boosting modeli: Çoklu hedef tahmin</li>
+          <li>Değerlendirme: Train-Test Split (80/20) + 5-fold Cross-Validation</li>
+          <li>Regularization: Learning rate, max_depth, subsample parametreleri</li>
+          <li>Açıklanabilirlik: Permutation Importance + SHAP Analizi</li>
         </ul>
         """)
 
