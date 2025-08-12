@@ -508,7 +508,7 @@ We aim to reduce 2.5 gigatons of CO2 emissions from the food sector. We plan to 
 | **Member** | **Role** | **Contribution** |
 |:--------|:--------|:----------|
 | **Özge Güneş** | Data Scientist | Model development, analysis |
-| **Kübra Saruhan** | Team Member | Data analysis, documentation |
+| **Kübra Saruhan** | Data Scientist | Data analysis, documentation |
 
 </div>
 
