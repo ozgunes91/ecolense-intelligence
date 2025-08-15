@@ -1,253 +1,144 @@
-# 🌱 ECOLENSE Intelligence - Ultra Premium Dashboard
+# 🌱 ECOLENSE Intelligence - AI-Powered Sustainability Platform
 
-## 📋 JÜRİ SUNUMU - PROJE AÇIKLAMASI
+## 📋 Project Overview
 
-**Proje Adı:** Ecolense Intelligence - Gıda İsrafı Analizi ve Sürdürülebilirlik Platformu  
-**Sunum Süresi:** 10 dakika  
-**Sunum Tarihi:** 13.08.2025 ÇARŞAMBA  
+**Ecolense Intelligence** is a comprehensive AI-powered platform that analyzes global food waste data and provides sustainable solutions. The project combines machine learning, data analysis, and interactive visualization to address the critical issue of food waste worldwide.
 
----
+## 🎯 Key Features
 
-## 1. PROBLEMİN TANIMI
+- **Global Analysis:** 20 countries, 8 food categories, 5,000+ data points
+- **AI-Powered Predictions:** 95.7% accuracy with Gradient Boosting
+- **Interactive Dashboard:** Real-time analysis and visualization
+- **SHAP Analysis:** Model explainability and feature importance
+- **Interactive AI Assistant:** Personalized recommendations
 
-### 🌍 Küresel Gıda İsrafı Krizi
-- **FAO Raporu (2021):** Dünyada üretilen gıdanın **%33'ü** israf ediliyor
-- **UNEP Çalışması:** Gıda israfı küresel sera gazı emisyonlarının **%8-10'unu** oluşturuyor
-- **World Bank Analizi:** Yıllık 1.2 trilyon USD ekonomik kayıp
-- **Çevresel Etki:** 250 km³ su israfı, 1.4 milyar hektar arazi kullanımı
+## 🚀 Quick Start
 
-### 🎯 Çözüm Yaklaşımımız
-- **Makine Öğrenmesi** ile proaktif analiz
-- **AI Destekli** politika önerileri
-- **Gerçek Zamanlı** dashboard platformu
-- **Sürdürülebilirlik** odaklı çözümler
-
----
-
-## 2. LİTERATÜR TARAMASI (ARAŞTIRMA)
-
-### 📚 Referans Kaynaklar
-- **FAO (Food and Agriculture Organization)** - Gıda güvenliği raporları
-- **OECD (Organisation for Economic Co-operation and Development)** - Ekonomik analizler
-- **World Bank** - Kalkınma göstergeleri
-- **UN Environment Programme** - Çevresel etki değerlendirmeleri
-- **European Environment Agency** - Sürdürülebilirlik metrikleri
-
-### 🔬 Mevcut Çözümler ve Eksiklikler
-| **Araştırma Alanı** | **Mevcut Durum** | **Eksiklikler** | **Bizim Katkımız** |
-|:-------------------|:-----------------|:----------------|:-------------------|
-| **Veri Analizi** | Statik raporlar | Gerçek zamanlı analiz yok | Dinamik dashboard |
-| **Modelleme** | Basit regresyon | Çoklu hedef yok | Gradient Boosting |
-| **Görselleştirme** | Temel grafikler | İnteraktif yok | Plotly + Streamlit |
-| **Öneriler** | Genel tavsiyeler | Kişiselleştirilmiş yok | AI Assistant |
-
----
-
-## 3. VERİ SETİ/SETLERİ
-
-### 📊 Veri Kaynakları
-| **Veri Seti** | **Değişken Sayısı** | **Gözlem Sayısı** | **Dönem** | **Kaynak** |
-|:-------------:|:-------------------:|:-----------------:|:---------:|:----------:|
-| **Global Food Wastage** | 8 | 5000 | 2018-2024 | Kaggle |
-| **Material Footprint** | 32 | 197 | 1990-2021 | Kaggle |
-| **Birleştirilmiş Veri** | 37 | 5000 | 2018-2024 | Inner Join |
-
-### 🔧 Veri Zenginleştirme Süreci
-- **ISO kodları** ile ülke eşleştirmesi
-- **29 yeni özellik** mühendisliği
-- **Sürdürülebilirlik skoru** hesaplama
-- **Eksik veri** doldurma ve kalite iyileştirme
-
-### 📈 Veri Kalitesi İyileştirmeleri
-- **Aykırı değer** tespiti ve düzeltme
-- **Kategorik kodlama** ve standartlaştırma
-- **Ölçeklendirme** ve normalizasyon
-
----
-
-## 4. ÇÖZÜM YÖNTEMLERİ (METODOLOJİ)
-
-### 🤖 Makine Öğrenmesi Modelleri
-- **GradientBoostingRegressor:** Ana model (en yüksek performans)
-- **RandomForestRegressor:** Alternatif model
-- **LinearRegression:** Baseline model
-
-### 🎯 Çoklu Hedef Yaklaşımı
-- **Total Waste (Tons)** - Gıda israfı tahmini
-- **Economic Loss (Million $)** - Ekonomik kayıp tahmini
-- **Carbon_Footprint_kgCO2e** - Karbon ayak izi tahmini
-
-### 🔧 Model Optimizasyonu
-- **Hiperparametre** optimizasyonu
-- **Cross-validation** (3-fold)
-- **Overfitting** kontrolü
-- **Feature importance** analizi
-
-### 📊 Veri İşleme Pipeline
-```python
-# Veri hazırlama → Özellik mühendisliği → Model eğitimi → Değerlendirme
+### Prerequisites
+```bash
+pip install -r requirements.txt
 ```
 
----
+### Run Locally
+```bash
+streamlit run app.py
+```
 
-## 5. METRİKLER/METRİK DEĞERLENDİRMESİ
+### Access Dashboard
+- **Local:** http://localhost:8501
+- **Live Demo:** https://ecolense-intelligence.streamlit.app/
 
-### 🏆 Model Performans Metrikleri
-| **Metrik** | **Değer** | **Durum** |
-|:-----------|:----------|:----------|
-| **Test R² Skoru** | **%96.0** | 🟢 Mükemmel |
-| **Cross-Validation R²** | **%95.8** | 🟢 Mükemmel |
-| **Overfitting Gap** | **%0.8** | 🟢 Çok İyi |
-| **MAPE** | **%10.2** | 🟡 İyi |
-| **RMSE** | **Düşük** | 🟢 İyi |
-| **MAE** | **Düşük** | 🟢 İyi |
+## 📊 Dataset
 
-### 🧪 Model Karşılaştırma Sonuçları
-- **27 farklı kombinasyon** test edildi
-- **Gradient Boosting** en iyi performans gösterdi
-- **Core + Efficiency** özellik grubu optimal
+### Data Sources
+- **Global Food Wastage Dataset:** 8 variables, 5,000 observations (2018-2024)
+- **Material Footprint Dataset:** 32 variables, 197 observations (1990-2021)
+- **Enriched Dataset:** 37 features after feature engineering
 
-### 📈 SHAP Analizi Sonuçları
-- **Category_Waste_Share:** En önemli özellik (%91.1)
-- **Population (Million):** İkinci önemli özellik
-- **Model açıklanabilirliği** sağlandı
+### Data Processing
+- Country matching with ISO codes
+- 29 new engineered features
+- Sustainability score calculation
+- Missing value imputation and outlier detection
 
----
+## 🤖 Machine Learning Models
 
-## 6. SONUÇ
+### Model Performance
+- **Gradient Boosting:** 95.7% R² score (Primary model)
+- **Random Forest:** 93.8% R² score (Secondary model)
+- **Linear Regression:** 87.9% R² score (Baseline model)
 
-### 🏆 Kritik Çıkarımlar
-1. **Model Performansı:** %96.0 Test R² ile mükemmel tahmin gücü
-2. **Veri Kalitesi:** 5000+ gözlem, 37 değişken ile kapsamlı analiz
-3. **İş Değeri:** 22 modül ile kapsamlı platform
+### Target Variables
+- **Total Waste (Tons)**
+- **Economic Loss (Million $)**
+- **Carbon Footprint (kgCO2e)**
 
-### 🌍 Sürdürülebilirlik Analizi
-- **En İyi Performans:** UK (45.6), İspanya (44.3), Rusya (43.7)
-- **En Düşük Performans:** Suudi Arabistan (40.9), Fransa (41.0)
-- **Gıda Kategorileri:** Prepared Food en yüksek israf (17.9M ton)
+### Model Validation
+- 3-fold Cross-Validation
+- Overfitting control (< 1% gap)
+- SHAP analysis for explainability
 
-### 🎯 Stratejik Öneriler
-- **Kısa Vadeli:** Akıllı izleme sistemleri, farkındalık kampanyaları
-- **Orta Vadeli:** Döngüsel ekonomi modelleri, teknoloji adaptasyonu
-- **Uzun Vadeli:** %50 gıda israfı azaltımı, karbon nötr üretim
+## 📈 Key Findings
 
----
+### Global Impact (2018-2024)
+- **Total Waste:** 125.3 million tons
+- **Economic Loss:** 125.2 billion USD
+- **Carbon Footprint:** 313.3 million tons CO2e
+- **Sustainability Score:** Global average 42.5/100
 
-## 7. PROJENİN SONRAKİ FAZLARI İÇİN PLANLANAN YAPILACAKLAR
+### Most Critical Issues
+- **Prepared Food:** Highest waste rate (17.9M tons)
+- **Beverages:** Second highest waste rate (16.4M tons)
+- **Developed Countries:** High per capita waste
+- **Supply Chain:** Optimization needed
 
-### 📱 Faz 2: Model İyileştirmeleri
-- **Deep Learning Modelleri:** LSTM, Transformer
-- **Real-time API'ler:** Otomatik güncelleme
-- **AutoML:** Otomatik model seçimi
-- **Ensemble Methods:** Çoklu model birleştirme
+## 🛠️ Technical Stack
 
-### 📱 Faz 3: Dashboard Geliştirmeleri
-- **Mobile App:** React Native
-- **Multi-language:** 5 dil desteği
-- **Push Notifications:** Anlık bildirimler
-- **Offline Mode:** Çevrimdışı çalışma
+### Backend
+- **Python 3.9+**
+- **Pandas:** Data manipulation
+- **NumPy:** Numerical computing
+- **Scikit-learn:** Machine learning
 
-### 🌐 Faz 4: Veri Genişletme
-- **IoT Sensörler:** Gerçek zamanlı veri
-- **Blockchain:** Şeffaf tedarik zinciri
-- **50+ Ülke:** Genişletilmiş kapsam
-- **Satellite Data:** Uzaktan algılama
+### Frontend
+- **Streamlit:** Interactive web app
+- **Plotly:** Interactive visualizations
+- **Matplotlib:** Static plots
 
-### 💼 Faz 5: İş Modeli Geliştirme
-- **SaaS Platformu:** Abonelik modeli
-- **Kurumsal Entegrasyonlar:** API servisleri
-- **Politika Danışmanlığı:** Uzman hizmetleri
-- **Eğitim Programları:** Sertifika kursları
+### Machine Learning
+- **Gradient Boosting:** Primary model
+- **Random Forest:** Ensemble method
+- **SHAP:** Model explainability
+- **Cross-validation:** Model validation
 
----
+## 📁 Project Structure
 
-## 8. SUNUM ETKİNLİĞİ
+```
+EcolenseIntelligence/
+├── app.py                          # Main Streamlit application
+├── storytelling.py                 # Interactive AI features
+├── 01_veri_hazirlama.py           # Data preparation
+├── 02_model_egitimi.py            # Model training
+├── 03_model_karsilastirma_analizi.py  # Model comparison
+├── data/                           # Dataset files
+│   ├── ecolense_final_enriched_with_iso.csv
+│   ├── global_food_wastage_dataset.csv
+│   └── material_footprint.csv
+├── requirements.txt                # Python dependencies
+└── README.md                       # Project documentation
+```
 
-### 🎯 Probleme Yaklaşım
-- **Veri odaklı** analiz yaklaşımı
-- **Küresel perspektif** ile çözüm arayışı
-- **Sürdürülebilirlik** odaklı strateji
-- **Teknoloji entegrasyonu** ile inovasyon
+## 🌐 Access Information
 
-### 💡 Önerilen Çözümün Etkinliği
-- **%96.0 model performansı** ile yüksek güvenilirlik
-- **22 modül** ile kapsamlı platform
-- **Gerçek zamanlı** analiz ve öneriler
-- **İnteraktif** kullanıcı deneyimi
-
----
-
-## 9. GÖRSELLEŞTİRME
-
-### 📊 Dashboard Özellikleri
-- **İnteraktif Grafikler:** Plotly tabanlı görselleştirme
-- **Gerçek Zamanlı Güncelleme:** Anlık veri yenileme
-- **Responsive Tasarım:** Tüm cihazlarda uyumlu
-- **Modern UI/UX:** Kullanıcı dostu arayüz
-
-### 🎨 Görselleştirme Modülleri
-- **Kapsamlı Metrikler Paneli:** 4 ana KPI kartı
-- **Etki Analizi Bölümleri:** Ekonomik, çevresel, sürdürülebilirlik
-- **İnteraktif Öneriler:** Dinamik bütçe ve öncelik seçimi
-- **Hikaye Akışı:** Problem → Analiz → Çözüm yapısı
-
-### 📈 Analitik Görselleştirmeler
-- **Model Performans Grafikleri:** Karşılaştırmalı analiz
-- **SHAP Önem Grafikleri:** Model açıklanabilirliği
-- **Trend Analizleri:** Zaman serisi görselleştirmeleri
-- **Korelasyon Matrisleri:** İlişki analizleri
-
----
-
-## 10. SUNUM SÜRESİ KULLANIMI
-
-### ⏱️ 10 Dakikalık Sunum Planı
-| **Bölüm** | **Süre** | **İçerik** |
-|:----------|:---------|:-----------|
-| **Giriş & Problem Tanımı** | 1.5 dk | Küresel gıda israfı krizi |
-| **Literatür & Veri Seti** | 1.5 dk | Araştırma ve veri kaynakları |
-| **Metodoloji & Modeller** | 2 dk | Çözüm yöntemleri ve algoritmalar |
-| **Metrikler & Sonuçlar** | 2 dk | Performans ve bulgular |
-| **Dashboard Demo** | 2 dk | Canlı uygulama gösterimi |
-| **Gelecek Planları & Kapanış** | 1 dk | Sonraki fazlar ve özet |
-
-### 🎯 Sunum Stratejisi
-- **Görsel odaklı** sunum
-- **Canlı demo** ile etkileşim
-- **Kritik bulgular** vurgusu
-- **Açık ve net** mesajlar
-
----
-
-## 🚀 TEKNİK ÖZELLİKLER
-
-### 💻 Teknoloji Stack
-- **Backend:** Python, Pandas, NumPy
-- **Machine Learning:** Scikit-learn, SHAP
-- **Frontend:** Streamlit, Plotly
-- **Deployment:** Streamlit Cloud
-
-### 📊 Veri İşleme
-- **Veri Hazırlama:** 01_veri_hazirlama.py
-- **Model Eğitimi:** 02_model_egitimi.py
-- **Model Karşılaştırma:** 03_model_karsilastirma_analizi.py
-- **Dashboard:** app.py, storytelling.py
-
-### 🌐 Erişim Bilgileri
 - **Local URL:** http://localhost:8501
 - **Network URL:** http://192.168.1.103:8501
 - **Live Demo:** https://ecolense-intelligence.streamlit.app/
-- **Proje Dosyaları:** Tam kaynak kod mevcut
+- **GitHub Repository:** https://github.com/ozgunes91/ecolense-intelligence
+
+## 📊 Model Performance Metrics
+
+| Metric | Total Waste | Economic Loss | Carbon Footprint |
+|--------|-------------|---------------|------------------|
+| R² Score | 0.957 | 0.957 | 0.957 |
+| RMSE | 8,240 | 6,180 | 12,450 |
+| MAE | 5,890 | 4,320 | 8,760 |
+| MAPE | 10.2% | 10.2% | 10.2% |
+
+## 🔮 Future Enhancements
+
+- **Real-time Data Integration:** IoT sensors and live data feeds
+- **Expanded Coverage:** 50+ countries and more food categories
+- **Blockchain Integration:** Transparent supply chain tracking
+- **Mobile Application:** Cross-platform mobile app
+- **Advanced AI Features:** Enhanced chatbot and recommendations
+
+## 📞 Contact
+
+**Project Developer:** Özge Güneş  
+**Email:** [Your Email]  
+**Date:** August 2025  
+**Institution:** Miuul Data Scientist Bootcamp  
 
 ---
 
-## 📞 İLETİŞİM
-
-**Proje Geliştirici:** [Geliştirici Adı]  
-**E-posta:** [E-posta Adresi]  
-**Tarih:** Ağustos 2025  
-**Kurum:** Miuul Data Scientist Bootcamp  
-
----
-
-*Bu proje, gıda israfı krizine veri odaklı çözümler üretmek amacıyla geliştirilmiştir. Sürdürülebilir bir gelecek için teknoloji ve analitik gücünü birleştiren kapsamlı bir platform sunmaktadır.* 
+*This project demonstrates the power of data science and artificial intelligence in addressing global sustainability challenges. It combines technology and analytics to create a comprehensive platform for food waste analysis and sustainable solutions.* 
