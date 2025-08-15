@@ -2,7 +2,7 @@
 
 ## 📊 EXECUTIVE SUMMARY
 
-**Rapor Tarihi:** 13 Aralık 2024  
+**Rapor Tarihi:** 15 Ağustos 2025  
 **Proje:** Ecolense Intelligence - Yapay Zeka Destekli Sürdürülebilirlik Platformu  
 **Veri Kapsamı:** 2018-2024 (7 yıl) - 5,000 veri noktası  
 **Kapsanan Ülkeler:** 20 ülke  
@@ -365,7 +365,7 @@ Kategori Sayısı: 8
 ## 📞 İLETİŞİM VE DESTEK
 
 **Proje Ekibi:** Ecolense Intelligence  
-**Rapor Tarihi:** 13 Aralık 2024  
+**Rapor Tarihi:** 15 Ağustos 2025  
 **Versiyon:** 1.0.0  
 **Lisans:** MIT License  
 
