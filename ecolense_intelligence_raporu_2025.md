@@ -371,7 +371,7 @@ Kategori Sayısı: 8
 
 **Teknik Destek:** [GitHub Repository](https://github.com/ozgunes91/ecolense-intelligence)  
 **Dokümantasyon:** [Deployment Guide](deployment_guide.md)  
-**Dashboard:** [Streamlit App](http://localhost:8502)  
+**Dashboard:** [Streamlit App](https://ecolense-intelligence.streamlit.app/)  
 
 ---
 

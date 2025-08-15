@@ -484,7 +484,7 @@ school programs, and community awareness projects."
 
 **Technical Support:** [GitHub Repository](https://github.com/ozgunes91/ecolense-intelligence)  
 **Documentation:** [Deployment Guide](deployment_guide.md)  
-**Dashboard:** [Streamlit App](http://localhost:8502)  
+**Dashboard:** [Streamlit App](https://ecolense-intelligence.streamlit.app/)  
 
 ---
 
