@@ -61,7 +61,7 @@
 - Sosyal sorumluluk (%20)
 
 **Veri Kaynağı:** Ecolense Enriched Dataset (2018-2024)
-**Analiz Tarihi:** Ağustos 2025
+**Analiz Tarihi:** Aralık 2024
 
 ---
 

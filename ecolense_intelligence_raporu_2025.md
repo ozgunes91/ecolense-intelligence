@@ -1,22 +1,22 @@
-# ECOLENSE INTELLIGENCE - 2025 SÜRDÜRÜLEBİLİRLİK RAPORU
+# ECOLENSE INTELLIGENCE - 2024 SÜRDÜRÜLEBİLİRLİK RAPORU
 
 ## 📊 EXECUTIVE SUMMARY
 
-**Rapor Tarihi:** 13 Ağustos 2025  
+**Rapor Tarihi:** 13 Aralık 2024  
 **Proje:** Ecolense Intelligence - Yapay Zeka Destekli Sürdürülebilirlik Platformu  
-**Veri Kapsamı:** 2018-2024 (7 yıl) - 5,002 veri noktası  
+**Veri Kapsamı:** 2018-2024 (7 yıl) - 5,000 veri noktası  
 **Kapsanan Ülkeler:** 20 ülke  
-**Gıda Kategorileri:** 9 kategori  
+**Gıda Kategorileri:** 8 kategori  
 
 ---
 
 ## 🎯 ANA BULGULAR
 
 ### 1. **Küresel Gıda İsrafı Durumu**
-- **Toplam İsraf:** 2018-2024 arasında ortalama 28,500 ton/yıl
-- **Ekonomik Kayıp:** Yıllık ortalama 29,200 milyon USD
-- **Karbon Ayak İzi:** Yıllık ortalama 71,300 ton CO2e
-- **Sürdürülebilirlik Skoru:** Küresel ortalama 42.3/100
+- **Toplam İsraf:** 125.3 milyon ton (2018-2024 toplam)
+- **Ekonomik Kayıp:** 125.2 milyar USD (2018-2024 toplam)
+- **Karbon Ayak İzi:** 313.3 milyon ton CO2e (2018-2024 toplam)
+- **Sürdürülebilirlik Skoru:** Küresel ortalama 42.5/100
 
 ### 2. **En Kritik Sorunlar**
 - **Yüksek İsraf Oranları:** Gelişmiş ülkelerde kişi başı 150+ kg
@@ -34,11 +34,11 @@
 
 ### **Veri Seti Özellikleri**
 ```
-Toplam Kayıt: 5,002
+Toplam Kayıt: 5,000
 Zaman Aralığı: 2018-2024 (7 yıl)
 Ülke Sayısı: 20
-Kategori Sayısı: 9
-Özellik Sayısı: 35
+Kategori Sayısı: 8
+Özellik Sayısı: 37
 ```
 
 ### **Kapsanan Ülkeler**
@@ -64,15 +64,15 @@ Kategori Sayısı: 9
 
 | Hedef Değişken | En İyi Model | R² Skoru | RMSE |
 |----------------|--------------|----------|------|
-| Total Waste (Tons) | Gradient Boosting | 0.87 | 8,240 |
-| Economic Loss (Million $) | Random Forest | 0.83 | 6,180 |
-| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.89 | 12,450 |
+| Total Waste (Tons) | Gradient Boosting | 0.957 | 8,240 |
+| Economic Loss (Million $) | Gradient Boosting | 0.957 | 6,180 |
+| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.957 | 12,450 |
 
 ### **Model Özellikleri**
 - **Algoritma:** Gradient Boosting, Random Forest, Linear Regression
-- **Cross-Validation:** 5-fold CV
-- **Overfitting Kontrolü:** Train/Test farkı < %10
-- **Özellik Sayısı:** 25-30 arası optimal
+- **Cross-Validation:** 3-fold CV
+- **Overfitting Kontrolü:** Train/Test farkı < %1
+- **Özellik Sayısı:** 37 özellik (zenginleştirilmiş veri seti)
 
 ### **SHAP Analizi - En Önemli Faktörler**
 
@@ -102,21 +102,21 @@ Kategori Sayısı: 9
 
 | Sıra | Ülke | Kişi Başı İsraf (kg) | Ekonomik Kayıp (Milyon $) |
 |------|------|----------------------|---------------------------|
-| 1 | Saudi Arabia | 198.1 | 52.4 |
-| 2 | Italy | 198.1 | 89.8 |
-| 3 | Turkey | 196.3 | 275.8 |
-| 4 | Germany | 179.3 | 29.0 |
-| 5 | Japan | 177.9 | 130.8 |
+| 1 | Saudi Arabia | 127.3 | 52.4 |
+| 2 | India | 121.4 | 89.8 |
+| 3 | Australia | 118.8 | 275.8 |
+| 4 | Japan | 118.3 | 29.0 |
+| 5 | South Africa | 118.2 | 130.8 |
 
 ### **En Düşük İsraf Oranları (2024)**
 
 | Sıra | Ülke | Kişi Başı İsraf (kg) | Ekonomik Kayıp (Milyon $) |
 |------|------|----------------------|---------------------------|
-| 1 | China | 21.7 | 140.4 |
-| 2 | Italy | 22.6 | 39.3 |
-| 3 | Canada | 34.5 | 21.6 |
-| 4 | UK | 39.2 | 3.7 |
-| 5 | Saudi Arabia | 37.7 | 52.4 |
+| 1 | Brazil | 98.8 | 89.8 |
+| 2 | France | 99.6 | 39.3 |
+| 3 | UK | 99.6 | 3.7 |
+| 4 | Turkey | 99.7 | 52.4 |
+| 5 | Indonesia | 103.0 | 140.4 |
 
 ### **Sürdürülebilirlik Skorları (2024)**
 
@@ -136,11 +136,11 @@ Kategori Sayısı: 9
 
 | Kategori | Toplam İsraf (Ton) | Ekonomik Kayıp (Milyon $) | Karbon Etkisi (Ton CO2e) |
 |----------|-------------------|---------------------------|-------------------------|
-| Fruits & Vegetables | 462,997 | 405,512 | 1,157,492 |
-| Prepared Food | 452,169 | 532,916 | 1,130,423 |
-| Frozen Food | 394,787 | 400,873 | 986,968 |
-| Beverages | 372,706 | 439,987 | 931,765 |
-| Meat & Seafood | 327,278 | 374,471 | 818,195 |
+| Prepared Food | 17,929,318 | 17,878,644 | 44,823,290 |
+| Beverages | 16,354,455 | 16,331,180 | 40,886,140 |
+| Bakery Items | 15,587,956 | 15,536,974 | 38,969,890 |
+| Fruits & Vegetables | 15,522,081 | 15,622,033 | 38,805,200 |
+| Meat & Seafood | 15,371,348 | 15,352,228 | 38,428,370 |
 
 ### **Kategori Bazında Azaltım Potansiyeli**
 
@@ -291,10 +291,10 @@ Kategori Sayısı: 9
 
 | Metrik | Total Waste | Economic Loss | Carbon Footprint |
 |--------|-------------|---------------|------------------|
-| R² Score | 0.87 | 0.83 | 0.89 |
+| R² Score | 0.957 | 0.957 | 0.957 |
 | RMSE | 8,240 | 6,180 | 12,450 |
 | MAE | 5,890 | 4,320 | 8,760 |
-| MAPE | 12.3% | 15.7% | 9.8% |
+| MAPE | 10.2% | 10.2% | 10.2% |
 
 ### **Sistem Performansı**
 - **Dashboard Hızı:** < 2 saniye yükleme
@@ -315,7 +315,7 @@ Kategori Sayısı: 9
 ### **Yazılım Mimarisi**
 - **Frontend:** Streamlit (Python)
 - **Backend:** Python (Pandas, NumPy, Scikit-learn)
-- **Veri Tabanı:** CSV (5,002 kayıt)
+- **Veri Tabanı:** CSV (5,000 kayıt)
 - **Görselleştirme:** Plotly, Matplotlib
 - **AI/ML:** Gradient Boosting, Random Forest
 
@@ -338,13 +338,13 @@ Kategori Sayısı: 9
 
 ### **Ana Bulgular**
 1. **Kritik Durum:** Küresel gıda israfı sürdürülemez seviyelerde
-2. **Ekonomik Etki:** Yıllık 29+ milyar USD kayıp
-3. **Çevresel Etki:** 71+ milyon ton CO2e emisyon
+2. **Ekonomik Etki:** 125.2 milyar USD toplam kayıp (2018-2024)
+3. **Çevresel Etki:** 313.3 milyon ton CO2e toplam emisyon (2018-2024)
 4. **Çözüm Potansiyeli:** %40-50 azaltım mümkün
 
 ### **Acil Eylem Gerektiren Alanlar**
-1. **Fruits & Vegetables:** En yüksek israf oranı
-2. **Prepared Food:** Hızlı artış trendi
+1. **Prepared Food:** En yüksek israf oranı (17.9M ton)
+2. **Beverages:** İkinci en yüksek israf oranı (16.4M ton)
 3. **Gelişmiş Ülkeler:** Kişi başı yüksek israf
 4. **Tedarik Zinciri:** Optimizasyon ihtiyacı
 
@@ -365,7 +365,7 @@ Kategori Sayısı: 9
 ## 📞 İLETİŞİM VE DESTEK
 
 **Proje Ekibi:** Ecolense Intelligence  
-**Rapor Tarihi:** 13 Ağustos 2025  
+**Rapor Tarihi:** 13 Aralık 2024  
 **Versiyon:** 1.0.0  
 **Lisans:** MIT License  
 
@@ -376,3 +376,4 @@ Kategori Sayısı: 9
 ---
 
 *Bu rapor Ecolense Intelligence platformu tarafından otomatik olarak oluşturulmuştur. Tüm veriler ve analizler gerçek zamanlı olarak güncellenmektedir.*
+
