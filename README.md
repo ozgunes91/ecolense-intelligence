@@ -209,7 +209,7 @@ for col in numeric_cols:
 
 | **Test Grubu** | **Kombinasyon** | **Sonuç** |
 |:---------------|:----------------|:----------|
-| **Model Türleri** | 5 farklı model | Gradient Boosting kazandı |
+| **Model Türleri** | 3 farklı model | Gradient Boosting kazandı |
 | **Özellik Grupları** | 6 farklı grup | Core + Efficiency en iyi |
 | **Toplam Test** | 27 kombinasyon | %96.0 başarı |
 
@@ -217,9 +217,9 @@ for col in numeric_cols:
 
 | **Hedef** | **Model** | **Özellik Grubu** | **Test R²** | **Aşırı Öğrenme** |
 |:----------|:----------|:------------------|:------------|:----------------|
-| **Total Waste** | Gradient Boosting | Core + Efficiency | 0.961 | 0.007 |
-| **Economic Loss** | Gradient Boosting | Core + Trends | 0.959 | 0.009 |
-| **Carbon Footprint** | Gradient Boosting | Core + Efficiency | 0.961 | 0.007 |
+| **Total Waste** | Gradient Boosting | Core + Efficiency | 0.960 | 0.008 |
+| **Economic Loss** | Gradient Boosting | Core + Trends | 0.955 | 0.012 |
+| **Carbon Footprint** | Gradient Boosting | Core + Efficiency | 0.960 | 0.008 |
 
 ---
 

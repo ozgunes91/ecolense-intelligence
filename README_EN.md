@@ -209,7 +209,7 @@ for col in numeric_cols:
 
 | **Test Group** | **Combination** | **Result** |
 |:---------------|:----------------|:----------|
-| **Model Types** | 5 different models | Gradient Boosting won |
+| **Model Types** | 3 different models | Gradient Boosting won |
 | **Feature Groups** | 6 different groups | Core + Efficiency best |
 | **Total Tests** | 27 combinations | 96.0% success |
 
@@ -217,9 +217,9 @@ for col in numeric_cols:
 
 | **Target** | **Model** | **Feature Group** | **Test R²** | **Overfitting** |
 |:----------|:----------|:------------------|:------------|:----------------|
-| **Total Waste** | Gradient Boosting | Core + Efficiency | 0.961 | 0.007 |
-| **Economic Loss** | Gradient Boosting | Core + Trends | 0.959 | 0.009 |
-| **Carbon Footprint** | Gradient Boosting | Core + Efficiency | 0.961 | 0.007 |
+| **Total Waste** | Gradient Boosting | Core + Efficiency | 0.960 | 0.008 |
+| **Economic Loss** | Gradient Boosting | Core + Trends | 0.955 | 0.012 |
+| **Carbon Footprint** | Gradient Boosting | Core + Efficiency | 0.960 | 0.008 |
 
 ---
 
