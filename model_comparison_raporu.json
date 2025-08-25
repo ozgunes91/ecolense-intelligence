@@ -1,0 +1,85 @@
+{
+  "model_comparison_summary": {
+    "total_models": 3,
+    "total_targets": 3,
+    "best_overall_model": "GradientBoosting",
+    "comparison_date": "2025-08-13",
+    "analysis_notes": "GradientBoosting tüm hedef değişkenlerde en iyi performansı gösterdi"
+  },
+  "model_performance_ranking": {
+    "Total Waste (Tons)": {
+      "1": "Gradient Boosting",
+      "2": "Gradient Boosting",
+      "3": "Gradient Boosting"
+    },
+    "Economic Loss (Million $)": {
+      "1": "Gradient Boosting",
+      "2": "Gradient Boosting",
+      "3": "Gradient Boosting"
+    },
+    "Carbon_Footprint_kgCO2e": {
+      "1": "Gradient Boosting",
+      "2": "Gradient Boosting",
+      "3": "Gradient Boosting"
+    }
+  },
+  "detailed_analysis": {
+    "Linear Regression": {
+      "avg_test_r2": 0.8793945650880151,
+      "avg_cv_r2": 0.8712112131011263,
+      "avg_overfitting_score": 0.007623457669531469,
+      "strengths": [
+        "Basit ve hızlı",
+        "Yorumlanabilir",
+        "Düşük overfitting"
+      ],
+      "weaknesses": [
+        "Karmaşık ilişkileri yakalayamaz",
+        "Düşük performans",
+        "Non-linear pattern'leri kaçırır"
+      ]
+    },
+    "Random Forest": {
+      "avg_test_r2": 0.9376108677918769,
+      "avg_cv_r2": 0.9339961202289566,
+      "avg_overfitting_score": 0.006015978894735578,
+      "strengths": [
+        "İyi genelleme",
+        "Feature importance",
+        "Hızlı eğitim"
+      ],
+      "weaknesses": [
+        "Overfitting riski",
+        "Büyük veri setlerinde yavaş",
+        "Karmaşık yapı"
+      ]
+    },
+    "Gradient Boosting": {
+      "avg_test_r2": 0.9570691907421848,
+      "avg_cv_r2": 0.9562949503882664,
+      "avg_overfitting_score": 0.00963272188168869,
+      "strengths": [
+        "En yüksek R² skorları",
+        "Düşük overfitting",
+        "Tutarlı performans"
+      ],
+      "weaknesses": [
+        "Yavaş eğitim",
+        "Hyperparameter hassasiyeti",
+        "Karmaşık yorumlama"
+      ]
+    }
+  },
+  "recommendations": {
+    "primary_model": "GradientBoosting",
+    "secondary_model": "RandomForest",
+    "baseline_model": "LinearRegression",
+    "deployment_strategy": "GradientBoosting'i production'da kullan, RandomForest'i backup olarak tut",
+    "future_improvements": [
+      "Hyperparameter tuning",
+      "Ensemble methods",
+      "Feature engineering",
+      "Cross-validation optimization"
+    ]
+  }
+}
