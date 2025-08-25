@@ -135,7 +135,7 @@ EcolenseIntelligence/
 ## 📞 Contact
 
 **Project Developer:** Özge Güneş  
-**Email:** [Your Email]  
+**Email:** ozgekayagunes@gmail.com  
 **Date:** August 2025  
 **Institution:** Miuul Data Scientist Bootcamp  
 
