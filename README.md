@@ -15,7 +15,7 @@
 
 | 🎯 **Amaç** | 📈 **Kapsam** | 🤖 **Teknoloji** | 📊 **Performans** |
 |:-------------:|:-------------:|:----------------:|:-----------------:|
-| Küresel gıda atığı analizi | 20 ülke, 8 kategori | Gradient Boosting | %96.0 Test R² |
+| Küresel gıda atığı analizi | 20 ülke, 8 kategori | Gradient Boosting | %95.7 Test R² |
 | Sürdürülebilirlik skorlama | 5000+ gözlem | SHAP Analizi | %0.8 Aşırı öğrenme |
 | Politika önerileri | 37 değişken | Model Karşılaştırma | 22 Modül |
 
@@ -185,8 +185,8 @@ for col in numeric_cols:
 
 | **Metrik** | **Değer** | **Durum** |
 |:-----------|:----------|:----------|
-| **Test R² Skoru** | **%96.0** | 🟢 Mükemmel |
-| **Çapraz Doğrulama R²** | **%95.8** | 🟢 Mükemmel |
+| **Test R² Skoru** | **%95.7** | 🟢 Mükemmel |
+| **Çapraz Doğrulama R²** | **%95.7** | 🟢 Mükemmel |
 | **Aşırı Öğrenme Farkı** | **%0.8** | 🟢 Çok İyi |
 | **MAPE** | **%10.2** | 🟡 İyi |
 
@@ -211,7 +211,7 @@ for col in numeric_cols:
 |:---------------|:----------------|:----------|
 | **Model Türleri** | 5 farklı model | Gradient Boosting kazandı |
 | **Özellik Grupları** | 6 farklı grup | Core + Efficiency en iyi |
-| **Toplam Test** | 27 kombinasyon | %96.0 başarı |
+| **Toplam Test** | 27 kombinasyon | %95.7 başarı |
 
 ### 🏆 **En İyi Performans Gösteren Kombinasyonlar**
 
@@ -381,9 +381,9 @@ for col in numeric_cols:
 ### 🏆 **Kritik İçgörüler**
 
 #### **1. Model Performansı**
-- **%96.0 Test R²:** Mükemmel tahmin gücü
+- **%95.7 Test R²:** Mükemmel tahmin gücü
 - **%0.8 Aşırı Öğrenme Farkı:** Çok iyi genelleme
-- **%95.8 CV R²:** Kararlı performans
+- **%95.7 CV R²:** Kararlı performans
 
 #### **2. Veri Kalitesi**
 - **5000+ gözlem:** Kapsamlı veri seti

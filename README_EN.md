@@ -15,7 +15,7 @@
 
 | 🎯 **Objective** | 📈 **Scope** | 🤖 **Technology** | 📊 **Performance** |
 |:-------------:|:-------------:|:----------------:|:-----------------:|
-| Global food waste analysis | 20 countries, 8 categories | Gradient Boosting | 96.0% Test R² |
+| Global food waste analysis | 20 countries, 8 categories | Gradient Boosting | 95.7% Test R² |
 | Sustainability scoring | 5000+ observations | SHAP Analysis | 0.8% Overfitting |
 | Policy recommendations | 37 variables | Model Comparison | 22 Modules |
 
@@ -185,8 +185,8 @@ for col in numeric_cols:
 
 | **Metric** | **Value** | **Status** |
 |:-----------|:----------|:----------|
-| **Test R² Score** | **96.0%** | 🟢 Excellent |
-| **Cross-Validation R²** | **95.8%** | 🟢 Excellent |
+| **Test R² Score** | **95.7%** | 🟢 Excellent |
+| **Cross-Validation R²** | **95.7%** | 🟢 Excellent |
 | **Overfitting Gap** | **0.8%** | 🟢 Very Good |
 | **MAPE** | **10.2%** | 🟡 Good |
 
@@ -211,7 +211,7 @@ for col in numeric_cols:
 |:---------------|:----------------|:----------|
 | **Model Types** | 5 different models | Gradient Boosting won |
 | **Feature Groups** | 6 different groups | Core + Efficiency best |
-| **Total Tests** | 27 combinations | 96.0% success |
+| **Total Tests** | 27 combinations | 95.7% success |
 
 ### 🏆 **Best Performing Combinations**
 
@@ -381,9 +381,9 @@ for col in numeric_cols:
 ### 🏆 **Critical Insights**
 
 #### **1. Model Performance**
-- **96.0% Test R²:** Excellent prediction power
+- **95.7% Test R²:** Excellent prediction power
 - **0.8% Overfitting Gap:** Very good generalization
-- **95.8% CV R²:** Stable performance
+- **95.7% CV R²:** Stable performance
 
 #### **2. Data Quality**
 - **5000+ observations:** Comprehensive dataset
