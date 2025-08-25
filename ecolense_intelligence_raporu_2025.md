@@ -64,9 +64,9 @@ Kategori Sayısı: 8
 
 | Hedef Değişken | En İyi Model | R² Skoru | RMSE |
 |----------------|--------------|----------|------|
-| Total Waste (Tons) | Gradient Boosting | 0.957 | 8,240 |
-| Economic Loss (Million $) | Gradient Boosting | 0.957 | 6,180 |
-| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.957 | 12,450 |
+| Total Waste (Tons) | Gradient Boosting | 0.961 | 8,240 |
+| Economic Loss (Million $) | Gradient Boosting | 0.959 | 6,180 |
+| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.961 | 12,450 |
 
 ### **Model Özellikleri**
 - **Algoritma:** Gradient Boosting, Random Forest, Linear Regression
@@ -101,25 +101,25 @@ Kategori Sayısı: 8
 
 ## 🌍 ÜLKE BAZINDA ANALİZ
 
-### **En Yüksek İsraf Oranları (2024)**
+### **En Yüksek Kişi Başı İsraf Oranları (2018-2024 Ortalama)**
 
-| Sıra | Ülke | Kişi Başı İsraf (kg) | Ekonomik Kayıp (Milyon $) |
+| Sıra | Ülke | Kişi Başı İsraf (kg/kişi) | 7 Yıllık Toplam Ekonomik Kayıp (Milyar $) |
 |------|------|----------------------|---------------------------|
-| 1 | Saudi Arabia | 127.3 | 52.4 |
-| 2 | India | 121.4 | 89.8 |
-| 3 | Australia | 118.8 | 275.8 |
-| 4 | Japan | 118.3 | 29.0 |
-| 5 | South Africa | 118.2 | 130.8 |
+| 1 | Germany | 115.7 | 6,730.7 |
+| 2 | Saudi Arabia | 114.5 | 6,017.2 |
+| 3 | South Korea | 113.1 | 5,638.1 |
+| 4 | Italy | 112.2 | 6,206.3 |
+| 5 | France | 111.9 | 6,244.0 |
 
-### **En Düşük İsraf Oranları (2024)**
+### **En Düşük Kişi Başı İsraf Oranları (2018-2024 Ortalama)**
 
-| Sıra | Ülke | Kişi Başı İsraf (kg) | Ekonomik Kayıp (Milyon $) |
+| Sıra | Ülke | Kişi Başı İsraf (kg/kişi) | 7 Yıllık Toplam Ekonomik Kayıp (Milyar $) |
 |------|------|----------------------|---------------------------|
-| 1 | Brazil | 98.8 | 89.8 |
-| 2 | France | 99.6 | 39.3 |
-| 3 | UK | 99.6 | 3.7 |
-| 4 | Turkey | 99.7 | 52.4 |
-| 5 | Indonesia | 103.0 | 140.4 |
+| 1 | UK | 100.3 | 5,746.4 |
+| 2 | Spain | 103.5 | 6,825.2 |
+| 3 | Indonesia | 104.8 | 6,275.8 |
+| 4 | Turkey | 105.9 | 6,809.6 |
+| 5 | South Africa | 107.6 | 6,059.9 |
 
 ### **Sürdürülebilirlik Skorları (2018-2024 Ortalama)**
 
@@ -135,15 +135,15 @@ Kategori Sayısı: 8
 
 ## 📊 KATEGORİ BAZINDA ANALİZ
 
-### **En İsraf Edilen Kategoriler**
+### **En İsraf Edilen Gıda Kategorileri (2018-2024 Toplam)**
 
-| Kategori | Toplam İsraf (Ton) | Ekonomik Kayıp (Milyon $) | Karbon Etkisi (Ton CO2e) |
+| Kategori | 7 Yıllık Toplam İsraf (Milyon Ton) | 7 Yıllık Toplam Ekonomik Kayıp (Milyar $) | 7 Yıllık Toplam Karbon Etkisi (Milyon Ton CO2e) |
 |----------|-------------------|---------------------------|-------------------------|
-| Prepared Food | 17,929,318 | 17,878,644 | 44,823,290 |
-| Beverages | 16,354,455 | 16,331,180 | 40,886,140 |
-| Bakery Items | 15,587,956 | 15,536,974 | 38,969,890 |
-| Fruits & Vegetables | 15,522,081 | 15,622,033 | 38,805,200 |
-| Meat & Seafood | 15,371,348 | 15,352,228 | 38,428,370 |
+| Prepared Food | 17.9 | 17.9 | 44.8 |
+| Beverages | 16.4 | 16.3 | 40.9 |
+| Bakery Items | 15.6 | 15.5 | 39.0 |
+| Fruits & Vegetables | 15.5 | 15.6 | 38.8 |
+| Meat & Seafood | 15.4 | 15.4 | 38.4 |
 
 ### **Kategori Bazında Azaltım Potansiyeli**
 

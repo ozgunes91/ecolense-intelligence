@@ -64,9 +64,9 @@ Number of Features: 37
 
 | Target Variable | Best Model | R² Score | RMSE |
 |----------------|------------|----------|------|
-| Total Waste (Tons) | Gradient Boosting | 0.957 | 8,240 |
-| Economic Loss (Million $) | Gradient Boosting | 0.957 | 6,180 |
-| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.957 | 12,450 |
+| Total Waste (Tons) | Gradient Boosting | 0.961 | 8,240 |
+| Economic Loss (Million $) | Gradient Boosting | 0.959 | 6,180 |
+| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.961 | 12,450 |
 
 ### **Model Characteristics**
 - **Algorithms:** Gradient Boosting, Random Forest, Linear Regression
@@ -101,25 +101,25 @@ Number of Features: 37
 
 ## 🌍 COUNTRY-BASED ANALYSIS
 
-### **Highest Waste Rates (2024)**
+### **Highest Per Capita Waste Rates (2018-2024 Average)**
 
-| Rank | Country | Per Capita Waste (kg) | Economic Loss (Million $) |
+| Rank | Country | Per Capita Waste (kg/person) | 7-Year Total Economic Loss (Billion $) |
 |------|---------|----------------------|---------------------------|
-| 1 | Saudi Arabia | 127.3 | 52.4 |
-| 2 | India | 121.4 | 89.8 |
-| 3 | Australia | 118.8 | 275.8 |
-| 4 | Japan | 118.3 | 29.0 |
-| 5 | South Africa | 118.2 | 130.8 |
+| 1 | Germany | 115.7 | 6,730.7 |
+| 2 | Saudi Arabia | 114.5 | 6,017.2 |
+| 3 | South Korea | 113.1 | 5,638.1 |
+| 4 | Italy | 112.2 | 6,206.3 |
+| 5 | France | 111.9 | 6,244.0 |
 
-### **Lowest Waste Rates (2024)**
+### **Lowest Per Capita Waste Rates (2018-2024 Average)**
 
-| Rank | Country | Per Capita Waste (kg) | Economic Loss (Million $) |
+| Rank | Country | Per Capita Waste (kg/person) | 7-Year Total Economic Loss (Billion $) |
 |------|---------|----------------------|---------------------------|
-| 1 | Brazil | 98.8 | 89.8 |
-| 2 | France | 99.6 | 39.3 |
-| 3 | UK | 99.6 | 3.7 |
-| 4 | Turkey | 99.7 | 52.4 |
-| 5 | Indonesia | 103.0 | 140.4 |
+| 1 | UK | 100.3 | 5,746.4 |
+| 2 | Spain | 103.5 | 6,825.2 |
+| 3 | Indonesia | 104.8 | 6,275.8 |
+| 4 | Turkey | 105.9 | 6,809.6 |
+| 5 | South Africa | 107.6 | 6,059.9 |
 
 ### **Sustainability Scores (2018-2024 Average)**
 
@@ -135,15 +135,15 @@ Number of Features: 37
 
 ## 📊 CATEGORY-BASED ANALYSIS
 
-### **Most Wasted Categories**
+### **Most Wasted Food Categories (2018-2024 Total)**
 
-| Category | Total Waste (Tons) | Economic Loss (Million $) | Carbon Impact (Tons CO2e) |
+| Category | 7-Year Total Waste (Million Tons) | 7-Year Total Economic Loss (Billion $) | 7-Year Total Carbon Impact (Million Tons CO2e) |
 |----------|-------------------|---------------------------|---------------------------|
-| Prepared Food | 17,929,318 | 17,878,644 | 44,823,290 |
-| Beverages | 16,354,455 | 16,331,180 | 40,886,140 |
-| Fruits & Vegetables | 15,522,081 | 15,622,033 | 38,805,200 |
-| Bakery Items | 15,587,956 | 15,536,974 | 38,969,890 |
-| Meat & Seafood | 15,371,348 | 15,352,228 | 38,428,370 |
+| Prepared Food | 17.9 | 17.9 | 44.8 |
+| Beverages | 16.4 | 16.3 | 40.9 |
+| Bakery Items | 15.6 | 15.5 | 39.0 |
+| Fruits & Vegetables | 15.5 | 15.6 | 38.8 |
+| Meat & Seafood | 15.4 | 15.4 | 38.4 |
 
 ### **Category-Based Reduction Potential**
 
