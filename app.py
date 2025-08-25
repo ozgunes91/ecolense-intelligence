@@ -1192,8 +1192,8 @@ def load_prof_ts_importance(target_norm: str, version: float = 0.0) -> Optional[
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': "shap_importance_Economic Loss (Million $).csv",
-            'total_waste_tons': "shap_importance_Total Waste (Tons).csv",
+            'economic_loss_million': "shap_importance_Economic_Loss_Million_USD.csv",
+            'total_waste_tons': "shap_importance_Total_Waste_Tons.csv",
             'carbon_footprint_kgco2e': "shap_importance_Carbon_Footprint_kgCO2e.csv",
             'sustainability_score': "shap_importance_Sustainability_Score.csv"
         }
@@ -1226,8 +1226,8 @@ def load_prof_ts_shap_mean(target_norm: str, version: float = 0.0) -> Optional[p
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': "shap_importance_Economic Loss (Million $).csv",
-            'total_waste_tons': "shap_importance_Total Waste (Tons).csv",
+            'economic_loss_million': "shap_importance_Economic_Loss_Million_USD.csv",
+            'total_waste_tons': "shap_importance_Total_Waste_Tons.csv",
             'carbon_footprint_kgco2e': "shap_importance_Carbon_Footprint_kgCO2e.csv",
             'sustainability_score': "shap_importance_Sustainability_Score.csv"
         }
