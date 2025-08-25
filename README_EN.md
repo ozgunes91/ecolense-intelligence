@@ -15,7 +15,7 @@
 
 | 🎯 **Objective** | 📈 **Scope** | 🤖 **Technology** | 📊 **Performance** |
 |:-------------:|:-------------:|:----------------:|:-----------------:|
-| Global food waste analysis | 20 countries, 8 categories | Gradient Boosting | 95.7% Test R² |
+| Global food waste analysis | 20 countries, 8 categories | Gradient Boosting | 96.0% Test R² |
 | Sustainability scoring | 5000+ observations | SHAP Analysis | 0.8% Overfitting |
 | Policy recommendations | 37 variables | Model Comparison | 22 Modules |
 
@@ -185,8 +185,8 @@ for col in numeric_cols:
 
 | **Metric** | **Value** | **Status** |
 |:-----------|:----------|:----------|
-| **Test R² Score** | **95.7%** | 🟢 Excellent |
-| **Cross-Validation R²** | **95.7%** | 🟢 Excellent |
+| **Test R² Score** | **96.0%** | 🟢 Excellent |
+| **Cross-Validation R²** | **95.8%** | 🟢 Excellent |
 | **Overfitting Gap** | **0.8%** | 🟢 Very Good |
 | **MAPE** | **10.2%** | 🟡 Good |
 
@@ -211,7 +211,7 @@ for col in numeric_cols:
 |:---------------|:----------------|:----------|
 | **Model Types** | 5 different models | Gradient Boosting won |
 | **Feature Groups** | 6 different groups | Core + Efficiency best |
-| **Total Tests** | 27 combinations | 95.7% success |
+| **Total Tests** | 27 combinations | 96.0% success |
 
 ### 🏆 **Best Performing Combinations**
 
@@ -231,9 +231,9 @@ for col in numeric_cols:
 
 | **Rank** | **Country** | **Sustainability Score** | **Key Feature** |
 |:--------:|:---------|:---------------------------|:----------------------|
-| **🥇** | **UK** | **45.6** | Balanced waste management |
-| **🥈** | **Spain** | **44.3** | Efficient food management |
-| **🥉** | **Russia** | **43.7** | Medium sustainability level |
+| **🥇** | **UK** | **45.59** | Balanced waste management |
+| **🥈** | **Spain** | **44.30** | Efficient food management |
+| **🥉** | **Russia** | **43.70** | Medium sustainability level |
 
 </div>
 
@@ -282,37 +282,38 @@ for col in numeric_cols:
 
 ### 📊 **Most Important Features (Top 5)**
 
-#### **Total Waste (Tons) Target**
+#### **Total Waste (Tons) Target (SHAP Analysis)**
 | **Feature** | **SHAP Importance Score** | **Impact** |
 |:------------|:-------------------|:---------|
-| **Category_Waste_Share** | **0.911** | 🟢 Very High |
-| **Population (Million)** | **0.020** | 🟡 Medium |
-| **Category_Economic_Share** | **0.019** | 🟡 Medium |
-| **Waste_Efficiency** | **0.013** | 🟡 Medium |
-| **Waste_Per_Capita_kg** | **0.012** | 🟡 Medium |
+| **Category_Waste_Share** | **62.6%** | 🟢 Very High |
+| **Population (Million)** | **10.4%** | 🟢 High |
+| **Waste_Efficiency** | **8.8%** | 🟡 Medium |
+| **Carbon_Per_Capita_kgCO2e** | **7.2%** | 🟡 Medium |
+| **Waste_Trend** | **2.3%** | 🟡 Low |
 
-#### **Economic Loss (Million $) Target**
+#### **Economic Loss (Million $) Target (SHAP Analysis)**
 | **Feature** | **SHAP Importance Score** | **Impact** |
 |:------------|:-------------------|:---------|
-| **Category_Economic_Share** | **0.919** | 🟢 Very High |
-| **Population (Million)** | **0.018** | 🟡 Medium |
-| **Economic_Loss_Per_Capita_USD** | **0.015** | 🟡 Medium |
-| **GDP_Per_Capita_Proxy** | **0.014** | 🟡 Medium |
-| **Economic_Intensity** | **0.011** | 🟡 Medium |
+| **Category_Economic_Share** | **62.4%** | 🟢 Very High |
+| **Population (Million)** | **10.2%** | 🟢 High |
+| **Economic_Loss_Per_Capita_USD** | **7.7%** | 🟡 Medium |
+| **GDP_Per_Capita_Proxy** | **7.4%** | 🟡 Medium |
+| **Economic_Intensity** | **2.6%** | 🟡 Low |
 
-#### **Carbon_Footprint_kgCO2e Target**
+#### **Carbon_Footprint_kgCO2e Target (SHAP Analysis)**
 | **Feature** | **SHAP Importance Score** | **Impact** |
 |:------------|:-------------------|:---------|
-| **Category_Waste_Share** | **0.911** | 🟢 Very High |
-| **Population (Million)** | **0.020** | 🟡 Medium |
-| **Category_Economic_Share** | **0.019** | 🟡 Medium |
-| **Waste_Efficiency** | **0.013** | 🟡 Medium |
-| **Waste_Per_Capita_kg** | **0.012** | 🟡 Medium |
+| **Category_Waste_Share** | **62.6%** | 🟢 Very High |
+| **Population (Million)** | **10.4%** | 🟢 High |
+| **Waste_Efficiency** | **8.7%** | 🟡 Medium |
+| **Carbon_Per_Capita_kgCO2e** | **7.3%** | 🟡 Medium |
+| **Waste_Trend** | **2.3%** | 🟡 Low |
 
-### 🔍 **Pandemic Impact SHAP Analysis**
-- **Pandemic_Indicator:** 15-20% impact on all targets
+### 🔍 **Pandemic Impact Analysis**
+- **Is_Pandemic_Year:** 0.2% impact (detected in SHAP analysis)
 - **Year_Trend:** Time-based increase trend
-- **Seasonal_Features:** Seasonal variations
+- **Is_Post_Pandemic:** 0.02% impact (detected in SHAP analysis)
+- **Pandemic impact is similar across all targets (0.1-0.3% range)**
 
 ---
 
@@ -381,9 +382,9 @@ for col in numeric_cols:
 ### 🏆 **Critical Insights**
 
 #### **1. Model Performance**
-- **95.7% Test R²:** Excellent prediction power
+- **96.0% Test R²:** Excellent prediction power
 - **0.8% Overfitting Gap:** Very good generalization
-- **95.7% CV R²:** Stable performance
+- **95.8% CV R²:** Stable performance
 
 #### **2. Data Quality**
 - **5000+ observations:** Comprehensive dataset

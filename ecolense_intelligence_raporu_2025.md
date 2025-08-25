@@ -76,23 +76,26 @@ Kategori Sayısı: 8
 
 ### **SHAP Analizi - En Önemli Faktörler**
 
-#### **Atık Miktarı İçin:**
-1. **Population (Million)** - %28.5 etki
-2. **Waste_Per_Capita_kg** - %22.3 etki
-3. **Years_From_2018** - %15.7 etki
-4. **GDP_Per_Capita_Proxy** - %12.1 etki
+#### **Total Waste (Tons) İçin (SHAP Analizi):**
+1. **Category_Waste_Share** - %62.6 etki
+2. **Population (Million)** - %10.4 etki
+3. **Waste_Efficiency** - %8.8 etki
+4. **Carbon_Per_Capita_kgCO2e** - %7.2 etki
+5. **Waste_Trend** - %2.3 etki
 
-#### **Ekonomik Kayıp İçin:**
-1. **Economic_Loss_Per_Capita_USD** - %31.2 etki
-2. **Population (Million)** - %24.8 etki
-3. **Waste_Efficiency** - %18.5 etki
-4. **Category_Economic_Share** - %14.3 etki
+#### **Economic Loss (Million $) İçin (SHAP Analizi):**
+1. **Category_Economic_Share** - %62.4 etki
+2. **Population (Million)** - %10.2 etki
+3. **Economic_Loss_Per_Capita_USD** - %7.7 etki
+4. **GDP_Per_Capita_Proxy** - %7.4 etki
+5. **Economic_Intensity** - %2.6 etki
 
-#### **Karbon Ayak İzi İçin:**
-1. **Carbon_Footprint_kgCO2e** - %35.1 etki
-2. **Population (Million)** - %26.4 etki
-3. **Material_Footprint_Per_Capita** - %19.2 etki
-4. **Waste_Per_Capita_kg** - %16.8 etki
+#### **Carbon_Footprint_kgCO2e İçin (SHAP Analizi):**
+1. **Category_Waste_Share** - %62.6 etki
+2. **Population (Million)** - %10.4 etki
+3. **Waste_Efficiency** - %8.7 etki
+4. **Carbon_Per_Capita_kgCO2e** - %7.3 etki
+5. **Waste_Trend** - %2.3 etki
 
 ---
 

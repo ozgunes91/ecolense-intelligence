@@ -15,7 +15,7 @@
 
 | 🎯 **Amaç** | 📈 **Kapsam** | 🤖 **Teknoloji** | 📊 **Performans** |
 |:-------------:|:-------------:|:----------------:|:-----------------:|
-| Küresel gıda atığı analizi | 20 ülke, 8 kategori | Gradient Boosting | %95.7 Test R² |
+| Küresel gıda atığı analizi | 20 ülke, 8 kategori | Gradient Boosting | %96.0 Test R² |
 | Sürdürülebilirlik skorlama | 5000+ gözlem | SHAP Analizi | %0.8 Aşırı öğrenme |
 | Politika önerileri | 37 değişken | Model Karşılaştırma | 22 Modül |
 
@@ -185,8 +185,8 @@ for col in numeric_cols:
 
 | **Metrik** | **Değer** | **Durum** |
 |:-----------|:----------|:----------|
-| **Test R² Skoru** | **%95.7** | 🟢 Mükemmel |
-| **Çapraz Doğrulama R²** | **%95.7** | 🟢 Mükemmel |
+| **Test R² Skoru** | **%96.0** | 🟢 Mükemmel |
+| **Çapraz Doğrulama R²** | **%95.8** | 🟢 Mükemmel |
 | **Aşırı Öğrenme Farkı** | **%0.8** | 🟢 Çok İyi |
 | **MAPE** | **%10.2** | 🟡 İyi |
 
@@ -211,7 +211,7 @@ for col in numeric_cols:
 |:---------------|:----------------|:----------|
 | **Model Türleri** | 5 farklı model | Gradient Boosting kazandı |
 | **Özellik Grupları** | 6 farklı grup | Core + Efficiency en iyi |
-| **Toplam Test** | 27 kombinasyon | %95.7 başarı |
+| **Toplam Test** | 27 kombinasyon | %96.0 başarı |
 
 ### 🏆 **En İyi Performans Gösteren Kombinasyonlar**
 
@@ -231,9 +231,9 @@ for col in numeric_cols:
 
 | **Sıra** | **Ülke** | **Sürdürülebilirlik Skoru** | **Ana Özellik** |
 |:--------:|:---------|:---------------------------|:----------------------|
-| **🥇** | **UK** | **45.6** | Dengeli atık yönetimi |
-| **🥈** | **Spain** | **44.3** | Verimli gıda yönetimi |
-| **🥉** | **Russia** | **43.7** | Orta sürdürülebilirlik seviyesi |
+| **🥇** | **UK** | **45.59** | Dengeli atık yönetimi |
+| **🥈** | **Spain** | **44.30** | Verimli gıda yönetimi |
+| **🥉** | **Russia** | **43.70** | Orta sürdürülebilirlik seviyesi |
 
 </div>
 
@@ -282,37 +282,38 @@ for col in numeric_cols:
 
 ### 📊 **En Önemli Özellikler (İlk 5)**
 
-#### **Total Waste (Tons) Hedefi**
+#### **Total Waste (Tons) Hedefi (SHAP Analizi)**
 | **Özellik** | **SHAP Önem Skoru** | **Etki** |
 |:------------|:-------------------|:---------|
-| **Category_Waste_Share** | **0.911** | 🟢 Çok Yüksek |
-| **Population (Million)** | **0.020** | 🟡 Orta |
-| **Category_Economic_Share** | **0.019** | 🟡 Orta |
-| **Waste_Efficiency** | **0.013** | 🟡 Orta |
-| **Waste_Per_Capita_kg** | **0.012** | 🟡 Orta |
+| **Category_Waste_Share** | **%62.6** | 🟢 Çok Yüksek |
+| **Population (Million)** | **%10.4** | 🟢 Yüksek |
+| **Waste_Efficiency** | **%8.8** | 🟡 Orta |
+| **Carbon_Per_Capita_kgCO2e** | **%7.2** | 🟡 Orta |
+| **Waste_Trend** | **%2.3** | 🟡 Düşük |
 
-#### **Economic Loss (Million $) Hedefi**
+#### **Economic Loss (Million $) Hedefi (SHAP Analizi)**
 | **Özellik** | **SHAP Önem Skoru** | **Etki** |
 |:------------|:-------------------|:---------|
-| **Category_Economic_Share** | **0.919** | 🟢 Çok Yüksek |
-| **Population (Million)** | **0.018** | 🟡 Orta |
-| **Economic_Loss_Per_Capita_USD** | **0.015** | 🟡 Orta |
-| **GDP_Per_Capita_Proxy** | **0.014** | 🟡 Orta |
-| **Economic_Intensity** | **0.011** | 🟡 Orta |
+| **Category_Economic_Share** | **%62.4** | 🟢 Çok Yüksek |
+| **Population (Million)** | **%10.2** | 🟢 Yüksek |
+| **Economic_Loss_Per_Capita_USD** | **%7.7** | 🟡 Orta |
+| **GDP_Per_Capita_Proxy** | **%7.4** | 🟡 Orta |
+| **Economic_Intensity** | **%2.6** | 🟡 Düşük |
 
-#### **Carbon_Footprint_kgCO2e Hedefi**
+#### **Carbon_Footprint_kgCO2e Hedefi (SHAP Analizi)**
 | **Özellik** | **SHAP Önem Skoru** | **Etki** |
 |:------------|:-------------------|:---------|
-| **Category_Waste_Share** | **0.911** | 🟢 Çok Yüksek |
-| **Population (Million)** | **0.020** | 🟡 Orta |
-| **Category_Economic_Share** | **0.019** | 🟡 Orta |
-| **Waste_Efficiency** | **0.013** | 🟡 Orta |
-| **Waste_Per_Capita_kg** | **0.012** | 🟡 Orta |
+| **Category_Waste_Share** | **%62.6** | 🟢 Çok Yüksek |
+| **Population (Million)** | **%10.4** | 🟢 Yüksek |
+| **Waste_Efficiency** | **%8.7** | 🟡 Orta |
+| **Carbon_Per_Capita_kgCO2e** | **%7.3** | 🟡 Orta |
+| **Waste_Trend** | **%2.3** | 🟡 Düşük |
 
-### 🔍 **Pandemi Etki SHAP Analizi**
-- **Pandemic_Indicator:** Tüm hedeflerde %15-20 etki
+### 🔍 **Pandemi Etki Analizi**
+- **Is_Pandemic_Year:** %0.2 etki (SHAP analizinde tespit edildi)
 - **Year_Trend:** Zaman tabanlı artış trendi
-- **Seasonal_Features:** Mevsimsel değişimler
+- **Is_Post_Pandemic:** %0.02 etki (SHAP analizinde tespit edildi)
+- **Pandemi etkisi tüm hedeflerde benzer düzeyde (%0.1-0.3 arası)**
 
 ---
 
@@ -381,9 +382,9 @@ for col in numeric_cols:
 ### 🏆 **Kritik İçgörüler**
 
 #### **1. Model Performansı**
-- **%95.7 Test R²:** Mükemmel tahmin gücü
+- **%96.0 Test R²:** Mükemmel tahmin gücü
 - **%0.8 Aşırı Öğrenme Farkı:** Çok iyi genelleme
-- **%95.7 CV R²:** Kararlı performans
+- **%95.8 CV R²:** Kararlı performans
 
 #### **2. Veri Kalitesi**
 - **5000+ gözlem:** Kapsamlı veri seti

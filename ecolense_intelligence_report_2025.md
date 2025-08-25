@@ -76,23 +76,26 @@ Number of Features: 37
 
 ### **SHAP Analysis - Most Important Factors**
 
-#### **For Waste Amount:**
-1. **Population (Million)** - 28.5% impact
-2. **Waste_Per_Capita_kg** - 22.3% impact
-3. **Years_From_2018** - 15.7% impact
-4. **GDP_Per_Capita_Proxy** - 12.1% impact
+#### **For Total Waste (Tons) (SHAP Analysis):**
+1. **Category_Waste_Share** - 62.6% impact
+2. **Population (Million)** - 10.4% impact
+3. **Waste_Efficiency** - 8.8% impact
+4. **Carbon_Per_Capita_kgCO2e** - 7.2% impact
+5. **Waste_Trend** - 2.3% impact
 
-#### **For Economic Loss:**
-1. **Economic_Loss_Per_Capita_USD** - 31.2% impact
-2. **Population (Million)** - 24.8% impact
-3. **Waste_Efficiency** - 18.5% impact
-4. **Category_Economic_Share** - 14.3% impact
+#### **For Economic Loss (Million $) (SHAP Analysis):**
+1. **Category_Economic_Share** - 62.4% impact
+2. **Population (Million)** - 10.2% impact
+3. **Economic_Loss_Per_Capita_USD** - 7.7% impact
+4. **GDP_Per_Capita_Proxy** - 7.4% impact
+5. **Economic_Intensity** - 2.6% impact
 
-#### **For Carbon Footprint:**
-1. **Carbon_Footprint_kgCO2e** - 35.1% impact
-2. **Population (Million)** - 26.4% impact
-3. **Material_Footprint_Per_Capita** - 19.2% impact
-4. **Waste_Per_Capita_kg** - 16.8% impact
+#### **For Carbon_Footprint_kgCO2e (SHAP Analysis):**
+1. **Category_Waste_Share** - 62.6% impact
+2. **Population (Million)** - 10.4% impact
+3. **Waste_Efficiency** - 8.7% impact
+4. **Carbon_Per_Capita_kgCO2e** - 7.3% impact
+5. **Waste_Trend** - 2.3% impact
 
 ---
 

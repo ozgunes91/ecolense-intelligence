@@ -13,6 +13,7 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 import json
 import warnings
+import shap
 warnings.filterwarnings('ignore')
 
 def load_and_prepare_data():
@@ -77,6 +78,39 @@ def evaluate_model(model, X_train, X_test, y_train, y_test, cv_folds=5):
         'mape': mape,
         'overfitting_score': overfitting_score
     }
+
+def perform_shap_analysis(model, X_train, X_test, feature_names, target_name):
+    """SHAP analizi yap ve sonuçları kaydet"""
+    try:
+        # SHAP explainer oluştur
+        explainer = shap.TreeExplainer(model)
+        
+        # Test seti için SHAP değerlerini hesapla
+        shap_values = explainer.shap_values(X_test)
+        
+        # Feature importance hesapla
+        feature_importance = np.abs(shap_values).mean(0)
+        
+        # DataFrame oluştur
+        shap_df = pd.DataFrame({
+            'feature': feature_names,
+            'importance': feature_importance
+        })
+        
+        # Önem sırasına göre sırala
+        shap_df = shap_df.sort_values('importance', ascending=False)
+        
+        # CSV dosyasına kaydet
+        filename = f"shap_importance_{target_name.replace(' ', '_').replace('(', '').replace(')', '').replace('$', 'USD')}.csv"
+        shap_df.to_csv(filename, index=False)
+        
+        print(f"SHAP analizi tamamlandı: {filename}")
+        
+        return shap_df
+        
+    except Exception as e:
+        print(f"SHAP analizi hatası: {e}")
+        return None
 
 def select_best_model(X_train, X_test, y_train, y_test, target_name):
     """En iyi modeli seç (Model karşılaştırma sonuçlarına göre Gradient Boosting öncelikli)"""
@@ -163,6 +197,9 @@ def train_models():
         print(f"Test R²: {best_results['test_r2']:.4f}")
         print(f"CV R²: {best_results['cv_r2']:.4f}")
         print(f"Overfitting: {best_results['overfitting_score']:.4f}")
+        
+        # SHAP analizi yap
+        perform_shap_analysis(best_model, X_train, X_test, feature_columns, target)
     
     # Sonuçları kaydet
     save_results(models, results, targets, feature_columns)
