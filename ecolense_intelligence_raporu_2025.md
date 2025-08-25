@@ -121,15 +121,15 @@ Kategori Sayısı: 8
 | 4 | Turkey | 99.7 | 52.4 |
 | 5 | Indonesia | 103.0 | 140.4 |
 
-### **Sürdürülebilirlik Skorları (2024)**
+### **Sürdürülebilirlik Skorları (2018-2024 Ortalama)**
 
 | Sıra | Ülke | Sürdürülebilirlik Skoru | Risk Seviyesi |
 |------|------|-------------------------|---------------|
-| 1 | Turkey | 0.0 | Çok Yüksek |
-| 2 | Italy | 2.7 | Çok Yüksek |
-| 3 | Japan | 13.5 | Yüksek |
-| 4 | China | 43.5 | Orta |
-| 5 | Brazil | 41.0 | Orta |
+| 1 | UK | 45.59 | Düşük |
+| 2 | Spain | 44.30 | Düşük |
+| 3 | Russia | 43.70 | Orta |
+| 4 | China | 43.69 | Orta |
+| 5 | South Africa | 42.89 | Orta |
 
 ---
 

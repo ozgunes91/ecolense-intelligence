@@ -121,15 +121,15 @@ Number of Features: 37
 | 4 | Turkey | 99.7 | 52.4 |
 | 5 | Indonesia | 103.0 | 140.4 |
 
-### **Sustainability Scores (2024)**
+### **Sustainability Scores (2018-2024 Average)**
 
 | Rank | Country | Sustainability Score | Risk Level |
 |------|---------|---------------------|------------|
-| 1 | Turkey | 0.0 | Very High |
-| 2 | Italy | 2.7 | Very High |
-| 3 | Japan | 13.5 | High |
-| 4 | China | 43.5 | Medium |
-| 5 | Brazil | 41.0 | Medium |
+| 1 | UK | 45.59 | Low |
+| 2 | Spain | 44.30 | Low |
+| 3 | Russia | 43.70 | Medium |
+| 4 | China | 43.69 | Medium |
+| 5 | South Africa | 42.89 | Medium |
 
 ---
 
