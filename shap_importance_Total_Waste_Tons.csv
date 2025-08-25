@@ -1,0 +1,28 @@
+feature,importance
+Category_Waste_Share,9912.0716475578
+Population (Million),1652.708364766131
+Waste_Efficiency,1389.502434746122
+Carbon_Per_Capita_kgCO2e,1147.2702320094686
+Waste_Trend,370.3015730620101
+Category_Economic_Share,327.78706711427327
+Economic_Loss_Per_Capita_USD,223.11635214790581
+Country_Trend,191.84212105754514
+GDP_Per_Capita_Proxy,181.1852076138866
+Hemisphere_Encoded,81.6012531459712
+Country_Encoded,69.90317725939192
+Population_Material_Interaction,68.39899480151746
+Year_Cycle_Cos,58.084127043413545
+Year_Population_Interaction,57.12749343483927
+Economic_Trend,37.495765651444714
+Material_Footprint_Per_Capita,35.360202083476786
+Year_Trend,6.42282236342013
+Household Waste (%),5.826299216723402
+Continent_Encoded,3.5625133843843066
+Economic_Intensity,3.257637781009487
+Year_Cycle,2.1715346238750777
+Avg Waste per Capita (Kg),1.9819686308559163
+Waste_Per_Capita_kg,1.5445395800596255
+Is_Post_Pandemic,0.0
+Is_Pandemic_Year,0.0
+Years_From_2018,0.0
+Food Category_Encoded,0.0

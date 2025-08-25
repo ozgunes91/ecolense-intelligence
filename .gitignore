@@ -152,6 +152,7 @@ Thumbs.db
 *.json
 !data/*.csv
 !data/*.json
+!shap_importance_*.csv
 
 # Model files
 *.pkl
