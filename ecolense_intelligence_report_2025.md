@@ -64,9 +64,9 @@ Number of Features: 37
 
 | Target Variable | Best Model | R² Score | RMSE |
 |----------------|------------|----------|------|
-| Total Waste (Tons) | Gradient Boosting | 0.961 | 8,240 |
-| Economic Loss (Million $) | Gradient Boosting | 0.959 | 6,180 |
-| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.961 | 12,450 |
+| Total Waste (Tons) | Gradient Boosting | 0.960 | 8,240 |
+| Economic Loss (Million $) | Gradient Boosting | 0.955 | 6,180 |
+| Carbon Footprint (kgCO2e) | Gradient Boosting | 0.960 | 12,450 |
 
 ### **Model Characteristics**
 - **Algorithms:** Gradient Boosting, Random Forest, Linear Regression
