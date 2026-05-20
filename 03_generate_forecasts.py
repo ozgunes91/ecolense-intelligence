@@ -30,6 +30,18 @@ FAO_FFPI_PROJ = {2024:1.21, 2025:1.18, 2026:1.15, 2027:1.13, 2028:1.11, 2029:1.0
 # IMF WEO 2024 büyüme tahminleri
 IMF_GROWTH_PROJ = {2024:3.2, 2025:3.2, 2026:3.1, 2027:3.1, 2028:3.0, 2029:3.0, 2030:2.9}
 
+TREND_LIMITS = {
+    "Total Waste (Tons)": (-0.025, 0.045),
+    "Economic Loss (Million $)": (-0.035, 0.050),
+    "Carbon_Footprint_kgCO2e": (-0.030, 0.045),
+}
+
+MACRO_WEIGHTS = {
+    "Total Waste (Tons)": {"pop": 0.55, "gdp": 0.10, "price": -0.05},
+    "Economic Loss (Million $)": {"pop": 0.30, "gdp": 0.55, "price": 0.45},
+    "Carbon_Footprint_kgCO2e": {"pop": 0.50, "gdp": 0.12, "price": -0.03},
+}
+
 
 def load_model(target):
     safe  = target.replace(" ","_").replace("(","").replace(")","").replace("$","USD").replace("/","_")
@@ -75,12 +87,23 @@ def build_future_rows(df):
         proj["Year_Trend"]      = year - 2010
         proj["Year_Norm"]       = (year - 2010) / 13
         proj["Pandemic_Flag"]   = 0
+        proj["Pandemic_Indicator"] = 0
         proj["Year_Sin"]        = np.sin(2 * np.pi * (year - 2010) / 5)
         proj["Year_Cos"]        = np.cos(2 * np.pi * (year - 2010) / 5)
+        proj["Year_Cycle"]      = np.sin(2 * np.pi * (year - 2010) / 5)
+        proj["Year_Cycle_Cos"]  = np.cos(2 * np.pi * (year - 2010) / 5)
 
         # Log özellikler güncelle
         proj["Log_Population"]  = np.log1p(proj["Population (Million)"].clip(lower=0.001))
         proj["Log_GDP_PC"]      = np.log1p(proj["GDP_Per_Capita_USD"].clip(lower=1))
+
+        # Modelde kullanılan dışsal etkileşimleri de yıl yıl güncelle
+        proj["Population_Material_Interaction"] = (
+            proj["Population (Million)"] * proj["Material_Footprint_Per_Capita"]
+        )
+        proj["Year_Population_Interaction"] = proj["Years_from_2010"] * proj["Population (Million)"]
+        proj["GDP_Per_Capita_Proxy"] = proj["GDP_Per_Capita_USD"] / 1000
+        proj["Pop_MatFP"] = proj["Population (Million)"] * proj["Material_Footprint_Per_Capita"]
 
         # Kayan ortalamalar – son 3 yıl ortalaması
         proj["Total Waste (Tons)_MA3"]          = last["Total Waste (Tons)"]
@@ -91,6 +114,109 @@ def build_future_rows(df):
         rows.append(proj)
 
     return pd.concat(rows, ignore_index=True)
+
+
+def _entity_trends(df, target):
+    """Son altı tarihsel yılı kullanarak ülke-kategori bazlı kontrollü yıllık trend çıkar."""
+    max_year = int(df["Year"].max())
+    recent = df[df["Year"] >= max_year - 5].copy()
+    low, high = TREND_LIMITS[target]
+
+    def trend_from_group(group):
+        group = group.sort_values("Year")
+        first = float(group[target].iloc[0])
+        last = float(group[target].iloc[-1])
+        years = max(int(group["Year"].iloc[-1] - group["Year"].iloc[0]), 1)
+        if first <= 0 or last <= 0:
+            return 0.0
+        trend = (last / first) ** (1 / years) - 1
+        if not np.isfinite(trend):
+            return 0.0
+        return float(np.clip(trend, low, high))
+
+    entity = (
+        recent.groupby(["Country", "Food Category"], as_index=False)
+              .apply(lambda g: trend_from_group(g), include_groups=False)
+              .rename(columns={None: "entity_trend"})
+    )
+    if "entity_trend" not in entity.columns:
+        entity.columns = ["Country", "Food Category", "entity_trend"]
+
+    category_year = recent.groupby(["Food Category", "Year"], as_index=False)[target].sum()
+    category = (
+        category_year.groupby("Food Category", as_index=False)
+                     .apply(lambda g: trend_from_group(g), include_groups=False)
+                     .rename(columns={None: "category_trend"})
+    )
+    if "category_trend" not in category.columns:
+        category.columns = ["Food Category", "category_trend"]
+
+    global_year = recent.groupby("Year", as_index=False)[target].sum()
+    global_trend = trend_from_group(global_year)
+
+    return entity, category, global_trend
+
+
+def apply_projection_dynamics(future, target):
+    """Ağaç modelinin sabit yaprak çıktısını tarihsel trend ve makro varsayımla yumuşat."""
+    pred_col = f"pred_{target}"
+    key_cols = ["Country", "Food Category"]
+    hist = pd.read_csv(DATA_PATH)
+    entity, category, global_trend = _entity_trends(hist, target)
+    last_year = int(hist["Year"].max())
+    anchor = (
+        hist[hist["Year"] == last_year]
+        .groupby(key_cols, as_index=False)[target]
+        .mean()
+        .rename(columns={target: "hist_anchor"})
+    )
+    low, high = TREND_LIMITS[target]
+    weights = MACRO_WEIGHTS[target]
+
+    work = future.sort_values(key_cols + ["Year"]).copy()
+    work["_row_id"] = work.index
+    work = work.merge(entity, on=key_cols, how="left")
+    work = work.merge(category, on="Food Category", how="left")
+    work = work.merge(anchor, on=key_cols, how="left")
+    work["entity_trend"] = work["entity_trend"].fillna(work["category_trend"]).fillna(global_trend)
+    work["category_trend"] = work["category_trend"].fillna(global_trend)
+    work["annual_trend"] = (
+        0.65 * work["entity_trend"] +
+        0.25 * work["category_trend"] +
+        0.10 * global_trend
+    ).clip(low, high)
+
+    group = work.groupby(key_cols, sort=False)
+    base_pred_raw = group[pred_col].transform("first")
+    anchor_2024 = work["hist_anchor"].fillna(group[pred_col].transform("median")).clip(lower=0)
+    anchor_2024 = anchor_2024 * (1 + work["annual_trend"]).clip(0.85, 1.15)
+    base_pred = base_pred_raw.where(base_pred_raw > 0, anchor_2024).replace(0, np.nan)
+    base_pop = group["Population (Million)"].transform("first").clip(lower=0.001)
+    base_gdp = group["GDP_Per_Capita_USD"].transform("first").clip(lower=1)
+    base_price = group["FAO_Food_Price_Index"].transform("first").clip(lower=0.001)
+
+    dt = (work["Year"] - FORECAST_YEARS[0]).clip(lower=0)
+    raw_ratio = (work[pred_col] / base_pred).replace([np.inf, -np.inf], np.nan).fillna(1.0)
+    trend_ratio = (1 + work["annual_trend"]) ** dt
+    macro_ratio = (
+        (work["Population (Million)"].clip(lower=0.001) / base_pop) ** weights["pop"] *
+        (work["GDP_Per_Capita_USD"].clip(lower=1) / base_gdp) ** weights["gdp"] *
+        (work["FAO_Food_Price_Index"].clip(lower=0.001) / base_price) ** weights["price"]
+    ).replace([np.inf, -np.inf], np.nan).fillna(1.0)
+
+    blended_ratio = (
+        0.50 * raw_ratio.clip(0.75, 1.35) +
+        0.35 * trend_ratio.clip(0.75, 1.35) +
+        0.15 * macro_ratio.clip(0.80, 1.25)
+    )
+    adjusted = (base_pred.fillna(work[pred_col]) * blended_ratio).clip(lower=0)
+
+    future.loc[work["_row_id"].to_numpy(), pred_col] = adjusted.to_numpy()
+    constant_share = (
+        future.groupby(key_cols)[pred_col].nunique(dropna=False).le(1).mean()
+    )
+    print(f"    Dinamik projeksiyon: sabit seri oranı %{constant_share * 100:.1f}")
+    return future
 
 
 def main():
@@ -115,6 +241,7 @@ def main():
 
         X = future[feats].fillna(0).values
         future[f"pred_{target}"] = model.predict(X)
+        future = apply_projection_dynamics(future, target)
         print(f"  ✅ {target}: {FORECAST_YEARS[0]}-{FORECAST_YEARS[-1]} tahminleri üretildi")
 
     # Uzun format (ülke × yıl × kategori × hedef)

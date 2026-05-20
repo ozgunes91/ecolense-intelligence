@@ -16,7 +16,7 @@
 | **Yıl aralığı** | 2010–2023 |
 | **Gözlem** | 16,576 |
 | **Model** | GradientBoosting (3 hedef) |
-| **Ort. Test R²** | 0.977 |
+| **Ort. Test R²** | 0.953 |
 
 ---
 
@@ -76,25 +76,16 @@ ecolense-intelligence/
 
 ---
 
-## 🤖 Model Detayları
+## 📈 Model Detayları
 
 - **Algoritma:** GradientBoostingRegressor
 - **Hedefler:** Toplam Atık (ton), Ekonomik Kayıp (M$), Karbon Ayak İzi (kgCO2e)
 - **Train/Test:** 80/20
 - **CV:** 3-fold
 - **Overfit önleme:** `min_samples_leaf=5`, `subsample=0.8`, sınırlı `max_depth`
-- **Sızıntı kontrolü:** Hedeflerden türetilmiş rolling/share/per-capita kolonları eğitimden çıkarılır
-
-### Düzeltilen Hatalar (orijinal proje)
-
-| Hata | Düzeltme |
-|------|----------|
-| Sustainability_Score → çoğunlukla 0 | Eşikler gerçek veri dağılımına göre ayarlandı |
-| Carbon birimi yanlış | `ton_atık × kg_CO2e/kg` doğru uygulandı |
-| 20 ülke / sentetik veri | 148 ISO3 tekil ülke, UNEP 2021 baz değerleri |
-| UK/UAE alias tekrarları | `United Kingdom` ve `United Arab Emirates` altında tekilleştirildi |
-| Modelde hedef türevi feature sızıntısı | Rolling/share/per-capita target türevleri eğitimden çıkarıldı |
-| Sabit ezber sayılar dashboard'da | Tüm sayılar CSV/JSON'dan dinamik okunur |
+- **Veri ilkesi:** Ülke, kategori, zaman ve makro değişkenler dışsal bilgi olarak kullanılır
+- **Model ilkesi:** Hedeflerden doğrudan türetilen kolonlar eğitim dışında tutulur
+- **Tahmin ilkesi:** 2024-2030 çıktıları model skoru, tarihsel ülke-kategori eğilimi ve makro varsayımlarla birlikte üretilir
 
 ---
 
@@ -105,12 +96,12 @@ ecolense-intelligence/
 | 🏠 Ana Sayfa | KPI kartları, trend, harita — tümü gerçek veriden |
 | 📊 Veri Analizi | Filtreli keşif, kategori & ülke sıralaması |
 | 🌍 Ülke Karşılaştırma | Çoklu ülke trend & ısı haritası |
-| 🤖 Model Performansı | R², RMSE, overfit — model_performance.json'dan |
+| 📈 Model Performansı | R², RMSE, overfit — model_performance.json'dan |
 | 🔮 Gelecek Tahminleri | 2024-2030 projeksiyon + harita |
 | 🎯 Hedef Simülatörü | Politika senaryosu etkisi |
 | 📈 SHAP & Önem | Özellik önemi grafikleri |
 | ⚠️ Risk & Fırsat | Ülke risk matrisi |
-| 📄 Rapor | Otomatik oluşturulan MD rapor |
+| 📄 Rapor | Çalışma özeti ve indirilebilir rapor |
 
 ---
 

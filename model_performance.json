@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T12:38:24.695023",
+  "generated_at": "2026-05-20T18:26:29.408041",
   "data_source": [
     "UNEP Food Waste Index Report 2021 – Tablo A4.1",
     "Gapminder Foundation – GDP per capita (gerçek ölçüm)",
@@ -22,83 +22,83 @@
   },
   "train_test_split": "80/20",
   "cv_folds": 3,
-  "average_test_r2": 0.9771,
-  "average_overfit": 0.0179,
+  "average_test_r2": 0.9534,
+  "average_overfit": 0.0298,
   "quality_label": "Mükemmel",
   "targets": {
     "Total Waste (Tons)": {
       "target": "Total Waste (Tons)",
       "train": {
-        "r2": 0.9991
+        "r2": 0.9866
       },
       "test": {
-        "r2": 0.9979,
-        "rmse": 69266.82,
-        "mae": 26471.21,
-        "mape": 54.99
+        "r2": 0.9674,
+        "rmse": 272343.12,
+        "mae": 88549.71,
+        "mape": 130.11
       },
-      "cv_mean": 0.9929,
-      "cv_std": 0.0047,
-      "overfit": 0.0012,
+      "cv_mean": 0.9684,
+      "cv_std": 0.0077,
+      "overfit": 0.0195,
       "n_train": 13260,
       "n_test": 3316,
-      "n_features": 28,
+      "n_features": 26,
       "top5_importance": [
         "Pop_MatFP",
-        "GDP_Waste_PC",
+        "Food Category_Enc",
         "Population (Million)",
-        "Population_Material_Interaction",
-        "Log_Population"
+        "Log_Population",
+        "Population_Material_Interaction"
       ]
     },
     "Economic Loss (Million $)": {
       "target": "Economic Loss (Million $)",
       "train": {
-        "r2": 0.9897
+        "r2": 0.9758
       },
       "test": {
-        "r2": 0.9697,
-        "rmse": 1136.09,
-        "mae": 353.02,
-        "mape": 116.54
+        "r2": 0.9464,
+        "rmse": 1512.32,
+        "mae": 476.97,
+        "mape": 111.16
       },
-      "cv_mean": 0.9632,
-      "cv_std": 0.0038,
-      "overfit": 0.0202,
+      "cv_mean": 0.9458,
+      "cv_std": 0.0031,
+      "overfit": 0.0302,
       "n_train": 13260,
       "n_test": 3316,
-      "n_features": 28,
+      "n_features": 26,
       "top5_importance": [
         "Food Category_Enc",
-        "Waste_Per_Capita_kg",
         "Pop_MatFP",
+        "Log_Population",
         "Population (Million)",
-        "Log_Population"
+        "Subregion_Enc"
       ]
     },
     "Carbon_Footprint_kgCO2e": {
       "target": "Carbon_Footprint_kgCO2e",
       "train": {
-        "r2": 0.9957
+        "r2": 0.9856
       },
       "test": {
-        "r2": 0.9636,
-        "rmse": 2442792337.66,
-        "mae": 523185053.78,
-        "mape": 219.48
+        "r2": 0.9464,
+        "rmse": 2963313778.45,
+        "mae": 778198081.36,
+        "mape": 177.26
       },
-      "cv_mean": 0.9797,
-      "cv_std": 0.0015,
-      "overfit": 0.0323,
+      "cv_mean": 0.9609,
+      "cv_std": 0.0086,
+      "overfit": 0.0398,
       "n_train": 13260,
       "n_test": 3316,
-      "n_features": 28,
+      "n_features": 26,
       "top5_importance": [
         "Food Category_Enc",
-        "Waste_Per_Capita_kg",
         "Pop_MatFP",
-        "GDP_Waste_PC",
-        "Population (Million)"
+        "Population (Million)",
+        "Log_Population",
+        "Population_Material_Interaction"
       ]
     }
   }
