@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T08:14:20.616950",
+  "generated_at": "2026-05-20T11:45:37.684417",
   "data_source": [
     "UNEP Food Waste Index Report 2021 – Tablo A4.1",
     "Gapminder Foundation – GDP per capita (gerçek ölçüm)",
@@ -37,7 +37,7 @@
         "mae": 19525.66,
         "mape": 30.27
       },
-      "cv_mean": 0.9968,
+      "cv_mean": 0.9967,
       "cv_std": 0.0002,
       "overfit": 0.0012,
       "n_train": 13440,
@@ -62,8 +62,8 @@
         "mae": 134.23,
         "mape": 84.44
       },
-      "cv_mean": 0.9874,
-      "cv_std": 0.0021,
+      "cv_mean": 0.9872,
+      "cv_std": 0.0019,
       "overfit": 0.0087,
       "n_train": 13440,
       "n_test": 3360,
@@ -87,8 +87,8 @@
         "mae": 174347647.16,
         "mape": 167.99
       },
-      "cv_mean": 0.9903,
-      "cv_std": 0.0064,
+      "cv_mean": 0.9904,
+      "cv_std": 0.0062,
       "overfit": 0.006,
       "n_train": 13440,
       "n_test": 3360,
