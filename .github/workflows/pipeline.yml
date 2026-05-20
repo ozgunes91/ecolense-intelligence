@@ -1,0 +1,63 @@
+name: EcoLense Pipeline CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Her ayın 1'i saat 02:00 UTC — veri güncel tutmak için
+    - cron: '0 2 1 * *'
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python kurulum
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Bağımlılık kurulum
+        run: pip install -r requirements.txt
+
+      - name: Veri hazırlama
+        run: python 01_prepare_data.py
+
+      - name: Model eğitimi
+        run: python 02_train_models.py
+
+      - name: Tahmin üretimi
+        run: python 03_generate_forecasts.py
+
+      - name: Çıktı doğrulama
+        run: |
+          python - <<'EOF'
+          import os, json, pandas as pd
+          assert os.path.exists("data/processed.csv"),        "processed.csv eksik"
+          assert os.path.exists("model_performance.json"),    "model_performance.json eksik"
+          assert os.path.exists("forecasts.csv"),             "forecasts.csv eksik"
+          perf = json.load(open("model_performance.json"))
+          avg  = perf["average_test_r2"]
+          assert avg > 0.85, f"Model R² çok düşük: {avg}"
+          fc   = pd.read_csv("forecasts.csv")
+          assert fc["Year"].max() == 2030, "2030 tahmini yok"
+          print(f"✅ Tüm kontroller geçti | Ort. Test R²={avg:.4f}")
+          EOF
+
+      - name: Artifacts yükle
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ecolense-outputs
+          path: |
+            model_performance.json
+            forecasts.csv
+            shap_*.csv
+            data/meta.json
+          retention-days: 30

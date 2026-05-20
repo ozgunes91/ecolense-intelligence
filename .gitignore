@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv
+venv/
+*.egg-info/
+dist/
+build/
+.DS_Store
+*.pkl
+# Büyük ham veri (ham CSV git LFS ile ya da dışarıda tutulabilir)
+# data/global_food_waste_real_world.csv
+# İşlenmiş dosyalar (CI tarafından üretilir)
+data/processed.csv

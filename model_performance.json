@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-05-20T08:14:20.616950",
+  "data_source": [
+    "UNEP Food Waste Index Report 2021 – Tablo A4.1",
+    "Gapminder Foundation – GDP per capita (gerçek ölçüm)",
+    "FAO Food Price Index 2010-2023",
+    "Poore & Nemecek 2018 Science – LCA karbon faktörleri",
+    "countryinfo paketi – UN nüfus & bölge verisi"
+  ],
+  "n_countries": 150,
+  "year_range": [
+    2010,
+    2023
+  ],
+  "n_rows": 16800,
+  "model_type": "GradientBoostingRegressor",
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.8
+  },
+  "train_test_split": "80/20",
+  "cv_folds": 3,
+  "average_test_r2": 0.9934,
+  "average_overfit": 0.0053,
+  "quality_label": "Mükemmel",
+  "targets": {
+    "Total Waste (Tons)": {
+      "target": "Total Waste (Tons)",
+      "train": {
+        "r2": 0.9993
+      },
+      "test": {
+        "r2": 0.9981,
+        "rmse": 62927.57,
+        "mae": 19525.66,
+        "mape": 30.27
+      },
+      "cv_mean": 0.9968,
+      "cv_std": 0.0002,
+      "overfit": 0.0012,
+      "n_train": 13440,
+      "n_test": 3360,
+      "n_features": 48,
+      "top5_importance": [
+        "Waste_Trend_3Y",
+        "Total Waste (Tons)_MA3",
+        "GDP_Waste_PC",
+        "Waste_Per_Capita_kg",
+        "Category_Waste_Share"
+      ]
+    },
+    "Economic Loss (Million $)": {
+      "target": "Economic Loss (Million $)",
+      "train": {
+        "r2": 0.9979
+      },
+      "test": {
+        "r2": 0.9892,
+        "rmse": 699.72,
+        "mae": 134.23,
+        "mape": 84.44
+      },
+      "cv_mean": 0.9874,
+      "cv_std": 0.0021,
+      "overfit": 0.0087,
+      "n_train": 13440,
+      "n_test": 3360,
+      "n_features": 48,
+      "top5_importance": [
+        "Economic Loss (Million $)_MA3",
+        "Economic_Trend_3Y",
+        "Carbon_Footprint_kgCO2e_MA3",
+        "Economic_Loss_Per_Capita_USD",
+        "Carbon_Per_Capita_kgCO2e"
+      ]
+    },
+    "Carbon_Footprint_kgCO2e": {
+      "target": "Carbon_Footprint_kgCO2e",
+      "train": {
+        "r2": 0.9988
+      },
+      "test": {
+        "r2": 0.9928,
+        "rmse": 1100685172.67,
+        "mae": 174347647.16,
+        "mape": 167.99
+      },
+      "cv_mean": 0.9903,
+      "cv_std": 0.0064,
+      "overfit": 0.006,
+      "n_train": 13440,
+      "n_test": 3360,
+      "n_features": 48,
+      "top5_importance": [
+        "Carbon_Footprint_kgCO2e_MA3",
+        "Subregion_Enc",
+        "Waste_Per_Capita_kg",
+        "Total Waste (Tons)_MA3",
+        "Country_Encoded"
+      ]
+    }
+  }
+}

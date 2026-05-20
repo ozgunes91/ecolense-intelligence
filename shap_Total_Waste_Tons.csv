@@ -1,0 +1,49 @@
+feature,importance
+Waste_Trend_3Y,0.5156592791274914
+Total Waste (Tons)_MA3,0.38159833017280465
+GDP_Waste_PC,0.06368758382929522
+Waste_Per_Capita_kg,0.03491660168846071
+Category_Waste_Share,0.0014905002141961245
+Carbon_Footprint_kgCO2e_MA3,0.0009532869295946296
+Cat_Waste_Share,0.0005501633325895371
+Carbon_Per_Capita_kgCO2e,0.00044851717232129417
+Carbon_Intensity,0.00013986475288655888
+Pandemic_Flag,6.0309179600304445e-05
+Pandemic_Indicator,5.316972391672743e-05
+Population (Million),4.933868495369718e-05
+Category_Economic_Share,4.7237057892251e-05
+Pop_MatFP,4.315125871561037e-05
+Year_Cycle_Cos,3.0518221409258164e-05
+Log_Population,2.982105634007435e-05
+Years_from_2010,2.6977851452711098e-05
+Year_Cos,2.372741419095796e-05
+Cat_Econ_Share,1.9689371981802525e-05
+Year,1.909349310121671e-05
+Economic Loss (Million $)_MA3,1.844522266745999e-05
+Year_Trend,1.7807766884548907e-05
+FAO_Food_Price_Index,1.7675194857927465e-05
+Population_Material_Interaction,1.5371585345738476e-05
+Food Category_Enc,1.5301549483366646e-05
+Material_Footprint_Per_Capita,1.3589792855132667e-05
+Year_Cycle,7.50572744406928e-06
+Year_Norm,7.076766174124961e-06
+Year_Sin,6.4773297618475595e-06
+Economic_Loss_Per_Capita_USD,6.409795326366553e-06
+Economic_Trend_3Y,6.394501022111647e-06
+Food Category_Encoded,5.797787095838997e-06
+Economic_Intensity,4.748474995295357e-06
+Year_Population_Interaction,3.924135920736608e-06
+Waste_Efficiency,3.148213571442761e-06
+Econ_GDP_Ratio,2.6959756714922325e-06
+GDP_Per_Capita_USD,4.696477276683403e-07
+GDP_Per_Capita_Proxy,0.0
+Income_Group_Encoded,0.0
+Country_Encoded,0.0
+Hemisphere_Encoded,0.0
+Continent_Encoded,0.0
+Log_GDP_PC,0.0
+Country_Enc,0.0
+Continent_Enc,0.0
+Subregion_Enc,0.0
+Hemisphere_Enc,0.0
+Income_Group_Enc,0.0
