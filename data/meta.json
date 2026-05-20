@@ -1,7 +1,7 @@
 {
-  "n_rows": 16800,
-  "n_cols": 61,
-  "countries": 150,
+  "n_rows": 16576,
+  "n_cols": 56,
+  "countries": 148,
   "years": [
     2010,
     2023
@@ -161,8 +161,6 @@
       "Tunisia",
       "Turkey",
       "Turkmenistan",
-      "UAE",
-      "UK",
       "USA",
       "Uganda",
       "Ukraine",

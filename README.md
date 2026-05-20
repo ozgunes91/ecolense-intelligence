@@ -12,11 +12,11 @@
 
 | | |
 |---|---|
-| **Ülke** | 150 (tüm kıtalar) |
+| **Ülke** | 148 (tüm kıtalar; ISO3 bazında tekilleştirilmiş) |
 | **Yıl aralığı** | 2010–2023 |
-| **Gözlem** | 16,800 |
+| **Gözlem** | 16,576 |
 | **Model** | GradientBoosting (3 hedef) |
-| **Ort. Test R²** | ~0.99 |
+| **Ort. Test R²** | 0.977 |
 
 ---
 
@@ -65,7 +65,8 @@ ecolense-intelligence/
 │   ├── model_Economic_Loss_Million_USD.pkl
 │   └── model_Carbon_Footprint_kgCO2e.pkl
 ├── 01_prepare_data.py      # Veri hazırlama pipeline
-├── 02_train_models.py      # Model eğitimi + SHAP
+├── 02_train_models.py      # Model eğitimi + feature importance
+├── 02_train_models_full.py # Opsiyonel tam SHAP analizi
 ├── 03_generate_forecasts.py# 2024-2030 tahminleri
 ├── run_pipeline.py         # Tek komut: tüm pipeline
 ├── app.py                  # Streamlit dashboard (9 sayfa)
@@ -80,8 +81,9 @@ ecolense-intelligence/
 - **Algoritma:** GradientBoostingRegressor
 - **Hedefler:** Toplam Atık (ton), Ekonomik Kayıp (M$), Karbon Ayak İzi (kgCO2e)
 - **Train/Test:** 80/20
-- **CV:** 5-fold
+- **CV:** 3-fold
 - **Overfit önleme:** `min_samples_leaf=5`, `subsample=0.8`, sınırlı `max_depth`
+- **Sızıntı kontrolü:** Hedeflerden türetilmiş rolling/share/per-capita kolonları eğitimden çıkarılır
 
 ### Düzeltilen Hatalar (orijinal proje)
 
@@ -89,7 +91,9 @@ ecolense-intelligence/
 |------|----------|
 | Sustainability_Score → çoğunlukla 0 | Eşikler gerçek veri dağılımına göre ayarlandı |
 | Carbon birimi yanlış | `ton_atık × kg_CO2e/kg` doğru uygulandı |
-| 20 ülke / sentetik veri | 150 gerçek ülke, UNEP 2021 baz değerleri |
+| 20 ülke / sentetik veri | 148 ISO3 tekil ülke, UNEP 2021 baz değerleri |
+| UK/UAE alias tekrarları | `United Kingdom` ve `United Arab Emirates` altında tekilleştirildi |
+| Modelde hedef türevi feature sızıntısı | Rolling/share/per-capita target türevleri eğitimden çıkarıldı |
 | Sabit ezber sayılar dashboard'da | Tüm sayılar CSV/JSON'dan dinamik okunur |
 
 ---

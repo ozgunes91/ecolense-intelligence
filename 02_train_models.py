@@ -27,23 +27,48 @@ TARGETS = [
     "Economic Loss (Million $)",
     "Carbon_Footprint_kgCO2e",
 ]
-EXCLUDE = TARGETS + [
+BASE_EXCLUDE = TARGETS + [
     "Country","Food Category","Continent","Subregion",
     "Hemisphere","Income_Group","ISO3","Sustainability_Score",
     "Log_Total_Waste","Log_Econ_Loss",
 ]
 
+LEAKAGE_EXCLUDE = {
+    "Total Waste (Tons)_MA3",
+    "Economic Loss (Million $)_MA3",
+    "Carbon_Footprint_kgCO2e_MA3",
+    "Waste_Trend_3Y",
+    "Economic_Trend_3Y",
+    "Economic_Loss_Per_Capita_USD",
+    "Carbon_Per_Capita_kgCO2e",
+    "Category_Waste_Share",
+    "Category_Economic_Share",
+    "Cat_Waste_Share",
+    "Cat_Econ_Share",
+    "Waste_Efficiency",
+    "Economic_Intensity",
+    "Carbon_Intensity",
+    "Econ_GDP_Ratio",
+}
+
 
 def load():
     df   = pd.read_csv(DATA_PATH)
     meta = json.load(open(META_PATH, encoding="utf-8"))
-    feats = [c for c in df.columns if c not in EXCLUDE and df[c].dtype != object]
-    print(f"  Veri: {len(df):,} satır | Feature: {len(feats)}")
-    return df, feats, meta
+    numeric_candidates = [c for c in df.columns if c not in BASE_EXCLUDE and df[c].dtype != object]
+    print(f"  Veri: {len(df):,} satır | Aday feature: {len(numeric_candidates)}")
+    return df, numeric_candidates, meta
 
 
-def train_one(df, feats, target):
+def features_for_target(numeric_candidates, target):
+    """Hedef değişkenden doğrudan türetilmiş kolonları çıkar."""
+    return [c for c in numeric_candidates if c not in LEAKAGE_EXCLUDE]
+
+
+def train_one(df, numeric_candidates, target):
     print(f"\n  🎯 {target}")
+    feats = features_for_target(numeric_candidates, target)
+    print(f"    Kullanılan feature: {len(feats)}")
     sub = df[feats + [target]].dropna()
     X, y = sub[feats].values, sub[target].values
     Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)

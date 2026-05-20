@@ -24,8 +24,8 @@ TARGETS = [
 
 FORECAST_YEARS = list(range(2024, 2031))
 
-# FAO Gıda Fiyat Endeksi – 2024-2030 IMF/FAO projeksiyon (2014-16=100)
-FAO_FFPI_PROJ = {2024:121, 2025:118, 2026:115, 2027:113, 2028:111, 2029:109, 2030:107}
+# FAO Gıda Fiyat Endeksi – veri setinde 2014-16=1.00 ölçeğine normalize edilir.
+FAO_FFPI_PROJ = {2024:1.21, 2025:1.18, 2026:1.15, 2027:1.13, 2028:1.11, 2029:1.09, 2030:1.07}
 
 # IMF WEO 2024 büyüme tahminleri
 IMF_GROWTH_PROJ = {2024:3.2, 2025:3.2, 2026:3.1, 2027:3.1, 2028:3.0, 2029:3.0, 2030:2.9}
@@ -51,9 +51,13 @@ def build_future_rows(df):
         # GDP büyümesi (gelir grubuna göre farklı)
         def gdp_factor(row):
             g = row.get("GDP_Per_Capita_USD", 5000)
-            if g >= 13000:   return 1 + growth * 0.9
-            elif g >= 4000:  return 1 + growth * 1.1
-            else:            return 1 + growth * 1.3
+            if g >= 13000:
+                annual = growth * 0.9
+            elif g >= 4000:
+                annual = growth * 1.1
+            else:
+                annual = growth * 1.3
+            return (1 + annual) ** dt
         proj["GDP_Per_Capita_USD"] = proj["GDP_Per_Capita_USD"] * proj.apply(gdp_factor, axis=1)
 
         # Nüfus büyümesi
@@ -124,9 +128,52 @@ def main():
         f"pred_{TARGETS[2]}": TARGETS[2],
     })
 
-    # Negatif tahminleri sıfırla
+    # Negatif tahminleri sıfırla ve kişi başı/kompozit skorları ekle
     for t in TARGETS:
         out[t] = out[t].clip(lower=0)
+
+    pop_people = (out["Population (Million)"].clip(lower=0.001) * 1_000_000)
+    out["Waste_Per_Capita_kg"] = out["Total Waste (Tons)"] * 1000 / pop_people
+    out["Economic_Loss_Per_Capita_USD"] = out["Economic Loss (Million $)"] / out["Population (Million)"].clip(lower=0.001)
+    out["Carbon_Per_Capita_kgCO2e"] = out["Carbon_Footprint_kgCO2e"] / pop_people
+
+    hist = pd.read_csv(DATA_PATH)
+    ref = hist.groupby(["Country", "Year"], as_index=False).agg({
+        "Total Waste (Tons)": "sum",
+        "Economic Loss (Million $)": "sum",
+        "Carbon_Footprint_kgCO2e": "sum",
+        "Population (Million)": "first",
+    })
+    ref_pop = ref["Population (Million)"].clip(lower=0.001) * 1_000_000
+    ref_waste_pc = ref["Total Waste (Tons)"] * 1000 / ref_pop
+    ref_loss_pc = ref["Economic Loss (Million $)"] / ref["Population (Million)"].clip(lower=0.001)
+    ref_carbon_pc = ref["Carbon_Footprint_kgCO2e"] / ref_pop
+
+    def inverse_score(values, reference):
+        low = float(reference.quantile(0.05))
+        high = float(reference.quantile(0.95))
+        if high <= low:
+            high = float(reference.max()) or 1.0
+            low = float(reference.min())
+        return (1 - (values - low) / (high - low + 1e-9)).clip(0, 1)
+
+    country_year = out.groupby(["Country", "Year"], as_index=False).agg({
+        "Total Waste (Tons)": "sum",
+        "Economic Loss (Million $)": "sum",
+        "Carbon_Footprint_kgCO2e": "sum",
+        "Population (Million)": "first",
+    })
+    cy_pop_m = country_year["Population (Million)"].clip(lower=0.001)
+    cy_pop_people = cy_pop_m * 1_000_000
+    country_year["Waste_Per_Capita_kg"] = country_year["Total Waste (Tons)"] * 1000 / cy_pop_people
+    country_year["Economic_Loss_Per_Capita_USD"] = country_year["Economic Loss (Million $)"] / cy_pop_m
+    country_year["Carbon_Per_Capita_kgCO2e"] = country_year["Carbon_Footprint_kgCO2e"] / cy_pop_people
+    country_year["Sustainability_Score"] = (
+        0.40 * inverse_score(country_year["Waste_Per_Capita_kg"], ref_waste_pc)
+        + 0.30 * inverse_score(country_year["Economic_Loss_Per_Capita_USD"], ref_loss_pc)
+        + 0.30 * inverse_score(country_year["Carbon_Per_Capita_kgCO2e"], ref_carbon_pc)
+    ) * 100
+    out = out.merge(country_year[["Country", "Year", "Sustainability_Score"]], on=["Country", "Year"], how="left")
 
     out.to_csv(FORECAST_PATH, index=False)
     print(f"\n  ✅ {FORECAST_PATH}  ({len(out):,} satır)")

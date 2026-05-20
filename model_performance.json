@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T11:45:37.684417",
+  "generated_at": "2026-05-20T12:38:24.695023",
   "data_source": [
     "UNEP Food Waste Index Report 2021 – Tablo A4.1",
     "Gapminder Foundation – GDP per capita (gerçek ölçüm)",
@@ -7,12 +7,12 @@
     "Poore & Nemecek 2018 Science – LCA karbon faktörleri",
     "countryinfo paketi – UN nüfus & bölge verisi"
   ],
-  "n_countries": 150,
+  "n_countries": 148,
   "year_range": [
     2010,
     2023
   ],
-  "n_rows": 16800,
+  "n_rows": 16576,
   "model_type": "GradientBoostingRegressor",
   "hyperparameters": {
     "n_estimators": 100,
@@ -22,83 +22,83 @@
   },
   "train_test_split": "80/20",
   "cv_folds": 3,
-  "average_test_r2": 0.9934,
-  "average_overfit": 0.0053,
+  "average_test_r2": 0.9771,
+  "average_overfit": 0.0179,
   "quality_label": "Mükemmel",
   "targets": {
     "Total Waste (Tons)": {
       "target": "Total Waste (Tons)",
       "train": {
-        "r2": 0.9993
+        "r2": 0.9991
       },
       "test": {
-        "r2": 0.9981,
-        "rmse": 62927.57,
-        "mae": 19525.66,
-        "mape": 30.27
+        "r2": 0.9979,
+        "rmse": 69266.82,
+        "mae": 26471.21,
+        "mape": 54.99
       },
-      "cv_mean": 0.9967,
-      "cv_std": 0.0002,
+      "cv_mean": 0.9929,
+      "cv_std": 0.0047,
       "overfit": 0.0012,
-      "n_train": 13440,
-      "n_test": 3360,
-      "n_features": 48,
+      "n_train": 13260,
+      "n_test": 3316,
+      "n_features": 28,
       "top5_importance": [
-        "Waste_Trend_3Y",
-        "Total Waste (Tons)_MA3",
+        "Pop_MatFP",
         "GDP_Waste_PC",
-        "Waste_Per_Capita_kg",
-        "Category_Waste_Share"
+        "Population (Million)",
+        "Population_Material_Interaction",
+        "Log_Population"
       ]
     },
     "Economic Loss (Million $)": {
       "target": "Economic Loss (Million $)",
       "train": {
-        "r2": 0.9979
+        "r2": 0.9897
       },
       "test": {
-        "r2": 0.9892,
-        "rmse": 699.72,
-        "mae": 134.23,
-        "mape": 84.44
+        "r2": 0.9697,
+        "rmse": 1136.09,
+        "mae": 353.02,
+        "mape": 116.54
       },
-      "cv_mean": 0.9872,
-      "cv_std": 0.0019,
-      "overfit": 0.0087,
-      "n_train": 13440,
-      "n_test": 3360,
-      "n_features": 48,
+      "cv_mean": 0.9632,
+      "cv_std": 0.0038,
+      "overfit": 0.0202,
+      "n_train": 13260,
+      "n_test": 3316,
+      "n_features": 28,
       "top5_importance": [
-        "Economic Loss (Million $)_MA3",
-        "Economic_Trend_3Y",
-        "Carbon_Footprint_kgCO2e_MA3",
-        "Economic_Loss_Per_Capita_USD",
-        "Carbon_Per_Capita_kgCO2e"
+        "Food Category_Enc",
+        "Waste_Per_Capita_kg",
+        "Pop_MatFP",
+        "Population (Million)",
+        "Log_Population"
       ]
     },
     "Carbon_Footprint_kgCO2e": {
       "target": "Carbon_Footprint_kgCO2e",
       "train": {
-        "r2": 0.9988
+        "r2": 0.9957
       },
       "test": {
-        "r2": 0.9928,
-        "rmse": 1100685172.67,
-        "mae": 174347647.16,
-        "mape": 167.99
+        "r2": 0.9636,
+        "rmse": 2442792337.66,
+        "mae": 523185053.78,
+        "mape": 219.48
       },
-      "cv_mean": 0.9904,
-      "cv_std": 0.0062,
-      "overfit": 0.006,
-      "n_train": 13440,
-      "n_test": 3360,
-      "n_features": 48,
+      "cv_mean": 0.9797,
+      "cv_std": 0.0015,
+      "overfit": 0.0323,
+      "n_train": 13260,
+      "n_test": 3316,
+      "n_features": 28,
       "top5_importance": [
-        "Carbon_Footprint_kgCO2e_MA3",
-        "Subregion_Enc",
+        "Food Category_Enc",
         "Waste_Per_Capita_kg",
-        "Total Waste (Tons)_MA3",
-        "Country_Encoded"
+        "Pop_MatFP",
+        "GDP_Waste_PC",
+        "Population (Million)"
       ]
     }
   }

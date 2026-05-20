@@ -4,7 +4,7 @@
 ==================
 Ham CSV'yi alır → özellik mühendisliği → model için hazır CSV üretir.
 
-Giriş : data/global_food_waste_real_world.csv  (150 ülke, 2010-2023, gerçek UNEP/FAO/Gapminder)
+Giriş : data/global_food_waste_real_world.csv  (ISO3 tekilleştirme öncesi ham gerçek veri)
 Çıkış : data/processed.csv                     (tüm özellikler, encode edilmiş, temiz)
 """
 
@@ -18,8 +18,35 @@ RAW_PATH  = "data/global_food_waste_real_world.csv"
 OUT_PATH  = "data/processed.csv"
 META_PATH = "data/meta.json"
 
+COUNTRY_ALIASES = {
+    "UK": "United Kingdom",
+    "UAE": "United Arab Emirates",
+}
+
+
 def load(path):
     df = pd.read_csv(path)
+    if "Country" in df.columns:
+        df["Country"] = df["Country"].replace(COUNTRY_ALIASES)
+    stale_encoded = [
+        "Country_Encoded",
+        "Food Category_Encoded",
+        "Continent_Encoded",
+        "Hemisphere_Encoded",
+        "Income_Group_Encoded",
+    ]
+    df = df.drop(columns=[c for c in stale_encoded if c in df.columns])
+    keys = [c for c in ["Country", "ISO3", "Year", "Food Category"] if c in df.columns]
+    if keys:
+        numeric_cols = [c for c in df.select_dtypes(include=[np.number]).columns if c not in keys]
+        other_cols = [c for c in df.columns if c not in keys and c not in numeric_cols]
+        agg = {c: "mean" for c in numeric_cols}
+        agg.update({c: "first" for c in other_cols})
+        before = len(df)
+        df = df.groupby(keys, as_index=False, dropna=False).agg(agg)
+        collapsed = before - len(df)
+        if collapsed:
+            print(f"  Kanonik ülke adlarıyla {collapsed:,} yinelenen alias satırı tekilleştirildi")
     print(f"  Yüklendi: {len(df):,} satır × {len(df.columns)} sütun")
     return df
 

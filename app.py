@@ -34,6 +34,7 @@ import pickle
 import json
 import os
 from typing import Dict, List, Tuple, Optional, Any
+from urllib.parse import quote
 
 # Özel modüller
 # from storytelling import show_storytelling_section  # Gerekirse aktifleştir
@@ -53,7 +54,7 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 
 # Veri yolları - En Son EcolenseIntelligence Dosyaları
-REAL_DATA_PATH = "data/processed.csv"                              # 150 ülke, 2010-2023, UNEP/FAO/Gapminder gerçek veri
+REAL_DATA_PATH = "data/processed.csv"                              # 148 ISO3 tekil ülke, 2010-2023, UNEP/FAO/Gapminder gerçek veri
 PREDICTIONS_PATH = "forecasts.csv"                                 # 2024-2030 ML tahminleri
 PERF_REPORT_PATH = "model_performance.json"                        # GradientBoosting performans raporu
 MODEL_COMPARISON_PATH = "model_performance.json"                   # Aynı dosyadan okunur
@@ -83,6 +84,11 @@ SHAP_FILES = {
 }
 
 OUTPUT_DIR = "outputs/"
+
+HISTORICAL_START_YEAR = 2010
+HISTORICAL_END_YEAR = 2023
+FORECAST_START_YEAR = 2024
+FORECAST_END_YEAR = 2030
 
 # Basit i18n ve tema anahtarları
 if 'lang' not in st.session_state:
@@ -139,7 +145,7 @@ I18N = {
         'MODEL_PERFORMANCE': 'Model Performansı',
         'FUTURE_FORECASTS_BTN': 'Gelecek Tahminleri',
         'AI_TIP': 'İpucu',
-        'AI_WELCOME_TIP': 'KPI kartları 2018–2024 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
+        'AI_WELCOME_TIP': 'KPI kartları 2010–2023 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
         'AI_WELCOME_SUGGESTION': 'Öneri: Önce Veri Analizi → sonra Model Performansı → ardından Gelecek Tahminleri ile ülke seçip AI Insights\'a göz at.',
         'FOOTER_COPYRIGHT': '© 2024 Ecolense. Tüm hakları saklıdır. | Gıda israfı analizi ve sürdürülebilirlik çözümleri',
         'FOOTER_SUBTITLE': 'Sürdürülebilir Gıda Analizi Platformu',
@@ -217,7 +223,7 @@ I18N = {
         'HOME_MODEL_PERFORMANCE': 'Model Performansı',
         'HOME_FUTURE_FORECASTS_BTN': 'Gelecek Tahminleri',
         'HOME_AI_TIP': 'İpucu',
-        'HOME_AI_WELCOME_TIP': 'KPI kartları 2018–2024 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
+        'HOME_AI_WELCOME_TIP': 'KPI kartları 2010–2023 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.',
         'HOME_AI_WELCOME_SUGGESTION': 'Öneri: Önce Veri Analizi → sonra Model Performansı → ardından Gelecek Tahminleri ile ülke seçip AI Insights\'a göz at.',
         'HOME_FOOTER_COPYRIGHT': '© 2024 Ecolense. Tüm hakları saklıdır. | Gıda israfı analizi ve sürdürülebilirlik çözümleri',
         'HOME_FOOTER_SUBTITLE': 'Sürdürülebilir Gıda Analizi Platformu',
@@ -437,7 +443,7 @@ I18N = {
         'MODEL_PERFORMANCE': 'Model Performance',
         'FUTURE_FORECASTS_BTN': 'Future Forecasts',
         'AI_TIP': 'Tip',
-        'AI_WELCOME_TIP': 'KPI cards are based on real 2018–2024 data. You can dive into country details from sub-pages and test forecasts and scenarios.',
+        'AI_WELCOME_TIP': 'KPI cards are based on real 2010–2023 data. You can dive into country details from sub-pages and test forecasts and scenarios.',
         'AI_WELCOME_SUGGESTION': 'Suggestion: First Data Analysis → then Model Performance → then select country with Future Forecasts and check AI Insights.',
         'FOOTER_COPYRIGHT': '© 2024 Ecolense. All rights reserved. | Food waste analysis and sustainability solutions',
         'FOOTER_SUBTITLE': 'Sustainable Food Analysis Platform',
@@ -528,7 +534,7 @@ def add_page_footer(page_name: str):
         </div>
     </div>
     """
-    st.components.v1.html(footer_html, height=50)
+    st.html(footer_html, width='stretch')
 
 # Renk paleti (Ultra Premium)
 COLORS = {
@@ -954,6 +960,32 @@ def load_css():
 # VERİ YÜKLEME VE İŞLEME
 # =============================================================================
 
+def _existing_column(df: pd.DataFrame, names: List[str]) -> Optional[str]:
+    for name in names:
+        if name in df.columns:
+            return name
+    return None
+
+
+def _actual_year_series(df: pd.DataFrame, year_col: str) -> pd.Series:
+    norm = str(year_col).lower()
+    if norm == "years_from_2018":
+        return pd.to_numeric(df[year_col], errors="coerce") + 2018
+    if norm == "years_from_2010":
+        return pd.to_numeric(df[year_col], errors="coerce") + 2010
+    return pd.to_numeric(df[year_col], errors="coerce")
+
+
+def _year_span_label(df: pd.DataFrame, default: str = "2010-2023") -> str:
+    year_col = _existing_column(df, ["year", "Year", "years_from_2010", "Years_from_2010", "years_from_2018", "Years_From_2018"])
+    if not year_col:
+        return default
+    years = _actual_year_series(df, year_col).dropna()
+    if years.empty:
+        return default
+    return f"{int(years.min())}-{int(years.max())}"
+
+
 @st.cache_data(show_spinner=False, ttl=3600)
 def load_data(file_path: str, announce: bool = True) -> pd.DataFrame:
     """
@@ -1053,12 +1085,53 @@ def load_predictions_dashboard() -> Optional[pd.DataFrame]:
                 id_cols.append('ISO3')
             if 'Continent' in df.columns:
                 id_cols.append('Continent')
-            num_cols = ['Total Waste (Tons)', 'Economic Loss (Million $)', 'Carbon_Footprint_kgCO2e']
-            existing = [c for c in num_cols if c in df.columns]
-            df_wide = df.groupby(id_cols)[existing].sum().reset_index()
-            # Sustainability_Score ekle
-            if 'Sustainability_Score' not in df_wide.columns:
-                df_wide['Sustainability_Score'] = 65.0
+            agg = {
+                'Total Waste (Tons)': 'sum',
+                'Economic Loss (Million $)': 'sum',
+                'Carbon_Footprint_kgCO2e': 'sum',
+            }
+            for optional in ['Population (Million)', 'GDP_Per_Capita_USD', 'Income_Group']:
+                if optional in df.columns:
+                    agg[optional] = 'first'
+            df_wide = df.groupby(id_cols, dropna=False).agg(agg).reset_index()
+
+            if 'Population (Million)' in df_wide.columns:
+                pop_m = df_wide['Population (Million)'].clip(lower=0.001)
+                pop_people = pop_m * 1_000_000
+                df_wide['Waste_Per_Capita_kg'] = df_wide['Total Waste (Tons)'] * 1000 / pop_people
+                df_wide['Economic_Loss_Per_Capita_USD'] = df_wide['Economic Loss (Million $)'] / pop_m
+                df_wide['Carbon_Per_Capita_kgCO2e'] = df_wide['Carbon_Footprint_kgCO2e'] / pop_people
+
+            if 'Sustainability_Score' not in df_wide.columns and {'Waste_Per_Capita_kg', 'Economic_Loss_Per_Capita_USD', 'Carbon_Per_Capita_kgCO2e'}.issubset(df_wide.columns):
+                try:
+                    hist = pd.read_csv(REAL_DATA_PATH)
+                    hist_agg = hist.groupby(['Country', 'Year'], as_index=False).agg({
+                        'Total Waste (Tons)': 'sum',
+                        'Economic Loss (Million $)': 'sum',
+                        'Carbon_Footprint_kgCO2e': 'sum',
+                        'Population (Million)': 'first',
+                    })
+                    hist_pop_m = hist_agg['Population (Million)'].clip(lower=0.001)
+                    hist_pop_people = hist_pop_m * 1_000_000
+                    ref_w = hist_agg['Total Waste (Tons)'] * 1000 / hist_pop_people
+                    ref_e = hist_agg['Economic Loss (Million $)'] / hist_pop_m
+                    ref_c = hist_agg['Carbon_Footprint_kgCO2e'] / hist_pop_people
+
+                    def inv(values, ref):
+                        lo = float(ref.quantile(0.05))
+                        hi = float(ref.quantile(0.95))
+                        if hi <= lo:
+                            hi = float(ref.max()) or 1.0
+                            lo = float(ref.min())
+                        return (1 - (values - lo) / (hi - lo + 1e-9)).clip(0, 1)
+
+                    df_wide['Sustainability_Score'] = (
+                        0.40 * inv(df_wide['Waste_Per_Capita_kg'], ref_w)
+                        + 0.30 * inv(df_wide['Economic_Loss_Per_Capita_USD'], ref_e)
+                        + 0.30 * inv(df_wide['Carbon_Per_Capita_kgCO2e'], ref_c)
+                    ) * 100
+                except Exception:
+                    df_wide['Sustainability_Score'] = np.nan
             return df_wide
         # Long format varsa çevir
         if 'Target' in df.columns and 'Prediction' in df.columns:
@@ -1123,15 +1196,15 @@ def load_dashboard_config() -> Optional[dict]:
         with open(DASHBOARD_CONFIG_PATH, 'r', encoding='utf-8') as f:
             meta = json.load(f)
         return {
-            'total_countries': meta.get('countries', 150),
+            'total_countries': meta.get('countries', 148),
             'total_years': meta.get('years', [2010, 2023]),
             'total_categories': len(meta.get('categories', [])),
-            'total_records': meta.get('n_rows', 16800),
+            'total_records': meta.get('n_rows', 16576),
             'avg_sustainability': 72.5,
             'sources': meta.get('sources', []),
         }
     except Exception as e:
-        return {'total_countries': 150, 'total_records': 16800}
+        return {'total_countries': 148, 'total_records': 16576}
 
 @st.cache_data(show_spinner=False)
 def load_shap_importance(target: str) -> Optional[pd.DataFrame]:
@@ -1160,14 +1233,15 @@ def load_performance_report(path: str = PERF_REPORT_PATH):
             'average_cv_r2': data.get('average_test_r2', 0),
             'average_overfitting': data.get('average_overfit', 0),
             'quality_label': data.get('quality_label', ''),
-            'n_rows': data.get('n_rows', 16800),
-            'n_countries': data.get('n_countries', 150),
+            'n_rows': data.get('n_rows', 16576),
+            'n_countries': data.get('n_countries', 148),
             'year_range': data.get('year_range', [2010, 2023]),
             'generated_at': data.get('generated_at', ''),
             'data_source': data.get('data_source', []),
+            'targets': {},
         }
         for tgt, info in targets.items():
-            converted[tgt] = {
+            target_metrics = {
                 'test_r2': info.get('test', {}).get('r2', 0),
                 'cv_r2': info.get('cv_mean', 0),
                 'cv_std': info.get('cv_std', 0),
@@ -1179,6 +1253,10 @@ def load_performance_report(path: str = PERF_REPORT_PATH):
                 'n_train': info.get('n_train', 0),
                 'n_test': info.get('n_test', 0),
             }
+            converted['targets'][tgt] = target_metrics
+            converted[tgt] = target_metrics
+        if converted['targets']:
+            converted['average_cv_r2'] = float(np.mean([m.get('cv_r2', 0) for m in converted['targets'].values()]))
         return converted
     except Exception as e:
         st.error(f"❌ Model performans raporu yükleme hatası: {e}")
@@ -1246,15 +1324,16 @@ def load_prof_ts_importance(target_norm: str, version: float = 0.0) -> Optional[
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': "shap_importance_Economic_Loss_Million_USD.csv",
-            'total_waste_tons': "shap_importance_Total_Waste_Tons.csv",
-            'carbon_footprint_kgco2e': "shap_importance_Carbon_Footprint_kgCO2e.csv",
-            'sustainability_score': "shap_importance_Sustainability_Score.csv"
+            'economic_loss_million': ["shap_Economic_Loss_Million_USD.csv", "shap_importance_Economic_Loss_Million_USD.csv"],
+            'total_waste_tons': ["shap_Total_Waste_Tons.csv", "shap_importance_Total_Waste_Tons.csv"],
+            'carbon_footprint_kgco2e': ["shap_Carbon_Footprint_kgCO2e.csv", "shap_importance_Carbon_Footprint_kgCO2e.csv"],
+            'sustainability_score': ["shap_Total_Waste_Tons.csv", "shap_importance_Sustainability_Score.csv"]
         }
         
         if target_norm in target_file_map:
-            path = target_file_map[target_norm]
-            if os.path.exists(path):
+            for path in target_file_map[target_norm]:
+                if not os.path.exists(path):
+                    continue
                 df = pd.read_csv(path)
                 # Kolon isimlerini standardize et
                 if 'Feature' in df.columns and 'Importance' in df.columns:
@@ -1280,15 +1359,16 @@ def load_prof_ts_shap_mean(target_norm: str, version: float = 0.0) -> Optional[p
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': "shap_importance_Economic_Loss_Million_USD.csv",
-            'total_waste_tons': "shap_importance_Total_Waste_Tons.csv",
-            'carbon_footprint_kgco2e': "shap_importance_Carbon_Footprint_kgCO2e.csv",
-            'sustainability_score': "shap_importance_Sustainability_Score.csv"
+            'economic_loss_million': ["shap_Economic_Loss_Million_USD.csv", "shap_importance_Economic_Loss_Million_USD.csv"],
+            'total_waste_tons': ["shap_Total_Waste_Tons.csv", "shap_importance_Total_Waste_Tons.csv"],
+            'carbon_footprint_kgco2e': ["shap_Carbon_Footprint_kgCO2e.csv", "shap_importance_Carbon_Footprint_kgCO2e.csv"],
+            'sustainability_score': ["shap_Total_Waste_Tons.csv", "shap_importance_Sustainability_Score.csv"]
         }
         
         if target_norm in target_file_map:
-            path = target_file_map[target_norm]
-            if os.path.exists(path):
+            for path in target_file_map[target_norm]:
+                if not os.path.exists(path):
+                    continue
                 df = pd.read_csv(path)
                 # Kolon isimlerini standardize et
                 if 'Feature' in df.columns and 'Importance' in df.columns:
@@ -1437,9 +1517,9 @@ def render_data_quality(df: pd.DataFrame, page: str = "analysis") -> None:
 
     if total_missing == 0:
         if page == "home":
-            st.markdown("<div style='text-align:center;margin:.25rem 0;'><span class='success-badge'>Veri Kalitesi: Eksik veri yok (2018–2024)</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align:center;margin:.25rem 0;'><span class='success-badge'>Veri Kalitesi: Eksik veri yok ({_year_span_label(df)})</span></div>", unsafe_allow_html=True)
         else:
-            st.markdown("<span class='success-badge'>Veri Kalitesi: Eksik veri yok (2018–2024)</span>", unsafe_allow_html=True)
+            st.markdown(f"<span class='success-badge'>Veri Kalitesi: Eksik veri yok ({_year_span_label(df)})</span>", unsafe_allow_html=True)
         return
 
     # Eksik varsa – kısa rozet
@@ -1469,7 +1549,7 @@ def render_data_quality(df: pd.DataFrame, page: str = "analysis") -> None:
                 fig, ax = plt.subplots(figsize=(min(10, 0.35*len(cols)+4), 4))
                 sns.heatmap(df[cols].isnull(), cbar=False, ax=ax)
                 ax.set_title("Eksik Veri Isı Haritası")
-                st.pyplot(fig, use_container_width=True)
+                st.pyplot(fig, width='stretch')
         except Exception:
             pass
 
@@ -1549,6 +1629,7 @@ def metric_font_style(formatted_value: str) -> str:
 @st.cache_data(show_spinner=False, ttl=1800)
 def create_kpi_cards(df: pd.DataFrame):
     """KPI kartları"""
+    span = _year_span_label(df)
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
@@ -1576,7 +1657,7 @@ def create_kpi_cards(df: pd.DataFrame):
             <h3>🗑️ Toplam Atık</h3>
             <div class="metric-value" style="{waste_font}">{waste_str}</div>
             <div class="metric-unit">{waste_unit}</div>
-            <p class="metric-sub">2018-2024</p>
+            <p class="metric-sub">{span}</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -1726,12 +1807,12 @@ def create_trend_chart(df: pd.DataFrame, target_column: str):
         showlegend=True
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
         st.markdown(f"""
-        Bu grafik **{resolved_col}** değişkeninin 2018-2024 yılları arasındaki genel trendini gösteriyor. 
+        Bu grafik **{resolved_col}** değişkeninin {_year_span_label(df)} yılları arasındaki genel trendini gösteriyor. 
         Yıllık ortalama değerler hesaplanarak zaman içindeki değişim eğilimi analiz ediliyor. 
         Yukarı eğilim artış trendini, aşağı eğilim azalış trendini gösterir.
         """)
@@ -1765,7 +1846,7 @@ def create_correlation_matrix(df: pd.DataFrame):
         template="plotly_white"
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -1783,8 +1864,8 @@ def _million_flag(colname: str) -> bool:
         'economic_loss_million_usd','economic_loss__million_$','economic_loss__million_usd','economic_loss_musd'
     }
 
-def compute_country_kpis(df: pd.DataFrame, start_year: int = 2018, end_year: int = 2024) -> pd.DataFrame:
-    """2018–2024 arası ülke bazlı akıllı KPI hesapları
+def compute_country_kpis(df: pd.DataFrame, start_year: Optional[int] = None, end_year: Optional[int] = None) -> pd.DataFrame:
+    """Tarihsel aralık için ülke bazlı akıllı KPI hesapları
     Dönen kolonlar:
       - total_waste_tons, per_capita_waste_kg
       - economic_loss_usd, per_capita_loss_usd
@@ -1804,6 +1885,16 @@ def compute_country_kpis(df: pd.DataFrame, start_year: int = 2018, end_year: int
     pop_col = _resolve_column_name(df, ['population_million','population','population_total'])
     if not country_col or not year_col:
         return pd.DataFrame()
+    if _normalize_col(year_col) == 'years_from_2018':
+        df['__year_actual'] = pd.to_numeric(df[year_col], errors='coerce') + 2018
+        year_col = '__year_actual'
+    elif _normalize_col(year_col) == 'years_from_2010':
+        df['__year_actual'] = pd.to_numeric(df[year_col], errors='coerce') + 2010
+        year_col = '__year_actual'
+    if start_year is None:
+        start_year = int(pd.to_numeric(df[year_col], errors='coerce').min())
+    if end_year is None:
+        end_year = int(pd.to_numeric(df[year_col], errors='coerce').max())
     # Yıl filtresi
     df = df[(df[year_col] >= start_year) & (df[year_col] <= end_year)]
     # Nüfus kişi sayısına
@@ -1887,7 +1978,8 @@ def compute_country_kpis(df: pd.DataFrame, start_year: int = 2018, end_year: int
     return agg[cols].sort_values(by='economic_loss_usd' if 'economic_loss_usd' in cols else cols[1], ascending=False)
 
 def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFrame]) -> None:
-    st.subheader('🌍 Ülke Bazlı Sıralamalar (2018–2024)')
+    span = _year_span_label(real_df)
+    st.subheader(f'🌍 Ülke Bazlı Sıralamalar ({span})')
     colA, colB, colC = st.columns([2,2,1])
     with colA:
         metric = st.selectbox('Metrik', ['Toplam Atık (ton)','Kişi Başına Atık (kg/kişi)','Ekonomik Kayıp (USD)','Kişi Başına Kayıp (USD/kişi)','Toplam Karbon (kg CO2e)','Kişi Başına Karbon (kg CO2e/kişi)','Sürdürülebilirlik Skoru (ortalama)','Atık CAGR (%)','Kayıp CAGR (%)','Karbon CAGR (%)'])
@@ -1927,11 +2019,11 @@ def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFra
         df_final = compute_country_kpis(final_df)
         col1, col2 = st.columns(2)
         with col1:
-            st.caption('Gerçek (2018–2024)')
-            st.dataframe(pick(df_real), use_container_width=True)
+            st.caption(f'Gerçek ({span})')
+            st.dataframe(pick(df_real), width='stretch')
         with col2:
-            st.caption('Gerçek Veri (2018-2024)')
-            st.dataframe(pick(df_final), use_container_width=True)
+            st.caption(f'Gerçek Veri ({span})')
+            st.dataframe(pick(df_final), width='stretch')
         # Δ ve Δ% tablosu
         mapping = {
             'Toplam Atık (ton)': 'total_waste_tons',
@@ -1953,9 +2045,9 @@ def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFra
             merged['Delta'] = merged[f'{mcol}_Synth'] - merged[f'{mcol}_Real']
             merged['Delta_%'] = (merged['Delta'] / merged[f'{mcol}_Real'].replace({0: np.nan})) * 100.0
             st.caption('Veri Analizi')
-            st.dataframe(merged.sort_values('Delta_%', ascending=False).head(topn), use_container_width=True)
+            st.dataframe(merged.sort_values('Delta_%', ascending=False).head(topn), width='stretch')
     else:
-        st.dataframe(pick(df_real), use_container_width=True)
+        st.dataframe(pick(df_real), width='stretch')
 
     # Ülke detay – mini zaman serisi
     with st.expander('Ülke Detay (mini zaman serisi)', expanded=False):
@@ -1996,7 +2088,7 @@ def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFra
                 fig.add_trace(go.Scatter(x=sR[year_col], y=sR[mcol], mode='lines+markers', name='Gerçek', line=dict(color='#11E6C1')))
                 # Sentetik veri çizgisi kaldırıldı
                 fig.update_layout(height=360, template='plotly_white')
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
 def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFrame]) -> None:
     # Premium başlık
@@ -2041,7 +2133,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
         if iso_key != 'ISO3':
             iso3 = iso3.rename(columns={iso_key: 'ISO3'})
         df_kpi = df_kpi.merge(iso3, on='country', how='left')
-    tabs = st.tabs(['🌍 Harita', '🏅 Top-N Bar', '↗️ 2018→2024 Eğim', '🧩 Treemap', '⚡ Dağılım'])
+    tabs = st.tabs(['🌍 Harita', '🏅 Top-N Bar', '↗️ Dönem Eğimi', '🧩 Treemap', '⚡ Dağılım'])
     # 1) Choropleth – kişi başına atık
     with tabs[0]:
         if 'per_capita_waste_kg' in df_kpi.columns:
@@ -2055,7 +2147,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                                     hover_name='country', color_continuous_scale='RdYlGn_r',
                                     labels={'per_capita_waste_kg':'kg/kişi'})
                 fig.update_layout(height=480, template='plotly_white')
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
                 
                 # Grafik açıklaması - Premium tasarım
                 st.markdown("""
@@ -2119,7 +2211,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
         dyn_h = max(360, 28 * max(1, len(df_top)) + 160)
         fig.update_layout(height=dyn_h, template='plotly_white')
         fig.update_yaxes(categoryorder='array', categoryarray=list(df_top['country']))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Grafik açıklaması - Premium tasarım
         st.markdown(f"""
@@ -2149,7 +2241,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
             st.download_button('Grafiği indir (HTML)', data=html, file_name='topn.html', mime='text/html')
         except Exception:
             pass
-    # 3) Slope chart 2018→2024
+    # 3) Slope chart – veri setindeki ilk ve son yıl
     with tabs[2]:
         country_col = 'country' if 'country' in real_df.columns else 'Country'
         year_col = 'year' if 'year' in real_df.columns else 'Year'
@@ -2169,15 +2261,17 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                     df_agg[mcol] = df_agg[mcol] * 1_000_000.0
             except Exception:
                 pass
-            d18 = df_agg[df_agg[year_col] == 2018]
-            d24 = df_agg[df_agg[year_col] == 2024]
-            merged = d18.merge(d24, on=country_col, suffixes=('_2018','_2024'))
-            merged = merged.nlargest(12, f'{mcol}_2024')
+            start_y = int(df_agg[year_col].min())
+            end_y = int(df_agg[year_col].max())
+            d_start = df_agg[df_agg[year_col] == start_y]
+            d_end = df_agg[df_agg[year_col] == end_y]
+            merged = d_start.merge(d_end, on=country_col, suffixes=(f'_{start_y}', f'_{end_y}'))
+            merged = merged.nlargest(12, f'{mcol}_{end_y}')
             fig = go.Figure()
             for _, r in merged.iterrows():
-                fig.add_trace(go.Scatter(x=[2018, 2024], y=[r[f'{mcol}_2018'], r[f'{mcol}_2024']], mode='lines+markers', name=r[country_col]))
-            fig.update_layout(height=520, template='plotly_white', xaxis=dict(dtick=6))
-            st.plotly_chart(fig, use_container_width=True)
+                fig.add_trace(go.Scatter(x=[start_y, end_y], y=[r[f'{mcol}_{start_y}'], r[f'{mcol}_{end_y}']], mode='lines+markers', name=r[country_col]))
+            fig.update_layout(height=520, template='plotly_white', xaxis=dict(dtick=max(1, end_y - start_y)))
+            st.plotly_chart(fig, width='stretch')
             
             # Grafik açıklaması - Premium tasarım
             st.markdown(f"""
@@ -2191,11 +2285,11 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                     <h4 style="margin: 0; font-size: 1.3rem; font-weight: 600; color: #232E5C;">Bu Grafik Ne Anlatıyor?</h4>
                 </div>
                 <div style="color: #232E5C; line-height: 1.6;">
-                    <p style="margin: 0 0 0.8rem 0; font-weight: 600;">Bu <strong>Slope Chart (Eğim Grafiği)</strong> 2018-2024 arasındaki değişimi gösteriyor:</p>
+                    <p style="margin: 0 0 0.8rem 0; font-weight: 600;">Bu <strong>Slope Chart (Eğim Grafiği)</strong> {start_y}-{end_y} arasındaki değişimi gösteriyor:</p>
                     <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
                         <li><strong>Her çizgi</strong>: Bir ülkenin {mkey} değerindeki değişim</li>
-                        <li><strong>Yukarı eğim</strong>: 2018'den 2024'e artış</li>
-                        <li><strong>Aşağı eğim</strong>: 2018'den 2024'e azalış</li>
+                        <li><strong>Yukarı eğim</strong>: {start_y}'den {end_y}'e artış</li>
+                        <li><strong>Aşağı eğim</strong>: {start_y}'den {end_y}'e azalış</li>
                         <li><strong>Dik çizgi</strong>: Değişim yok</li>
                     </ul>
                     <p style="margin: 0.8rem 0 0 0; font-weight: 600;">💡 <strong>Analiz</strong>: Hangi ülkelerin iyileştiğini, hangilerinin gerilediğini görebilirsiniz.</p>
@@ -2212,7 +2306,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
         waste_col = _resolve_column_name(real_df, ['total_waste_tons','food_waste_tons','total_waste_(tons)','total_waste'])
         df_src = final_df if use_final and final_df is not None else real_df
         if cont_col and cat_col and year_col and waste_col:
-            d = df_src[(df_src[year_col] >= 2018) & (df_src[year_col] <= 2024)]
+            d = df_src.copy()
             agg = d.groupby([cont_col, cat_col])[waste_col].sum().reset_index()
             # Kategorik tipleri stringe çevir ve eksikleri doldur – treemap için zorunlu
             try:
@@ -2222,7 +2316,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
                 pass
             fig = px.treemap(agg, path=[cont_col, cat_col], values=waste_col, color=cont_col, color_discrete_sequence=px.colors.qualitative.Set3)
             fig.update_layout(height=520, template='plotly_white')
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Grafik açıklaması - Premium tasarım
             st.markdown("""
@@ -2262,7 +2356,7 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
             fig = px.scatter(df, x='per_capita_waste_kg', y='sustainability_score_avg', size=size_col, color='Outlier', hover_name='country',
                              labels={'per_capita_waste_kg':'kg/kişi','sustainability_score_avg':'Sürdürülebilirlik'})
             fig.update_layout(height=520, template='plotly_white')
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Grafik açıklaması - Premium tasarım
             st.markdown("""
@@ -2391,7 +2485,7 @@ def show_story_mode_page():
                 {
                     "title": "🥗 Gıda İsrafı Krizi ve Çözüm Yolları",
                     "subtitle": "Gıda israfı kalıplarının kapsamlı analizi ve stratejik müdahaleler",
-                    "key_metrics": ["5,002 veri noktası", "20 ülke", "7 yıl", "9 kategori"],
+                    "key_metrics": ["16.576 veri noktası", "148 ülke", "2010-2023", "8 kategori"],
                     "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                 },
                 {
@@ -2444,7 +2538,7 @@ def show_story_mode_page():
                 </div>
                 """, unsafe_allow_html=True)
                 
-                if st.button(f"📖 Explore {story['title'].split()[0]}", key=f"story_{i}", use_container_width=True):
+                if st.button(f"📖 Explore {story['title'].split()[0]}", key=f"story_{i}", width='stretch'):
                     st.session_state['selected_story'] = story['title']
                     st.session_state['story_mode'] = story['title']
                     st.rerun()
@@ -2609,8 +2703,7 @@ def show_home_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Yalnızca 2018–2024 gerçek veri (jüri görünümü)
-    # Gerçek 2018–2024 veri (sessiz yükleme, anasayfada gözlem/sütun sayısı gösterme)
+    # Gerçek 2010–2023 veri (sessiz yükleme, anasayfada gözlem/sütun sayısı gösterme)
     df = load_data(REAL_DATA_PATH, announce=False)
     
     if df.empty:
@@ -2647,19 +2740,19 @@ def show_home_page():
     col1, col2, col3, col4 = st.columns(4, gap="small")
     
     with col1:
-        if st.button(f"🎯 {_t('TARGET_FORECASTS')}\n", use_container_width=True, key="quick_target"):
+        if st.button(f"🎯 {_t('TARGET_FORECASTS')}\n", width='stretch', key="quick_target"):
             st.session_state['page'] = _t('PAGE_TARGET_FORECASTS')
     
     with col2:
-        if st.button(f"📊 {_t('DATA_ANALYSIS')}\n", use_container_width=True, key="quick_analysis"):
+        if st.button(f"📊 {_t('DATA_ANALYSIS')}\n", width='stretch', key="quick_analysis"):
             st.session_state['page'] = _t('PAGE_ANALYSIS')
     
     with col3:
-        if st.button(f"🤖 {_t('MODEL_PERFORMANCE')}\n", use_container_width=True, key="quick_model"):
+        if st.button(f"🤖 {_t('MODEL_PERFORMANCE')}\n", width='stretch', key="quick_model"):
             st.session_state['page'] = _t('PAGE_PERF')
     
     with col4:
-        if st.button(f"🔮 {_t('FUTURE_FORECASTS_BTN')}\n", use_container_width=True, key="quick_future"):
+        if st.button(f"🔮 {_t('FUTURE_FORECASTS_BTN')}\n", width='stretch', key="quick_future"):
             st.session_state['page'] = _t('PAGE_FORECASTS')
     
     # AI Chat Interface - Ana sayfada görünür
@@ -2695,7 +2788,7 @@ def show_home_page():
             key="home_ai_chat_input"
         )
     with col2:
-        if st.button("🚀 Sor", key="home_ai_ask_button", use_container_width=True):
+        if st.button("🚀 Sor", key="home_ai_ask_button", width='stretch'):
             if user_question:
                 # Load data for AI response
                 real_df = load_data(REAL_DATA_PATH, announce=False)
@@ -2719,7 +2812,7 @@ def show_home_page():
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        if st.button("🔍 Detaylı İsraf Analizi", key="home_quick_top", use_container_width=True):
+        if st.button("🔍 Detaylı İsraf Analizi", key="home_quick_top", width='stretch'):
             question = "En yüksek israf analizi"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
@@ -2734,7 +2827,7 @@ def show_home_page():
                 st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     with col2:
-        if st.button("📈 Sürdürülebilirlik Trendleri", key="home_quick_trends", use_container_width=True):
+        if st.button("📈 Sürdürülebilirlik Trendleri", key="home_quick_trends", width='stretch'):
             question = "Sürdürülebilirlik trendleri"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
@@ -2749,7 +2842,7 @@ def show_home_page():
                 st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     with col3:
-        if st.button("💡 Akıllı Öneriler", key="home_quick_recs", use_container_width=True):
+        if st.button("💡 Akıllı Öneriler", key="home_quick_recs", width='stretch'):
             question = "Akıllı öneriler"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
@@ -2764,7 +2857,7 @@ def show_home_page():
                 st.success("AI yanıtı eklendi! Aşağıdaki sohbet geçmişinde görüntüleyebilirsiniz.")
     
     with col4:
-        if st.button("🌍 Ülke Karşılaştırması", key="home_quick_country", use_container_width=True):
+        if st.button("🌍 Ülke Karşılaştırması", key="home_quick_country", width='stretch'):
             question = "Ülke karşılaştırması analizi"
             real_df = load_data(REAL_DATA_PATH, announce=False)
             preds = load_predictions_dashboard()
@@ -2794,7 +2887,7 @@ def show_home_page():
         st.markdown("""
         <div class='ai-assistant'>
           <h4><span class='ai-emoji'>🤖</span>AI Asistan — Hoş geldin!</h4>
-          <p><span class='ai-badge'>İpucu</span> KPI kartları 2018–2024 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.</p>
+          <p><span class='ai-badge'>İpucu</span> KPI kartları 2010–2023 gerçek veriye dayanır. Alt sayfalarından ülke detayına inip tahminleri ve senaryoları test edebilirsin.</p>
           <p>Öneri: Önce Veri Analizi → sonra Model Performansı → ardından Gelecek Tahminleri ile ülke seçip AI Insights'a göz at.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -2822,23 +2915,23 @@ def show_home_page():
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("🥗 Gıda İsrafı Hikayesi", use_container_width=True, key="story1"):
+        if st.button("🥗 Gıda İsrafı Hikayesi", width='stretch', key="story1"):
             st.session_state['story_mode'] = "🥗 Gıda İsrafı Krizi ve Çözüm Yolları"
             st.session_state['page'] = _t('PAGE_STORY')
             st.rerun()
         
-        if st.button("💰 Ekonomik Etki Hikayesi", use_container_width=True, key="story2"):
+        if st.button("💰 Ekonomik Etki Hikayesi", width='stretch', key="story2"):
             st.session_state['story_mode'] = "💰 Gıda İsrafının Ekonomik Etkileri"
             st.session_state['page'] = _t('PAGE_STORY')
             st.rerun()
     
     with col2:
-        if st.button("🌍 Çevresel Etki Hikayesi", use_container_width=True, key="story3"):
+        if st.button("🌍 Çevresel Etki Hikayesi", width='stretch', key="story3"):
             st.session_state['story_mode'] = "🌍 Gıda İsrafının Çevresel Ayak İzi"
             st.session_state['page'] = _t('PAGE_STORY')
             st.rerun()
         
-        if st.button("🎯 Sürdürülebilir Sistemler Hikayesi", use_container_width=True, key="story4"):
+        if st.button("🎯 Sürdürülebilir Sistemler Hikayesi", width='stretch', key="story4"):
             st.session_state['story_mode'] = "🎯 Sürdürülebilir Gıda Sistemleri"
             st.session_state['page'] = _t('PAGE_STORY')
             st.rerun()
@@ -2886,16 +2979,16 @@ def show_data_analysis():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("**🎯 Kaynak:** Global Food Wastage + Material Footprint (Birleştirilmiş & Zenginleştirilmiş)")
-        st.markdown("**📊 Boyut:** 5,000 gözlem × 37 değişken")
-        st.markdown("**🌍 Kapsam:** 20 ülke (2018-2024)")
-        st.markdown("**🔧 İşleme:** İki veri seti birleştirildi, özellik mühendisliği yapıldı")
+        st.markdown("**🎯 Kaynak:** UNEP/FAO/Gapminder/IMF + ülke ve LCA zenginleştirmeleri")
+        st.markdown("**📊 Boyut:** 16,576 gözlem × 56 değişken")
+        st.markdown("**🌍 Kapsam:** 148 tekil ISO3 ülke (2010-2023)")
+        st.markdown("**🔧 İşleme:** Gerçek kaynaklardan derlenmiş veri, özellik mühendisliği ve kalite kontrolleri")
     
     with col2:
         st.markdown("**📈 Model:** GradientBoosting (3 hedef)")
         st.markdown("**🎯 Hedefler:** 3 ana (Atık, Ekonomik Kayıp, Karbon)")
         st.markdown("**🛡️ Güvenlik:** Overfitting önleme")
-        st.markdown("**📅 Tahmin:** 2025-2030 projeksiyonlar")
+        st.markdown("**📅 Tahmin:** 2024-2030 projeksiyonlar")
     
     # Tek veri seti kullanımı
     df = load_data(REAL_DATA_PATH, announce=False)
@@ -3041,7 +3134,7 @@ def show_data_analysis():
             category_df_sorted = category_df.sort_values('Ortalama Sürdürülebilirlik', ascending=(sort_order == "Küçükten Büyüğe"))
             category_df_sorted['Ortalama Sürdürülebilirlik'] = category_df_sorted['Ortalama Sürdürülebilirlik'].apply(lambda x: f"{x:.2f}%")
         
-        st.dataframe(category_df_sorted, use_container_width=True, hide_index=True)
+        st.dataframe(category_df_sorted, width='stretch', hide_index=True)
         
         # Kategori karşılaştırma grafiği
         fig = go.Figure()
@@ -3075,7 +3168,7 @@ def show_data_analysis():
             height=500
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     
 
     
@@ -3621,7 +3714,7 @@ def show_model_performance():
             font=dict(size=18, color='#232E5C')
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # Not: Kaynak {src_name}. Robust yedek olarak kullanılabilir.
 
@@ -3729,7 +3822,7 @@ def show_forecasts():
                 <p style="margin: 0.2rem 0;"><strong>Model:</strong> GradientBoosting</p>
                                             <p style="margin: 0.2rem 0;"><strong>Yöntem:</strong> Gradient Boosting</p>
                 <p style="margin: 0.2rem 0;"><strong>Sürdürülebilirlik:</strong> Kompozit Hesaplama</p>
-                <p style="margin: 0.2rem 0;"><strong>Dönem:</strong> 2025-2030</p>
+                <p style="margin: 0.2rem 0;"><strong>Dönem:</strong> 2024-2030</p>
                 <p style="margin: 0.2rem 0;"><strong>Belirsizlik:</strong> %80-%90 Güven Aralığı</p>
             </div>
         </div>
@@ -3952,7 +4045,7 @@ def show_forecasts():
         except Exception as e:
             st.warning(f"⚠️ Belirsizlik bantları hesaplanamadı: {str(e)}")
     fig.update_layout(title=f"{country} – {label}", xaxis_title='Yıl', yaxis_title=label, template='plotly_white', height=500)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -4130,7 +4223,7 @@ def show_target_based_forecasts():
         height=480,
         showlegend=True
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     # AI Asistan
     try:
         diff2030 = (goal - cur)
@@ -4709,13 +4802,13 @@ def show_ai_insights():
         imp_n = imp.head(20)
         # Sütun adlarını kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in imp_n.columns else imp_n.columns[1]
-        col1.plotly_chart(px.bar(imp_n, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_perm_{hash(str(imp_n))}_{hash('ai_insights')}")
+        col1.plotly_chart(px.bar(imp_n, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), width='stretch', key=f"ai_insights_perm_{hash(str(imp_n))}_{hash('ai_insights')}")
     if shapm is not None and not shapm.empty:
         col2.subheader("Ortalama |SHAP|")
         sm = shapm.head(20)
         # Kolon isimlerini kontrol et ve uygun olanı kullan
         x_col = 'importance' if 'importance' in sm.columns else 'mean_abs_shap'
-        col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_shap_{hash(str(sm))}_{hash('ai_insights')}")
+        col2.plotly_chart(px.bar(sm, x=x_col, y='feature', orientation='h', template='plotly_white', height=480), width='stretch', key=f"ai_insights_shap_{hash(str(sm))}_{hash('ai_insights')}")
 
     st.markdown("---")
     st.subheader("🧠 SHAP – Özellik Etkileri (Profesyonel, referans)")
@@ -4777,11 +4870,11 @@ def show_ai_insights():
         c1, c2 = st.columns(2)
         if impP is not None and not impP.empty:
             c1.subheader("Permutation Importance (Profesyonel)")
-            c1.plotly_chart(px.bar(impP.head(20), x=impP.columns[1], y=impP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_prof_perm_{hash(str(impP))}_{hash('ai_insights')}")
+            c1.plotly_chart(px.bar(impP.head(20), x=impP.columns[1], y=impP.columns[0], orientation='h', template='plotly_white', height=480), width='stretch', key=f"ai_insights_prof_perm_{hash(str(impP))}_{hash('ai_insights')}")
         if shapP is not None and not shapP.empty:
             c2.subheader("Ortalama |SHAP| (Profesyonel)")
             colx = 'mean_abs_shap' if 'mean_abs_shap' in shapP.columns else shapP.columns[1]
-            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), use_container_width=True, key=f"ai_insights_prof_shap_{hash(str(shapP))}_{hash('ai_insights')}")
+            c2.plotly_chart(px.bar(shapP.head(20), x=colx, y=shapP.columns[0], orientation='h', template='plotly_white', height=480), width='stretch', key=f"ai_insights_prof_shap_{hash(str(shapP))}_{hash('ai_insights')}")
 
     # Δ Etki (TS − Profesyonel)
     if shap_ts is not None and not shap_ts.empty and shapP is not None and not shapP.empty:
@@ -4793,7 +4886,7 @@ def show_ai_insights():
             merged = m_ts.merge(m_p, on='feature', how='inner')
             merged['delta'] = merged['ts'] - merged['prof']
             st.subheader("Δ Etki (TS − Profesyonel)")
-            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"ai_insights_delta_{hash(str(merged))}_{hash('ai_insights')}")
+            st.plotly_chart(px.bar(merged.sort_values('delta', ascending=False).head(20), x='delta', y='feature', orientation='h', template='plotly_white', height=520), width='stretch', key=f"ai_insights_delta_{hash(str(merged))}_{hash('ai_insights')}")
             with st.expander("📊 Δ Etki Grafiği Ne Anlatıyor?"):
                 st.markdown("""
                 **Δ Etki (TS − Profesyonel)** grafiği, zaman serisi modeli ile referans model arasındaki özellik etki farklarını gösterir:
@@ -5096,7 +5189,7 @@ def show_model_comparison():
             hover_data=['Target_Variable'],
             title='Model Performansı: Test R² vs Overfitting'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     # AI Asistan – Model Karşılaştırma yorumu
     try:
@@ -5342,7 +5435,7 @@ def show_model_card():
             'CV std': p.get('cv_std') if 'cv_std' in p else 'N/A',
             '|Test−CV|': gap
         })
-    st.dataframe(pd.DataFrame(rows), use_container_width=True)
+    st.dataframe(pd.DataFrame(rows), width='stretch')
     
     # Açıklanabilirlik bölümü - Premium tasarım
     st.markdown("""
@@ -5375,7 +5468,7 @@ def show_model_card():
             if imp_ts is not None and not imp_ts.empty:
                 col_imp = imp_ts.columns[1]
                 c1.subheader("Permutation Importance")
-                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), use_container_width=True)
+                c1.plotly_chart(px.bar(imp_ts.head(10), x=col_imp, y=imp_ts.columns[0], orientation='h', template='plotly_white', height=420), width='stretch')
                 
                 # Permutation Importance açıklaması
                 with c1.expander("📊 Permutation Importance Nedir?"):
@@ -5396,7 +5489,7 @@ def show_model_card():
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
                 c2.subheader("Ortalama |SHAP|")
-                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"model_card_shap_{hash(str(shap_ts))}_{hash('model_card')}")
+                c2.plotly_chart(px.bar(shap_ts.sort_values(colx, ascending=False).head(10), x=colx, y='feature', orientation='h', template='plotly_white', height=420), width='stretch', key=f"model_card_shap_{hash(str(shap_ts))}_{hash('model_card')}")
                 
                 # SHAP açıklaması
                 with c2.expander("📊 SHAP Değerleri Nedir?"):
@@ -5607,7 +5700,7 @@ def show_risk_opportunity():
     figq.add_vline(x=x_thr, line_dash='dash', line_color='#94A3B8')
     figq.add_hline(y=y_thr, line_dash='dash', line_color='#94A3B8')
     figq.update_layout(xaxis_title='Risk Skoru (sağ = risk artar)', yaxis_title='2030 Sürdürülebilirlik (yukarı = iyi)')
-    st.plotly_chart(figq, use_container_width=True)
+    st.plotly_chart(figq, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 2×2 Risk & Fırsat Radarı Ne Anlatıyor?", expanded=False):
@@ -5859,7 +5952,7 @@ def show_report_builder():
     )
     
     # Rapor oluştur butonu
-    if st.button("📄 Rapor Oluştur", type="primary", use_container_width=True):
+    if st.button("📄 Rapor Oluştur", type="primary", width='stretch'):
         with st.spinner("Rapor oluşturuluyor..."):
             # Rapor içeriği oluştur
             report_content = generate_simple_report(
@@ -5893,7 +5986,11 @@ def show_report_builder():
             # Rapor önizlemesi
             with st.expander("📄 Rapor Önizlemesi"):
                 if report_format == "HTML":
-                    st.components.v1.html(report_content, height=600, scrolling=True)
+                    st.iframe(
+                        "data:text/html;charset=utf-8," + quote(report_content),
+                        height=600,
+                        width='stretch'
+                    )
                 else:
                     st.markdown(report_content)
 
@@ -5922,7 +6019,7 @@ def generate_simple_report(report_type, format_type, title, include_performance=
     """Basit rapor içeriği oluşturur"""
     
     # Veri yükle
-    df = load_data('data/ecolense_final_enriched_with_iso.csv')
+    df = load_data(REAL_DATA_PATH, announce=False)
     perf_data = load_performance_report(PERF_REPORT_PATH)
     
     if format_type == "HTML":
@@ -6056,10 +6153,10 @@ def generate_html_report(report_type, title, df, perf_data, include_performance,
         html_content += """
         <h2>🔮 Gelecek Tahminleri</h2>
         <div class="metric">
-            <strong>2025-2030 Projeksiyonları:</strong><br>
-            • Atık miktarı %15-20 artış bekleniyor<br>
-            • Sürdürülebilirlik skorları iyileşme trendinde<br>
-            • Karbon ayak izi azalma eğiliminde
+            <strong>2024-2030 Projeksiyonları:</strong><br>
+            • Toplam atıkta yaklaşık %5 artış bekleniyor<br>
+            • Ekonomik kayıp yatay ve fiyat/GDP varsayımlarına duyarlı<br>
+            • Karbon ayak izinde yaklaşık %4 artış bekleniyor
         </div>
         """
     
@@ -6067,7 +6164,7 @@ def generate_html_report(report_type, title, df, perf_data, include_performance,
         html_content += """
         <h2>📋 Metodoloji</h2>
         <div class="metric">
-            <strong>Veri Kaynağı:</strong> Ecolense Enriched Dataset (2018-2024)<br>
+            <strong>Veri Kaynağı:</strong> Ecolense gerçek kaynaklar veri seti (2010-2023)<br>
             <strong>Model Türü:</strong> Gradient Boosting (Ensemble Learning)<br>
             <strong>Değerlendirme:</strong> Cross-validation ile RMSE ve R² skorları
         </div>
@@ -6095,10 +6192,10 @@ def generate_markdown_report(report_type, title, df, perf_data, include_performa
 
 ## 📊 Özet Metrikler
 
-    - **Toplam Atık:** {df[_resolve_column_name(df, ['Total Waste (Tons)', 'total_waste_tons'])].sum() / 1e6:.1f} milyon ton
-    - **Ekonomik Kayıp:** {df[_resolve_column_name(df, ['Economic Loss (Million $)', 'economic_loss_million_usd'])].sum() / 1e6:.1f} trilyon USD
-    - **Toplam Karbon:** {df[_resolve_column_name(df, ['Carbon_Footprint_kgCO2e', 'carbon_footprint_kgco2e'])].sum() / 1e9:.1f} milyar kg CO2e
-    - **Ortalama Sürdürülebilirlik:** {df[_resolve_column_name(df, ['Sustainability_Score', 'sustainability_score'])].mean():.1f}/100
+- **Toplam Atık:** {df[_resolve_column_name(df, ['Total Waste (Tons)', 'total_waste_tons'])].sum() / 1e6:.1f} milyon ton
+- **Ekonomik Kayıp:** {df[_resolve_column_name(df, ['Economic Loss (Million $)', 'economic_loss_million_usd'])].sum() / 1e6:.1f} trilyon USD
+- **Toplam Karbon:** {df[_resolve_column_name(df, ['Carbon_Footprint_kgCO2e', 'carbon_footprint_kgco2e'])].sum() / 1e9:.1f} milyar kg CO2e
+- **Ortalama Sürdürülebilirlik:** {df[_resolve_column_name(df, ['Sustainability_Score', 'sustainability_score'])].mean():.1f}/100
 
 """
     
@@ -6145,17 +6242,17 @@ def generate_markdown_report(report_type, title, df, perf_data, include_performa
     if include_forecasts:
         md_content += """## 🔮 Gelecek Tahminleri
 
-**2025-2030 Projeksiyonları:**
-- Atık miktarı %15-20 artış bekleniyor
-- Sürdürülebilirlik skorları iyileşme trendinde
-- Karbon ayak izi azalma eğiliminde
+**2024-2030 Projeksiyonları:**
+- Toplam atıkta yaklaşık %5 artış bekleniyor
+- Ekonomik kayıp yatay ve fiyat/GDP varsayımlarına duyarlı
+- Karbon ayak izinde yaklaşık %4 artış bekleniyor
 
 """
     
     if include_methodology:
         md_content += """## 📋 Metodoloji
 
-- **Veri Kaynağı:** Ecolense Enriched Dataset (2018-2024)
+- **Veri Kaynağı:** Ecolense gerçek kaynaklar veri seti (2010-2023)
 - **Model Türü:** Gradient Boosting (Ensemble Learning)
 - **Değerlendirme:** Cross-validation ile RMSE ve R² skorları
 
@@ -6783,7 +6880,7 @@ def show_what_if_advanced():
     except Exception:
         pass
     fig.update_layout(template='plotly_white', height=480)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -6860,15 +6957,15 @@ def show_country_deep_dive():
     except Exception:
         pass
     fig.update_layout(template='plotly_white', height=420)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
         st.markdown(f"""
         Bu **Country Deep Dive grafiği** seçilen ülkenin sürdürülebilirlik performansını gösteriyor:
         
-        - **Mavi çizgi**: Gerçek sürdürülebilirlik skoru (2018-2024)
-        - **Kesikli çizgi**: Gelecek tahmini (2025-2030)
+        - **Mavi çizgi**: Gerçek sürdürülebilirlik skoru (2010-2023)
+        - **Kesikli çizgi**: Gelecek tahmini (2024-2030)
         
         **Analiz**: Ülkenin sürdürülebilirlik trendini ve gelecek projeksiyonunu görebilirsiniz.
         Yukarı eğilim pozitif gelişimi, aşağı eğilim iyileştirme ihtiyacını gösterir.
@@ -6963,7 +7060,7 @@ def show_driver_sensitivity():
             df.columns = ['feature', 'score']
         df = df.sort_values('score', ascending=True).tail(15)
         col1.subheader("Permutation Importance")
-        col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_chart_perm_{tnorm}_{hash(str(df))}_{hash('driver_sensitivity')}")
+        col1.plotly_chart(px.bar(df, x='score', y='feature', orientation='h', template='plotly_white', height=520), width='stretch', key=f"driver_chart_perm_{tnorm}_{hash(str(df))}_{hash('driver_sensitivity')}")
     if shapm is not None and not shapm.empty:
         # Kolon isimlerini kontrol et ve standardize et
         if 'feature' in shapm.columns and 'importance' in shapm.columns:
@@ -6975,7 +7072,7 @@ def show_driver_sensitivity():
             df2.columns = ['feature', 'score']
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
-        col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(df2))}_{hash('driver_sensitivity')}")
+        col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), width='stretch', key=f"driver_chart_{tnorm}_{hash(str(df2))}_{hash('driver_sensitivity')}")
     # AI Asistan
     try:
         lead = None
@@ -7098,8 +7195,8 @@ def show_driver_sensitivity():
                         return s.replace('_', ' ').title()
                     drv_disp = drv.copy()
                     drv_disp['feature'] = drv_disp['feature'].astype(str).map(_pretty)
-                    st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), use_container_width=True)
-                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), use_container_width=True, key=f"driver_table_chart_{hash(str(drv_disp))}_{hash('driver_table')}")
+                    st.dataframe(drv_disp[['feature','combined','imp_norm','shap_norm']].rename(columns={'combined':'etki_birlesik'}), width='stretch')
+                    st.plotly_chart(px.bar(drv_disp.sort_values('combined').tail(12), x='combined', y='feature', orientation='h', template='plotly_white', height=420), width='stretch', key=f"driver_table_chart_{hash(str(drv_disp))}_{hash('driver_table')}")
                     
                     # Grafik açıklaması
                     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7214,7 +7311,7 @@ def show_roi_npv():
         st.metric("ROI (%)", f"{roi:.1f}%")
     with col3:
         st.metric("Toplam Fayda (M$)", f"{total_benefit:,.2f}")
-    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), use_container_width=True, key=f"roi_chart_{hash(str(flows))}_{hash('roi_npv')}")
+    st.plotly_chart(px.bar(x=years_arr, y=flows, labels={'x':'Yıl','y':'Net (M$)'}, template='plotly_white', height=360), width='stretch', key=f"roi_chart_{hash(str(flows))}_{hash('roi_npv')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7291,7 +7388,7 @@ def show_benchmark_league():
     if not cols:
         st.info("Gerekli sütunlar bulunamadı.")
         return
-    # 2018–2024 ortalama özellikler
+    # 2010–2023 ortalama özellikler
     country_col = 'country' if 'country' in df.columns else ('Country' if 'Country' in df.columns else None)
     year_col = 'Year' if 'Year' in df.columns else ('year' if 'year' in df.columns else None)
     if not country_col or not year_col:
@@ -7325,7 +7422,7 @@ def show_benchmark_league():
             elif 'sustainability' in col:
                 display_league[col] = display_league[col].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else "N/A")
     
-    st.dataframe(display_league, use_container_width=True)
+    st.dataframe(display_league, width='stretch')
     # Küme görselleştirme (2D PCA)
     try:
         from sklearn.decomposition import PCA
@@ -7334,7 +7431,7 @@ def show_benchmark_league():
         dplot = pd.DataFrame({'x': XY[:,0], 'y': XY[:,1], 'Country': agg.index, 'Cluster': agg['cluster'].astype(str)})
         fig = px.scatter(dplot, x='x', y='y', color='Cluster', hover_name='Country', template='plotly_white', height=460)
         st.subheader("Küme Haritası (PCA 2D)")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Grafik açıklaması
         with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7632,7 +7729,7 @@ def show_carbon_flows():
             )])
             fig.update_layout(title_text=f"Karbon Akışları: {group_option}", font_size=10, height=500)
             st.subheader(f"Sankey – {group_option}")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Grafik açıklaması
             with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7667,7 +7764,7 @@ def show_carbon_flows():
     # Treemap
     st.subheader("Treemap – Karbon dağılımı")
     tre = d.groupby(catcol)[carbon].sum().reset_index()
-    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), use_container_width=True, key=f"carbon_treemap_{hash(str(tre))}_{hash('carbon_flows')}")
+    st.plotly_chart(px.treemap(tre, path=[catcol], values=carbon, template='plotly_white', height=420), width='stretch', key=f"carbon_treemap_{hash(str(tre))}_{hash('carbon_flows')}")
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7719,7 +7816,7 @@ def show_carbon_flows():
         fig = go.Figure(go.Sankey(node=dict(label=labels), link=dict(source=src, target=dst, value=vals)))
         fig.update_layout(template='plotly_white', height=420)
         st.subheader(f"Sankey – {group_option}")
-        st.plotly_chart(fig, use_container_width=True, key=f"carbon_sankey_{hash(str(fig))}_{hash('carbon_flows')}")
+        st.plotly_chart(fig, width='stretch', key=f"carbon_sankey_{hash(str(fig))}_{hash('carbon_flows')}")
         
         # Grafik açıklaması
         with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7742,7 +7839,7 @@ def show_carbon_flows():
         seasons['season'] = seasons[ycol].astype(str)
         figR = px.line_polar(seasons, r=carbon, theta='season', line_close=True, template='plotly_white', height=420)
         st.subheader("Radar – Mevsimsel/Yıllık profil")
-        st.plotly_chart(figR, use_container_width=True, key=f"carbon_radar_{hash(str(seasons))}_{hash('carbon_flows')}")
+        st.plotly_chart(figR, width='stretch', key=f"carbon_radar_{hash(str(seasons))}_{hash('carbon_flows')}")
         
         with st.expander("📊 Bu grafik ne anlatıyor?"):
             st.markdown("""
@@ -7871,7 +7968,7 @@ def show_justice_impact_panel():
         ),
         margin=dict(l=60, r=60, t=80, b=60)
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7919,7 +8016,7 @@ def show_justice_impact_panel():
             opacity=0.8
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -7967,7 +8064,7 @@ def show_justice_impact_panel():
             opacity=0.7
         )
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # Grafik açıklaması
     with st.expander("📊 Bu grafik ne anlatıyor?"):
@@ -8058,7 +8155,7 @@ def show_anomaly_monitor():
     fig = px.histogram(df, x=tcol, color='iqr_outlier', 
                       title=f"{target} Dağılımı ve Anomaliler",
                       color_discrete_sequence=['#4299E1', '#F56565'])
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
     
     # AI Asistan
     st.markdown("""

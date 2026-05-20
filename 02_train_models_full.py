@@ -30,20 +30,43 @@ TARGETS = [
     "Economic Loss (Million $)",
     "Carbon_Footprint_kgCO2e",
 ]
-EXCLUDE = TARGETS + [
+BASE_EXCLUDE = TARGETS + [
     "Country","Food Category","Continent","Subregion",
     "Hemisphere","Income_Group","ISO3","Sustainability_Score",
     # log türevleri target ile korelasyon yüksek → sızdırma riski
     "Log_Total_Waste","Log_Econ_Loss",
 ]
 
+LEAKAGE_EXCLUDE = {
+    "Total Waste (Tons)_MA3",
+    "Economic Loss (Million $)_MA3",
+    "Carbon_Footprint_kgCO2e_MA3",
+    "Waste_Trend_3Y",
+    "Economic_Trend_3Y",
+    "Economic_Loss_Per_Capita_USD",
+    "Carbon_Per_Capita_kgCO2e",
+    "Category_Waste_Share",
+    "Category_Economic_Share",
+    "Cat_Waste_Share",
+    "Cat_Econ_Share",
+    "Waste_Efficiency",
+    "Economic_Intensity",
+    "Carbon_Intensity",
+    "Econ_GDP_Ratio",
+}
+
 
 def load():
     df  = pd.read_csv(DATA_PATH)
     meta = json.load(open(META_PATH, encoding="utf-8"))
-    feats = [c for c in df.columns if c not in EXCLUDE and df[c].dtype != object]
-    print(f"  Veri: {len(df):,} satır | Feature: {len(feats)}")
-    return df, feats, meta
+    numeric_candidates = [c for c in df.columns if c not in BASE_EXCLUDE and df[c].dtype != object]
+    print(f"  Veri: {len(df):,} satır | Aday feature: {len(numeric_candidates)}")
+    return df, numeric_candidates, meta
+
+
+def features_for_target(numeric_candidates, target):
+    """Hedef değişkenden doğrudan türetilmiş kolonları çıkar."""
+    return [c for c in numeric_candidates if c not in LEAKAGE_EXCLUDE]
 
 
 def metrics(y_true, y_pred):
@@ -73,8 +96,10 @@ def shap_importance(model, X_train, X_test, feature_names, target_label):
         return None
 
 
-def train_one(df, feats, target):
+def train_one(df, numeric_candidates, target):
     print(f"\n  🎯 Hedef: {target}")
+    feats = features_for_target(numeric_candidates, target)
+    print(f"    Kullanılan feature: {len(feats)}")
     sub = df[feats + [target]].dropna()
     X   = sub[feats].values
     y   = sub[target].values
