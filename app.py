@@ -2005,7 +2005,11 @@ def render_country_rankings(real_df: pd.DataFrame, final_df: Optional[pd.DataFra
             topn = st.slider('Top-N', 3, 20, 10, key='topn_rankings')
         else:
             max_n = int(min(20, df_real['country'].nunique() if 'country' in df_real.columns else len(df_real)))
-            topn = st.slider('Top-N', 3, max_n if max_n >= 3 else 3, min(10, max_n) if max_n >= 3 else 3, key='topn_rankings')
+            if max_n <= 1:
+                topn = max(1, max_n)
+                st.caption("Tek ülke bulunduğu için Top-N seçimi otomatik ayarlandı.")
+            else:
+                topn = st.slider('Top-N', 1, max_n, min(10, max_n), key='topn_rankings')
     with colC:
         # Ek veri seçeneği pasif
         compare = False
@@ -2203,7 +2207,11 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
         mlabel = st.selectbox('Metrik', list(options.keys()))
         col = options[mlabel]
         max_n2 = int(min(20, df_kpi['country'].nunique() if 'country' in df_kpi.columns else len(df_kpi)))
-        topn_prem = st.slider('Top-N', 5, max_n2 if max_n2 >= 5 else 5, min(10, max_n2) if max_n2 >= 5 else 5, key='topn_premium')
+        if max_n2 <= 1:
+            topn_prem = max(1, max_n2)
+            st.caption("Tek ülke bulunduğu için Top-N seçimi otomatik ayarlandı.")
+        else:
+            topn_prem = st.slider('Top-N', 1, max_n2, min(10, max_n2), key='topn_premium')
         # Ek veri karşılaştırması pasif
         comp = False
         if comp and final_df is not None:
@@ -4851,8 +4859,15 @@ def show_ai_insights():
     </div>
     """, unsafe_allow_html=True)
     
-    max_n = max(3, min(20, n_countries))
-    topN = st.slider("Top-N", 3, max_n, min(10, max_n), key="topn_aiinsights")
+    available_n = int(min(20, len(agg)))
+    if available_n <= 0:
+        st.info("Seçilen filtreler için Top-N analizi oluşturacak yeterli veri bulunamadı.")
+        return
+    if available_n == 1:
+        topN = 1
+        st.caption("Tek ülke bulunduğu için Top-N seçimi otomatik olarak 1 yapıldı.")
+    else:
+        topN = st.slider("Top-N", 1, available_n, min(10, available_n), key="topn_aiinsights")
     colA, colB = st.columns(2)
     with colA:
         st.subheader("🚀 En hızlı artış (CAGR)")
