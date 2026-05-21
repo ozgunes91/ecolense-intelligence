@@ -3809,17 +3809,19 @@ def show_model_performance():
         st.warning(f"⚠️ Model performans raporu bulunamadı.")
         return
     
-    # Model tipini JSON'dan al
+    # Model tipini ve veri kapsamını JSON'dan al
     model_type = perf.get('model_type', 'GradientBoosting')
-    src_name = f"{model_type} Model"
+    year_range = perf.get('year_range', [2010, 2023])
+    data_scope = f"{perf.get('n_countries', 148)} ülke · {year_range[0]}-{year_range[-1]} · {perf.get('n_rows', 16576):,} satır"
     
 
     
     st.markdown(f"""
     <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px; margin: 1rem 0; 
                 box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-left: 4px solid #11E6C1;">
-        <div style="font-weight: 600; color: #232E5C;">📊 Kaynak: {src_name}</div>
-                        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.3rem;">📊 {model_type} - Gradient Boosting (Conservative Settings)</div>
+        <div style="font-weight: 600; color: #232E5C;">📊 Model: {model_type}</div>
+        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.3rem;">Veri kaynağı: data/processed.csv · {data_scope}</div>
+        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.2rem;">Kaynak kapsamı: UNEP, FAO, Gapminder, IMF ve ülke meta verileri</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -5159,14 +5161,12 @@ def show_model_comparison():
         rows = []
         if perf_data and perf_data.get('targets'):
             for target, detail in perf_data['targets'].items():
-                test = detail.get('test', {})
-                train = detail.get('train', {})
-                gb_r2 = float(test.get('r2', 0))
-                cv_r2 = float(detail.get('cv_mean', gb_r2))
+                gb_r2 = float(detail.get('test_r2', detail.get('test', {}).get('r2', 0)))
+                cv_r2 = float(detail.get('cv_r2', detail.get('cv_mean', gb_r2)))
                 cv_std = float(detail.get('cv_std', 0))
-                overfit = float(detail.get('overfit', 0))
-                mape = float(test.get('mape', 0))
-                train_r2 = float(train.get('r2', gb_r2))
+                overfit = float(detail.get('overfitting_score', detail.get('overfit', 0)))
+                mape = float(detail.get('mape', detail.get('test', {}).get('mape', 0)))
+                train_r2 = float(detail.get('train_r2', detail.get('train', {}).get('r2', gb_r2)))
                 rows.extend([
                     {
                         'Model': 'GradientBoosting',
@@ -5178,7 +5178,7 @@ def show_model_comparison():
                         'Overfitting_Score': overfit,
                     },
                     {
-                        'Model': 'CV Lower Bound',
+                        'Model': 'CV Alt Sınır',
                         'Target_Variable': target,
                         'Train_R2': max(cv_r2 - cv_std, 0),
                         'Test_R2': max(cv_r2 - cv_std, 0),
@@ -5187,7 +5187,7 @@ def show_model_comparison():
                         'Overfitting_Score': 0.0,
                     },
                     {
-                        'Model': 'Conservative Baseline',
+                        'Model': 'Koruyucu Referans',
                         'Target_Variable': target,
                         'Train_R2': max(gb_r2 - 0.10, 0),
                         'Test_R2': max(gb_r2 - 0.10, 0),
@@ -5208,10 +5208,10 @@ def show_model_comparison():
             },
             'recommendations': {
                 'primary_model': 'GradientBoosting',
-                'secondary_model': 'CV Lower Bound',
-                'baseline_model': 'Conservative Baseline',
-                'deployment_strategy': 'GradientBoosting production, CV lower bound monitoring',
-                'future_improvements': ['Time-based validation', 'Country-level calibration', 'Scenario-specific monitoring']
+                'secondary_model': 'CV Alt Sınır',
+                'baseline_model': 'Koruyucu Referans',
+                'deployment_strategy': 'GradientBoosting ana model olarak kullanılır; CV alt sınırı izleme eşiği olarak takip edilir.',
+                'future_improvements': ['Zaman bazlı doğrulama', 'Ülke düzeyinde kalibrasyon', 'Senaryo bazlı izleme']
             }
         }
 
@@ -5227,7 +5227,7 @@ def show_model_comparison():
             <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">MODEL KARŞILAŞTIRMA ÖZETİ</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            3 hedef değişken için 27 farklı model-özellik kombinasyonu test edildi
+            3 hedef değişken için ana model ve iki referans çizgisi birlikte izlenir
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -5305,7 +5305,7 @@ def show_model_comparison():
         with col3:
             st.metric("📊 Baz Model", rec.get('baseline_model', 'N/A'))
         
-        st.info(f"**🚀 Deployment Stratejisi:** {rec.get('deployment_strategy', 'N/A')}")
+        st.info(f"**🚀 Kullanım Stratejisi:** {rec.get('deployment_strategy', 'N/A')}")
         
         st.markdown("**🔮 Gelecek İyileştirmeler:**")
         for improvement in rec.get('future_improvements', []):
@@ -5313,32 +5313,49 @@ def show_model_comparison():
     
     # Model Karşılaştırma Grafikleri
     st.markdown("### 📊 Model Karşılaştırma Görsel Analizi")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        try:
-            with open('model_comparison_performance.png', 'rb') as f:
-                st.image(f.read(), caption='Model Performans Karşılaştırması')
-        except Exception as e:
-            st.warning(f"Model performans grafiği yüklenemedi: {str(e)}")
-            st.info("💡 Grafik dosyası bulunamadı. Model karşılaştırma analizini yeniden çalıştırın.")
-    
-    with col2:
-        try:
-            with open('model_comparison_model_types.png', 'rb') as f:
-                st.image(f.read(), caption='Model Türleri Karşılaştırması')
-        except Exception as e:
-            st.warning(f"Model türleri grafiği yüklenemedi: {str(e)}")
-            st.info("💡 Grafik dosyası bulunamadı. Model karşılaştırma analizini yeniden çalıştırın.")
-    
-    # Özellik grupları grafiği
-    try:
-        with open('model_comparison_feature_groups.png', 'rb') as f:
-            st.image(f.read(), caption='Özellik Grupları Karşılaştırması')
-    except Exception as e:
-        st.warning(f"Özellik grupları grafiği yüklenemedi: {str(e)}")
-        st.info("💡 Grafik dosyası bulunamadı. Model karşılaştırma analizini yeniden çalıştırın.")
+
+    if ab_results.empty:
+        st.info("Model karşılaştırma grafikleri için yeterli sonuç bulunamadı.")
+    else:
+        col1, col2 = st.columns(2)
+        with col1:
+            fig_perf = px.bar(
+                ab_results,
+                x='Target_Variable',
+                y='Test_R2',
+                color='Model',
+                barmode='group',
+                title='Hedef Bazlı Test R²',
+                labels={'Target_Variable': 'Hedef Değişken', 'Test_R2': 'Test R²'}
+            )
+            fig_perf.update_layout(height=420, template='plotly_white')
+            st.plotly_chart(fig_perf, use_container_width=True)
+
+        with col2:
+            fig_cv = px.scatter(
+                ab_results,
+                x='CV_R2',
+                y='Test_R2',
+                color='Model',
+                size='MAPE',
+                hover_data=['Target_Variable'],
+                title='CV ve Test Performansı',
+                labels={'CV_R2': 'CV R²', 'Test_R2': 'Test R²'}
+            )
+            fig_cv.update_layout(height=420, template='plotly_white')
+            st.plotly_chart(fig_cv, use_container_width=True)
+
+        fig_overfit = px.bar(
+            ab_results,
+            x='Target_Variable',
+            y='Overfitting_Score',
+            color='Model',
+            barmode='group',
+            title='Overfit Kontrolü',
+            labels={'Target_Variable': 'Hedef Değişken', 'Overfitting_Score': 'Overfit Skoru'}
+        )
+        fig_overfit.update_layout(height=380, template='plotly_white')
+        st.plotly_chart(fig_overfit, use_container_width=True)
     
     # Detaylı sonuçlar
     st.markdown("### 📋 Model Karşılaştırma Sonuçları")
@@ -5402,7 +5419,7 @@ def show_model_comparison():
             <div class='ai-assistant'>
               <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Model Karşılaştırma Özeti</h4>
               <p>{rows}</p>
-              <p>Öneri: GradientBoosting tüm hedef değişkenlerde en iyi performansı gösteriyor. RandomForest yedek model olarak kullanılabilir.</p>
+              <p>Öneri: GradientBoosting ana model olarak izlenebilir; CV alt sınırı ise performans eşiği olarak takip edilmelidir.</p>
             </div>
             """.replace("{rows}", " · ".join(msgs)), unsafe_allow_html=True)
     except Exception as e:
@@ -8370,14 +8387,16 @@ def show_data_lineage_quality():
     """, unsafe_allow_html=True)
     
     # Veri soy ağacı
-    st.subheader("📊 Veri Soy Ağacı")
+    st.subheader("📊 Veri Akışı")
     st.markdown("""
-    **Veri Akışı:**
-    - **Kaynak**: global_food_wastage_dataset.csv + material_footprint.csv
-    - **Birleştirme**: 01_veri_hazirlama.py
-    - **Model Eğitimi**: 02_model_egitimi.py
-    - **Model Karşılaştırma**: 03_model_karsilastirma_analizi.py
-    - **Dashboard**: app.py
+    Bu bölüm, dashboard'da görülen verinin hangi adımlardan geçtiğini sade bir şekilde gösterir.
+
+    - **Kaynak veri**: `data/global_food_waste_real_world.csv`
+    - **Hazırlanmış veri**: `data/processed.csv`
+    - **Veri hazırlama**: `01_prepare_data.py`
+    - **Modelleme**: `02_train_models.py`
+    - **Tahmin üretimi**: `03_generate_forecasts.py`
+    - **Dashboard**: `app.py`
     """)
     
     # Veri kalitesi kontrolü
@@ -8400,13 +8419,14 @@ def show_data_lineage_quality():
         st.error("❌ Veri yüklenemedi")
     
     # Cache durumu
-    st.subheader("💾 Cache Durumu")
-    st.info("Streamlit cache: veri/pred dosyaları cache'de; yenilemek için sayfayı yeniden başlatın.")
+    st.subheader("💾 Veri Yenileme Durumu")
+    st.info("Veri ve tahmin dosyaları dashboard açılışında yüklenir. Yeni pipeline çıktısı alındığında sayfayı yenilemek yeterlidir.")
     
     # Sürüm bilgisi
-    st.subheader("🏷️ Sürüm Bilgisi")
-    import datetime
-    st.code(f"Build: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    st.subheader("🏷️ Çalışma Bilgisi")
+    perf = load_performance_report(PERF_REPORT_PATH)
+    generated_at = perf.get('generated_at', 'Kayıt bulunamadı') if perf else 'Kayıt bulunamadı'
+    st.code(f"Son model üretimi: {generated_at}")
     
     # Veri Asistanı
     st.markdown("""

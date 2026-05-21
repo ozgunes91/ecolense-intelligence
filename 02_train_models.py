@@ -5,8 +5,7 @@
 processed.csv → GradientBoosting modelleri eğitir →
 model pkl + model_performance.json + shap_*.csv üretir.
 
-Not: Hız için SHAP yerine feature_importances_ kullanılır.
-Tam SHAP analizi için 02_train_models_full.py'yi çalıştırın.
+Not: Hız ve okunabilirlik için özellik önemleri doğrudan modelden alınır.
 """
 
 import pandas as pd

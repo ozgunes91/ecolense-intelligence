@@ -1,69 +1,81 @@
 # Ecolense Intelligence Raporu
 
-**Tarih:** 21 Mayis 2026  
-**Canli dashboard:** [ecolense-intelligence.streamlit.app](https://ecolense-intelligence.streamlit.app)
+**Tarih:** 21 Mayıs 2026  
+**Canlı dashboard:** [ecolense-intelligence.streamlit.app](https://ecolense-intelligence.streamlit.app)
 
-## Yonetici Ozeti
+## Yönetici Özeti
 
-Ecolense Intelligence, gida israfini yalnizca ton bazli bir kayip olarak degil; ekonomik maliyet, karbon etkisi, ulke profili ve kategori davranisi ile birlikte ele alan bir veri urunudur. Dashboard; 2010-2023 tarihsel verisini ve 2024-2030 projeksiyonlarini tek bir arayuzde birlestirir.
+Ecolense Intelligence, küresel gıda israfını ülke, yıl ve gıda kategorisi düzeyinde inceleyen bir sürdürülebilirlik analiz platformudur. Proje, israf miktarını tek başına ele almak yerine ekonomik kayıp, karbon ayak izi ve sürdürülebilirlik skoru ile birlikte değerlendirir.
 
-| Gosterge | Deger |
+Dashboard, 2010-2023 dönemindeki tarihsel görünümü ve 2024-2030 projeksiyonlarını aynı akışta sunar. Böylece kullanıcı, hangi ülkelerde ve hangi kategorilerde öncelik verilmesi gerektiğini hızlıca görebilir.
+
+| Gösterge | Değer |
 |---|---:|
-| Ulke sayisi | 148 |
-| Tarihsel donem | 2010-2023 |
-| Tahmin ufku | 2024-2030 |
-| Gozlem sayisi | 16.576 |
-| Ortalama model test R2 | 0,9534 |
+| Ülke sayısı | 148 |
+| Tarihsel dönem | 2010-2023 |
+| Tahmin dönemi | 2024-2030 |
+| Gözlem sayısı | 16.576 |
+| Ortalama test R² | 0,9534 |
 
-![2024-2030 Projeksiyon Ozeti](docs/assets/forecast_trends.png)
+![2024-2030 projeksiyon özeti](docs/assets/forecast_trends.png)
 
 ## Veri Seti
 
-Veri seti ulke, yil ve gida kategorisi kiriliminda hazirlanmistir. Analizde gida israfi, ekonomik kayip, karbon ayak izi, nufus, kisi basi gelir, gida fiyat endeksi, malzeme ayak izi, gelir grubu ve bolge bilgileri birlikte kullanilir.
+Veri seti; ülke, yıl ve gıda kategorisi kırılımında hazırlanmıştır. Her satır, belirli bir ülkedeki belirli bir gıda kategorisinin ilgili yıldaki israf, maliyet ve karbon etkisini temsil eder.
 
-Baslica veri kaynaklari:
+Analizde kullanılan temel değişkenler şunlardır:
 
-- UNEP Food Waste Index Report 2021
-- FAO Food Price Index
-- Gapminder GDP per capita serileri
-- IMF WEO buyume varsayimlari
-- Poore & Nemecek karbon katsayilari
-- Ulke bolge, nufus ve ISO meta verileri
+- Toplam gıda israfı
+- Ekonomik kayıp
+- Karbon ayak izi
+- Nüfus
+- Kişi başına gelir
+- Gıda fiyat endeksi
+- Gelir grubu ve bölge bilgisi
+- Sürdürülebilirlik skoru
 
-## Tarihsel Durum
+Veri kaynakları; UNEP Food Waste Index, FAO Food Price Index, Gapminder, IMF WEO, Poore & Nemecek karbon katsayıları ve ülke meta verilerinden oluşur.
 
-2010-2023 toplaminda:
+![2023 kategori bazlı gıda israfı](docs/assets/category_waste_2023.png)
 
-| Metrik | Deger |
+## Tarihsel Görünüm
+
+2010-2023 döneminde toplam gıda israfı 7.046,8 milyon tona ulaşmıştır. Aynı dönemde ekonomik kayıp 27,18 trilyon USD, karbon ayak izi ise 43,57 trilyon kg CO2e düzeyindedir.
+
+| Metrik | Değer |
 |---|---:|
-| Toplam gida israfi | 7.046,8 milyon ton |
-| Ekonomik kayip | 27,18 trilyon USD |
+| Toplam gıda israfı | 7.046,8 milyon ton |
+| Ekonomik kayıp | 27,18 trilyon USD |
 | Karbon ayak izi | 43,57 trilyon kg CO2e |
-| Ortalama surdurulebilirlik skoru | 83,1 / 100 |
+| Ortalama sürdürülebilirlik skoru | 83,1 / 100 |
 
-2023 kategori dagilimi, toplam israfta ilk sirada **Fruits & Vegetables** kategorisinin yer aldigini gosterir. Bunu **Grains & Cereals**, **Dairy Products**, **Meat & Seafood** ve **Bakery Items** izler.
+Kategori dağılımında meyve ve sebze grubu en yüksek israf hacmine sahiptir. Tahıl ürünleri, süt ürünleri, et-deniz ürünleri ve fırıncılık ürünleri de toplam etkinin önemli bölümünü oluşturur.
 
-![2023 Kategori Bazli Israf](docs/assets/category_waste_2023.png)
+## Modelleme Yaklaşımı
 
-## Modelleme
+Modelleme aşamasında üç hedef ayrı ayrı tahmin edilmiştir:
 
-Modelleme uc hedef icin ayri yapilir:
+- Toplam gıda israfı
+- Ekonomik kayıp
+- Karbon ayak izi
 
-- Total Waste (Tons)
-- Economic Loss (Million $)
-- Carbon_Footprint_kgCO2e
+Model, ülke ve kategori desenlerini yakalayabilmek için zaman, nüfus, gelir, fiyat endeksi, bölge ve kategori değişkenlerini birlikte kullanır. Performans değerlendirmesi test skoru, çapraz doğrulama skoru ve overfit kontrolü üzerinden yapılır.
 
-| Hedef | Test R2 | CV R2 | Overfit |
+![Model performansı özeti](docs/assets/model_performance_summary.png)
+
+| Hedef | Test R² | CV R² | Overfit |
 |---|---:|---:|---:|
-| Total Waste (Tons) | 0,9674 | 0,9684 | 0,0195 |
-| Economic Loss (Million $) | 0,9464 | 0,9458 | 0,0302 |
-| Carbon_Footprint_kgCO2e | 0,9464 | 0,9609 | 0,0398 |
+| Toplam gıda israfı | 0,9674 | 0,9684 | 0,0195 |
+| Ekonomik kayıp | 0,9464 | 0,9458 | 0,0302 |
+| Karbon ayak izi | 0,9464 | 0,9609 | 0,0398 |
 
-Model sonuclari, ulke ve kategori desenlerini guclu sekilde yakaladigini gosterir. Tahmin katmaninda model skoru, tarihsel ulke-kategori egilimi ve makro varsayimlar birlikte kullanilir.
+Sonuçlar, modelin üç hedefte de güçlü ve dengeli bir performans verdiğini göstermektedir.
 
 ## 2024-2030 Projeksiyonu
 
-| Yil | Gida israfi | Ekonomik kayip | Karbon ayak izi | Ortalama skor |
+Projeksiyonlar, tarihsel ülke-kategori eğilimleri ile makro değişkenlerin birlikte okunmasıyla üretilir. Bu yapı, her yıl için aynı değeri tekrarlayan durağan bir tahmin yerine ülke, kategori ve yıl bazında değişen bir görünüm sağlar.
+
+| Yıl | Gıda israfı | Ekonomik kayıp | Karbon ayak izi | Ortalama skor |
 |---:|---:|---:|---:|---:|
 | 2024 | 545,7 milyon ton | 2,29 trilyon USD | 3,46 trilyon kg CO2e | 42,5 |
 | 2025 | 554,7 milyon ton | 2,38 trilyon USD | 3,54 trilyon kg CO2e | 42,9 |
@@ -73,17 +85,24 @@ Model sonuclari, ulke ve kategori desenlerini guclu sekilde yakaladigini gosteri
 | 2029 | 583,2 milyon ton | 2,62 trilyon USD | 3,67 trilyon kg CO2e | 44,3 |
 | 2030 | 590,5 milyon ton | 2,68 trilyon USD | 3,73 trilyon kg CO2e | 44,4 |
 
-2024-2030 arasinda toplam gida israfi yaklasik **%8,2**, ekonomik kayip **%17,2**, karbon ayak izi **%7,8** artar. Surdurulebilirlik skorunda 0'a yapisan deger kullanilmaz; cok yuksek etki ureten ulkeler dusuk fakat okunabilir taban skorla temsil edilir.
+2030'a doğru gıda israfı, ekonomik kayıp ve karbon ayak izi artış eğilimini korumaktadır. Bu nedenle en etkili müdahale alanları; yüksek hacimli ülkeler, yüksek karbon katsayısına sahip kategoriler ve ekonomik kaybın yoğunlaştığı ürün gruplarıdır.
 
-## Dashboard Kullanim Akisi
+## Dashboard Akışı
 
-1. Ana sayfada KPI kartlari ile genel tablo okunur.
-2. Veri Analizi sayfasinda kategori ve degisken yapisi incelenir.
-3. Model Performansi sayfasinda hedef bazli model kalitesi kontrol edilir.
-4. Gelecek Tahminleri sayfasinda 2024-2030 ulke/metrik davranisi izlenir.
-5. Hedef ve what-if modulleriyle politika senaryolari test edilir.
-6. Rapor sayfasindan yonetici ozeti indirilebilir.
+Dashboard, kullanıcının veriyi önce genel düzeyde görmesini, ardından ülke ve kategori ayrıntılarına inmesini sağlar.
 
-## Sonuc
+| Modül | Amaç |
+|---|---|
+| Ana Sayfa | Genel KPI görünümü ve hızlı yönlendirme |
+| Veri Analizi | Ülke, yıl ve kategori kırılımlarını inceleme |
+| Model Performansı | Tahmin modelinin güvenilirliğini değerlendirme |
+| Gelecek Tahminleri | 2024-2030 dönemini ülke ve metrik bazında izleme |
+| What-if | Politika senaryolarını karşılaştırma |
+| Risk & Fırsat | Ülkeleri risk ve fırsat alanlarına göre konumlandırma |
+| Rapor Oluşturucu | Analiz çıktısını paylaşılabilir biçime getirme |
 
-Ecolense Intelligence, gida israfi kararlarini ulke, kategori, ekonomi ve karbon etkisi birlikte gorulecek sekilde tasarlar. Proje; veri kesfi, model performansi, ileri donem projeksiyonu ve raporlama islerini tek bir profesyonel dashboard akisi icinde toplar.
+## Sonuç
+
+Ecolense Intelligence, gıda israfını yalnızca çevresel bir sorun olarak değil, ekonomik ve operasyonel bir karar alanı olarak ele alır. Proje; veri analizi, modelleme, tahmin ve raporlama adımlarını tek bir dashboard deneyiminde birleştirir.
+
+Bu yapı sayesinde kullanıcı, hangi ülkelerde, hangi gıda kategorilerinde ve hangi metriklerde öncelik verilmesi gerektiğini açık biçimde görebilir.
