@@ -282,7 +282,7 @@ def main():
         if high <= low:
             high = float(reference.max()) or 1.0
             low = float(reference.min())
-        return (1 - (values - low) / (high - low + 1e-9)).clip(0, 1)
+        return (1 - (values - low) / (high - low + 1e-9)).clip(0.05, 0.98)
 
     country_year = out.groupby(["Country", "Year"], as_index=False).agg({
         "Total Waste (Tons)": "sum",

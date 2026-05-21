@@ -1,115 +1,124 @@
-# 🌱 EcoLense Intelligence
+# Ecolense Intelligence
 
-**Gerçek veriye dayalı küresel gıda israfı analiz ve tahmin platformu**
+Kuresel gida israfini ulke, kategori, ekonomik kayip ve karbon etkisi ekseninde inceleyen Streamlit dashboard projesi.
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red)](https://streamlit.io)
-[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.3+-orange)](https://scikit-learn.org)
+[![Live App](https://img.shields.io/badge/Live%20App-Streamlit-ff4b4b?style=for-the-badge&logo=streamlit&logoColor=white)](https://ecolense-intelligence.streamlit.app)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Model](https://img.shields.io/badge/Model-Gradient%20Boosting-27ae60?style=for-the-badge)](#modelleme)
 
----
+## Canli Dashboard
 
-## 📊 Proje Özeti
+Dashboard yayini: [ecolense-intelligence.streamlit.app](https://ecolense-intelligence.streamlit.app)
 
-| | |
+## Proje Ozeti
+
+| Baslik | Deger |
+|---|---:|
+| Ulke sayisi | 148 |
+| Tarihsel donem | 2010-2023 |
+| Tahmin ufku | 2024-2030 |
+| Gozlem sayisi | 16.576 |
+| Model tipi | GradientBoostingRegressor |
+| Ortalama test R2 | 0,9534 |
+
+![2024-2030 forecast trends](docs/assets/forecast_trends.png)
+
+## Veri Kapsami
+
+Proje; gida israfi, ekonomik kayip, karbon ayak izi, nufus, kisi basi gelir, gida fiyat endeksi, malzeme ayak izi ve ulke meta verilerini birlikte kullanir.
+
+| Kaynak | Kullanim |
 |---|---|
-| **Ülke** | 148 (tüm kıtalar; ISO3 bazında tekilleştirilmiş) |
-| **Yıl aralığı** | 2010–2023 |
-| **Gözlem** | 16,576 |
-| **Model** | GradientBoosting (3 hedef) |
-| **Ort. Test R²** | 0.953 |
+| UNEP Food Waste Index Report 2021 | Ulke bazli gida israfi baz degerleri |
+| FAO Food Price Index | Gida fiyat endeksi ve ileri donem varsayimi |
+| Gapminder | Kisi basi gelir serileri |
+| IMF WEO | 2024-2030 buyume varsayimlari |
+| Poore & Nemecek LCA katsayilari | Kategori bazli karbon etkisi |
+| countryinfo / ulke meta verileri | ISO3, bolge, nufus ve gelir grubu |
 
----
+![2023 category waste](docs/assets/category_waste_2023.png)
 
-## 🔬 Gerçek Veri Kaynakları
+## Mimari
 
-| Kaynak | Kapsam | Ne için? |
-|--------|--------|----------|
-| **UNEP Food Waste Index 2021** (Tablo A4.1) | 148 ülke | Kişi başı atık (kg/kişi/yıl) |
-| **Gapminder Foundation** | 142 ülke, 1952-2007 | GDP per capita (gerçek ölçüm) |
-| **IMF World Economic Outlook** | 2008-2030 | GDP büyüme oranları |
-| **FAO Food Price Index** | 2010-2023 | Gıda enflasyonu |
-| **Poore & Nemecek 2018** (*Science*) | 40.000 çiftlik | LCA karbon faktörleri |
-| **countryinfo** (UN kaynaklı) | 248 ülke | Nüfus, bölge, ISO kodu |
+```mermaid
+flowchart LR
+    A["Raw data sources"] --> B["01_prepare_data.py"]
+    B --> C["data/processed.csv"]
+    C --> D["02_train_models.py"]
+    D --> E["models/*.pkl"]
+    D --> F["model_performance.json"]
+    C --> G["03_generate_forecasts.py"]
+    E --> G
+    G --> H["forecasts.csv"]
+    C --> I["app.py Streamlit dashboard"]
+    F --> I
+    H --> I
+```
 
----
+## Modelleme
 
-## 🚀 Kurulum & Çalıştırma
+Uc hedef ayri ayri modellenir:
+
+- Total Waste (Tons)
+- Economic Loss (Million $)
+- Carbon_Footprint_kgCO2e
+
+Modelleme notlari:
+
+- Train/test ayrimi: 80/20
+- Cross-validation: 3 fold
+- Model: Gradient Boosting
+- Tahmin katmani: model ciktisi + tarihsel ulke-kategori egilimi + makro varsayimlar
+- Skorlama: 0'a yapismayan, taban puanli robust surdurulebilirlik skoru
+
+## Calistirma
 
 ```bash
-# 1. Klonla
-git clone https://github.com/KULLANICI_ADI/ecolense-intelligence.git
-cd ecolense-intelligence
-
-# 2. Bağımlılıkları kur
-pip install -r requirements.txt
-
-# 3. Pipeline çalıştır (veri → model → tahmin)
 python run_pipeline.py
-
-# 4. Dashboard başlat
 streamlit run app.py
 ```
 
----
+## Dosya Yapisi
 
-## 📁 Dosya Yapısı
-
-```
-ecolense-intelligence/
+```text
+.
+├── app.py
+├── run_pipeline.py
+├── 01_prepare_data.py
+├── 02_train_models.py
+├── 02_train_models_full.py
+├── 03_generate_forecasts.py
 ├── data/
-│   ├── global_food_waste_real_world.csv   # Ham gerçek veri (UNEP/FAO/Gapminder)
-│   ├── processed.csv                       # Özellik mühendisliği uygulanmış
-│   └── meta.json                           # Veri meta bilgisi
-├── models/
-│   ├── model_Total_Waste_Tons.pkl
-│   ├── model_Economic_Loss_Million_USD.pkl
-│   └── model_Carbon_Footprint_kgCO2e.pkl
-├── 01_prepare_data.py      # Veri hazırlama pipeline
-├── 02_train_models.py      # Model eğitimi + feature importance
-├── 02_train_models_full.py # Opsiyonel tam SHAP analizi
-├── 03_generate_forecasts.py# 2024-2030 tahminleri
-├── run_pipeline.py         # Tek komut: tüm pipeline
-├── app.py                  # Streamlit dashboard (9 sayfa)
-├── requirements.txt
-└── README.md
+│   ├── global_food_waste_real_world.csv
+│   ├── processed.csv
+│   └── meta.json
+├── docs/
+│   └── assets/
+│       ├── forecast_trends.png
+│       └── category_waste_2023.png
+├── forecasts.csv
+├── model_performance.json
+└── ecolense_intelligence_raporu_2026.md
 ```
 
----
+## Dashboard Modulleri
 
-## 📈 Model Detayları
+| Modul | Icerik |
+|---|---|
+| Ana Sayfa | KPI kartlari, hizli erisim ve veri asistani |
+| Veri Analizi | Veri seti ozeti, kategori analizi, degisken sozlugu |
+| Model Performansi | R2, RMSE, CV ve hedef bazli performans |
+| Gelecek Tahminleri | 2024-2030 ulke ve metrik projeksiyonlari |
+| Hedef Bazli Tahminler | Ulke/metrik hedef rotasi |
+| What-if | Senaryo duyarliligi |
+| Risk & Firsat | Ulke risk matrisi |
+| Rapor | Indirilebilir calisma raporu |
 
-- **Algoritma:** GradientBoostingRegressor
-- **Hedefler:** Toplam Atık (ton), Ekonomik Kayıp (M$), Karbon Ayak İzi (kgCO2e)
-- **Train/Test:** 80/20
-- **CV:** 3-fold
-- **Overfit önleme:** `min_samples_leaf=5`, `subsample=0.8`, sınırlı `max_depth`
-- **Veri ilkesi:** Ülke, kategori, zaman ve makro değişkenler dışsal bilgi olarak kullanılır
-- **Model ilkesi:** Hedeflerden doğrudan türetilen kolonlar eğitim dışında tutulur
-- **Tahmin ilkesi:** 2024-2030 çıktıları model skoru, tarihsel ülke-kategori eğilimi ve makro varsayımlarla birlikte üretilir
+## Ekip
 
----
+| Isim | Rol |
+|---|---|
+| Ozge Gunes | Veri Bilimi ve Dashboard Gelistirme |
+| Kubra Saruhan | Veri Analizi ve Modelleme |
 
-## 📖 Dashboard Sayfaları
-
-| Sayfa | İçerik |
-|-------|--------|
-| 🏠 Ana Sayfa | KPI kartları, trend, harita — tümü gerçek veriden |
-| 📊 Veri Analizi | Filtreli keşif, kategori & ülke sıralaması |
-| 🌍 Ülke Karşılaştırma | Çoklu ülke trend & ısı haritası |
-| 📈 Model Performansı | R², RMSE, overfit — model_performance.json'dan |
-| 🔮 Gelecek Tahminleri | 2024-2030 projeksiyon + harita |
-| 🎯 Hedef Simülatörü | Politika senaryosu etkisi |
-| 📈 SHAP & Önem | Özellik önemi grafikleri |
-| ⚠️ Risk & Fırsat | Ülke risk matrisi |
-| 📄 Rapor | Çalışma özeti ve indirilebilir rapor |
-
----
-
-## 👥 Ekip
-
-| Üye | Rol |
-|-----|-----|
-| Özge Güneş | Veri Bilimci |
-| Kübra Saruhan | Veri Bilimci |
-
-**Kurum:** Miuul Data Scientist Bootcamp — Final Projesi 2025
+Miuul Data Scientist Bootcamp final projesi.

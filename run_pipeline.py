@@ -13,7 +13,7 @@ import subprocess, sys, time
 
 STEPS = [
     ("01_prepare_data.py",      "📦 Veri Hazırlama"),
-    ("02_train_models.py",      "🤖 Model Eğitimi"),
+    ("02_train_models.py",      "📈 Model Eğitimi"),
     ("03_generate_forecasts.py","🔮 Tahmin Üretimi"),
 ]
 

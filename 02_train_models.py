@@ -41,6 +41,7 @@ LEAKAGE_EXCLUDE = {
     "Economic_Trend_3Y",
     "Economic_Loss_Per_Capita_USD",
     "Carbon_Per_Capita_kgCO2e",
+    "Waste_Per_Capita_kg",
     "Category_Waste_Share",
     "Category_Economic_Share",
     "Cat_Waste_Share",
@@ -49,6 +50,7 @@ LEAKAGE_EXCLUDE = {
     "Economic_Intensity",
     "Carbon_Intensity",
     "Econ_GDP_Ratio",
+    "GDP_Waste_PC",
 }
 
 

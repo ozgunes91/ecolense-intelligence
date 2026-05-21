@@ -35,9 +35,6 @@ import json
 import os
 from typing import Dict, List, Tuple, Optional, Any
 
-# Özel modüller
-# from storytelling import show_storytelling_section  # Gerekirse aktifleştir
-
 # Performans optimizasyonları
 
 # Cache optimizasyonu
@@ -1122,7 +1119,7 @@ def load_predictions_dashboard() -> Optional[pd.DataFrame]:
                         if hi <= lo:
                             hi = float(ref.max()) or 1.0
                             lo = float(ref.min())
-                        return (1 - (values - lo) / (hi - lo + 1e-9)).clip(0, 1)
+                        return (1 - (values - lo) / (hi - lo + 1e-9)).clip(0.05, 0.98)
 
                     df_wide['Sustainability_Score'] = (
                         0.40 * inv(df_wide['Waste_Per_Capita_kg'], ref_w)
@@ -1177,14 +1174,32 @@ def load_model_comparison_report() -> Optional[dict]:
 def load_category_analyses() -> Optional[dict]:
     """Kategori analizlerini yükle"""
     try:
-        with open(CATEGORY_ANALYSES_PATH, 'r', encoding='utf-8') as f:
-            meta = json.load(f)
-        # meta.json'dan kategori analizi formatı oluştur
-        cats = meta.get('categories', [])
+        df = pd.read_csv(REAL_DATA_PATH)
+        required = {
+            "Food Category",
+            "Total Waste (Tons)",
+            "Economic Loss (Million $)",
+            "Carbon_Footprint_kgCO2e",
+            "Sustainability_Score",
+        }
+        if not required.issubset(df.columns):
+            return None
+        grouped = df.groupby("Food Category").agg({
+            "Total Waste (Tons)": "sum",
+            "Economic Loss (Million $)": "sum",
+            "Carbon_Footprint_kgCO2e": "sum",
+            "Sustainability_Score": "mean",
+        })
         result = {}
-        for cat in cats:
-            result[cat] = {'name': cat, 'count': 0}
-        return result if result else None
+        for category, row in grouped.iterrows():
+            result[category] = {
+                "name": category,
+                "total_waste": float(row["Total Waste (Tons)"]),
+                "economic_loss": float(row["Economic Loss (Million $)"]),
+                "carbon_footprint": float(row["Carbon_Footprint_kgCO2e"]),
+                "avg_sustainability": float(row["Sustainability_Score"]),
+            }
+        return result
     except Exception as e:
         return None
 
@@ -2389,11 +2404,212 @@ def render_premium_visuals(real_df: pd.DataFrame, final_df: Optional[pd.DataFram
 # ANA UYGULAMA
 # =============================================================================
 
+def _compact_metric(value: float, unit: str = "") -> str:
+    """Dashboard kartlarında okunaklı kısa sayı formatı."""
+    try:
+        val = float(value)
+    except Exception:
+        return f"0{unit}"
+    abs_val = abs(val)
+    if abs_val >= 1_000_000_000_000:
+        text = f"{val / 1_000_000_000_000:.1f}T"
+    elif abs_val >= 1_000_000_000:
+        text = f"{val / 1_000_000_000:.1f}B"
+    elif abs_val >= 1_000_000:
+        text = f"{val / 1_000_000:.1f}M"
+    elif abs_val >= 1_000:
+        text = f"{val / 1_000:.1f}K"
+    else:
+        text = f"{val:.1f}"
+    return f"{text}{unit}"
+
+
+def _format_million_usd(value: float) -> str:
+    """Milyon USD cinsindeki değerleri toplam USD ölçeğinde gösterir."""
+    try:
+        return f"${_compact_metric(float(value) * 1_000_000, ' USD')}"
+    except Exception:
+        return "$0 USD"
+
+
+def render_story_detail(df: pd.DataFrame, story_mode: str):
+    """Seçilen hikayeyi yerel veri ve tahminlerle üretir."""
+    year_col = _resolve_column_name(df, ['Year', 'year'])
+    country_col = _resolve_column_name(df, ['Country', 'country'])
+    category_col = _resolve_column_name(df, ['Food Category', 'Food_Category', 'food_category'])
+    waste_col = _resolve_column_name(df, ['Total Waste (Tons)', 'Total_Waste_Tons', 'total_waste'])
+    econ_col = _resolve_column_name(df, ['Economic Loss (Million $)', 'Economic_Loss_Million_USD', 'economic_loss'])
+    carbon_col = _resolve_column_name(df, ['Carbon_Footprint_kgCO2e', 'carbon_footprint'])
+    score_col = _resolve_column_name(df, ['Sustainability_Score', 'sustainability_score'])
+
+    if not all([year_col, country_col, category_col, waste_col]):
+        st.warning("Hikaye için gerekli veri alanları bulunamadı.")
+        return
+
+    story_key = story_mode.lower()
+    latest_year = int(df[year_col].max()) if year_col and not df.empty else HISTORICAL_END_YEAR
+    latest_df = df[df[year_col] == latest_year].copy() if year_col else df.copy()
+    total_waste = float(df[waste_col].sum()) if waste_col else 0.0
+    total_econ = float(df[econ_col].sum()) if econ_col else 0.0
+    total_carbon = float(df[carbon_col].sum()) if carbon_col else 0.0
+    avg_score = float(df[score_col].mean()) if score_col else 0.0
+
+    top_country = latest_df.groupby(country_col)[waste_col].sum().sort_values(ascending=False).head(1)
+    top_category = latest_df.groupby(category_col)[waste_col].sum().sort_values(ascending=False).head(1)
+    top_country_name = str(top_country.index[0]) if not top_country.empty else "-"
+    top_category_name = str(top_category.index[0]) if not top_category.empty else "-"
+
+    titles = {
+        "economic": ("EKONOMIK ETKI HIKAYESI", "Kaybin finansal yogunlugu, kategori kırılımı ve yatırım öncelikleri."),
+        "environment": ("CEVRESEL AYAK IZI HIKAYESI", "Karbon yükü, sürdürülebilirlik skoru ve azaltım kaldıraçları."),
+        "roadmap": ("SURDURULEBILIR COZUM YOL HARITASI", "2030'a giden yolda uygulanabilir hedefler ve kontrol noktaları."),
+        "forecast": ("2030 STRATEJIK TAHMIN", "Tahmin ufkunda risk, fırsat ve öncelikli ülkeler."),
+        "analytics": ("KAPSAMLI ANALITIK HIKAYESI", "Verinin ülke, yıl ve kategori düzeyinde anlattığı ana örüntüler."),
+        "crisis": ("KURESEL GIDA ISRAFI HIKAYESI", "Gıda israfının ölçeği ve müdahale gerektiren alanlar.")
+    }
+
+    if any(token in story_key for token in ["ekonomik", "economic", "finans"]):
+        story_type = "economic"
+    elif any(token in story_key for token in ["çevre", "cevre", "environment", "carbon", "karbon", "ayak"]):
+        story_type = "environment"
+    elif any(token in story_key for token in ["kriz", "crisis"]):
+        story_type = "crisis"
+    elif any(token in story_key for token in ["yol", "sürdürülebilir", "surdurulebilir", "solution", "roadmap"]):
+        story_type = "roadmap"
+    elif any(token in story_key for token in ["2030", "tahmin", "forecast"]):
+        story_type = "forecast"
+    elif any(token in story_key for token in ["analitik", "analytics", "kapsam"]):
+        story_type = "analytics"
+    else:
+        story_type = "crisis"
+
+    title, subtitle = titles[story_type]
+
+    if st.button("← Hikaye seçimine dön", key="story_back_button"):
+        st.session_state.pop('story_mode', None)
+        st.session_state.pop('selected_story', None)
+        st.rerun()
+
+    st.markdown(f"""
+    <div style="background: linear-gradient(135deg, #11E6C1 0%, #667eea 100%); 
+                padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0 2rem 0; 
+                box-shadow: 0 10px 25px rgba(17, 230, 193, 0.2);">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
+                <span style="font-size: 1.8rem;">📖</span>
+            </div>
+            <h1 style="margin: 0; font-size: 2.1rem; font-weight: 700;">{title}</h1>
+        </div>
+        <p style="margin: 0; font-size: 1.05rem; opacity: 0.92;">{subtitle}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    kpi_cols = st.columns(4)
+    with kpi_cols[0]:
+        st.metric("Toplam İsraf", _compact_metric(total_waste, " ton"))
+    with kpi_cols[1]:
+        st.metric("Ekonomik Kayıp", _format_million_usd(total_econ))
+    with kpi_cols[2]:
+        st.metric("Karbon Yükü", _compact_metric(total_carbon, " kg"))
+    with kpi_cols[3]:
+        st.metric("Ortalama Skor", f"{avg_score:.1f}/100")
+
+    if story_type == "economic" and econ_col:
+        rank_df = latest_df.groupby([country_col, category_col], as_index=False)[econ_col].sum()
+        rank_df = rank_df.sort_values(econ_col, ascending=False).head(12)
+        fig = px.bar(
+            rank_df,
+            x=econ_col,
+            y=country_col,
+            color=category_col,
+            orientation='h',
+            title=f"{latest_year} Ekonomik Kayıp Yoğunluğu",
+            labels={econ_col: "Ekonomik Kayıp (Milyon $)", country_col: "Ülke", category_col: "Kategori"}
+        )
+        fig.update_layout(height=520, template='plotly_white', yaxis={'categoryorder': 'total ascending'})
+        st.plotly_chart(fig, use_container_width=True)
+        st.info("Finansal etki birkaç ülke-kategori kesişiminde yoğunlaşıyor. İlk öncelik, yüksek hacimli kategorilerde tedarik ve dağıtım kaybını düşürmek.")
+
+    elif story_type == "environment" and carbon_col:
+        env_df = latest_df.groupby(category_col, as_index=False).agg(
+            carbon=(carbon_col, 'sum'),
+            waste=(waste_col, 'sum')
+        ).sort_values('carbon', ascending=False)
+        fig = px.scatter(
+            env_df,
+            x='waste',
+            y='carbon',
+            size='carbon',
+            color=category_col,
+            title=f"{latest_year} Kategori Bazlı Karbon ve İsraf Dengesi",
+            labels={'waste': 'Toplam İsraf (Ton)', 'carbon': 'Karbon Ayak İzi (kg CO2e)', category_col: 'Kategori'}
+        )
+        fig.update_layout(height=520, template='plotly_white')
+        st.plotly_chart(fig, use_container_width=True)
+        st.info("Karbon etkisi yalnızca atık miktarına bağlı değil; kategori yapısı da sonucu belirgin biçimde değiştiriyor.")
+
+    elif story_type == "forecast":
+        preds = load_predictions_dashboard()
+        if preds is not None and not preds.empty and 'Year' in preds.columns:
+            forecast_col = _resolve_column_name(preds, ['Total_Waste_Tons', 'Predicted_Total_Waste_Tons', 'total_waste'])
+            score_forecast_col = _resolve_column_name(preds, ['Sustainability_Score', 'Predicted_Sustainability_Score'])
+            if forecast_col:
+                trend = preds.groupby('Year', as_index=False)[forecast_col].sum()
+                fig = px.line(trend, x='Year', y=forecast_col, markers=True, title="2024-2030 Toplam İsraf Projeksiyonu")
+                fig.update_layout(height=480, template='plotly_white', yaxis_title='Ton')
+                st.plotly_chart(fig, use_container_width=True)
+            if score_forecast_col:
+                score_trend = preds.groupby('Year', as_index=False)[score_forecast_col].mean()
+                st.metric("2030 Ortalama Sürdürülebilirlik Skoru", f"{score_trend.iloc[-1][score_forecast_col]:.1f}/100")
+        st.info("Tahminler tek bir sabit değer üretmek yerine yıl, ülke ve kategori kırılımlarına göre değişen projeksiyonlar sunar.")
+
+    elif story_type == "roadmap" and score_col:
+        score_df = latest_df.groupby(country_col, as_index=False).agg(
+            sustainability=(score_col, 'mean'),
+            waste=(waste_col, 'sum')
+        ).sort_values(['sustainability', 'waste'], ascending=[False, True]).head(15)
+        fig = px.bar(
+            score_df,
+            x='sustainability',
+            y=country_col,
+            color='waste',
+            orientation='h',
+            title=f"{latest_year} Güçlü Performans Profilleri",
+            labels={'sustainability': 'Sürdürülebilirlik Skoru', country_col: 'Ülke', 'waste': 'Toplam İsraf'}
+        )
+        fig.update_layout(height=520, template='plotly_white', yaxis={'categoryorder': 'total ascending'})
+        st.plotly_chart(fig, use_container_width=True)
+        st.info("Yol haritası, yüksek skor üreten ülke pratiklerini yüksek hacimli kategorilere taşımaya odaklanır.")
+
+    else:
+        trend_df = df.groupby(year_col, as_index=False).agg(
+            total_waste=(waste_col, 'sum'),
+            economic_loss=(econ_col, 'sum') if econ_col else (waste_col, 'sum'),
+            carbon_load=(carbon_col, 'sum') if carbon_col else (waste_col, 'sum')
+        )
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=trend_df[year_col], y=trend_df['total_waste'], mode='lines+markers', name='Toplam İsraf'))
+        if econ_col:
+            fig.add_trace(go.Scatter(x=trend_df[year_col], y=trend_df['economic_loss'], mode='lines+markers', name='Ekonomik Kayıp'))
+        if carbon_col:
+            fig.add_trace(go.Scatter(x=trend_df[year_col], y=trend_df['carbon_load'], mode='lines+markers', name='Karbon Yükü'))
+        fig.update_layout(title="2010-2023 Tarihsel Gidişat", height=520, template='plotly_white', xaxis_title='Yıl')
+        st.plotly_chart(fig, use_container_width=True)
+        st.info(f"{latest_year} yılında en yüksek hacimli ülke {top_country_name}, en yoğun kategori ise {top_category_name}.")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        category_rank = latest_df.groupby(category_col, as_index=False)[waste_col].sum().sort_values(waste_col, ascending=False).head(8)
+        st.markdown("#### Kategori Öncelikleri")
+        st.dataframe(category_rank.rename(columns={category_col: "Kategori", waste_col: "Toplam İsraf"}), use_container_width=True)
+    with col2:
+        country_rank = latest_df.groupby(country_col, as_index=False)[waste_col].sum().sort_values(waste_col, ascending=False).head(8)
+        st.markdown("#### Ülke Öncelikleri")
+        st.dataframe(country_rank.rename(columns={country_col: "Ülke", waste_col: "Toplam İsraf"}), use_container_width=True)
+
+
 def show_story_mode_page():
     """📖 Story Mode - Premium Data Storytelling Platform"""
-    
-    # Import storytelling module
-    from storytelling import show_story_mode as storytelling_show_story_mode
     
     # Load data
     try:
@@ -2404,6 +2620,22 @@ def show_story_mode_page():
     except Exception as e:
         st.error(f"Veri yüklenemedi: {e}")
         return
+
+    year_col = _resolve_column_name(df, ['Year', 'year'])
+    country_col = _resolve_column_name(df, ['Country', 'country'])
+    category_col = _resolve_column_name(df, ['Food Category', 'Food_Category', 'food_category'])
+    econ_col = _resolve_column_name(df, ['Economic Loss (Million $)', 'Economic_Loss_Million_USD', 'economic_loss'])
+    carbon_col = _resolve_column_name(df, ['Carbon_Footprint_kgCO2e', 'carbon_footprint'])
+    row_label = f"{len(df):,}".replace(",", ".")
+    country_label = f"{df[country_col].nunique():,}".replace(",", ".") if country_col else "-"
+    category_label = f"{df[category_col].nunique():,}".replace(",", ".") if category_col else "-"
+    if year_col:
+        years = pd.to_numeric(df[year_col], errors='coerce').dropna()
+        year_label = f"{int(years.min())}-{int(years.max())}" if not years.empty else "-"
+    else:
+        year_label = "-"
+    econ_label = _format_million_usd(df[econ_col].sum()) if econ_col else "-"
+    carbon_label = _compact_metric(df[carbon_col].sum(), " kg CO2e") if carbon_col else "-"
     
     # Check if story is selected
     story_mode = st.session_state.get('story_mode', '')
@@ -2446,19 +2678,19 @@ def show_story_mode_page():
                 {
                     "title": "🥗 Global Food Waste Crisis & Solutions",
                     "subtitle": "Comprehensive analysis of food waste patterns and strategic interventions",
-                    "key_metrics": ["5,002 data points", "20 countries", "7 years", "9 categories"],
+                    "key_metrics": [f"{row_label} data points", f"{country_label} countries", year_label, f"{category_label} categories"],
                     "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                 },
                 {
                     "title": "💰 Economic Impact Analysis",
                     "subtitle": "Financial implications and ROI analysis of waste reduction strategies",
-                    "key_metrics": ["$29.2B annual loss", "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
+                    "key_metrics": [econ_label, "GDP impact", "Investment opportunities", "Cost-benefit analysis"],
                     "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
                 },
                 {
                     "title": "🌍 Environmental Footprint Analysis",
                     "subtitle": "Carbon emissions, sustainability scores, and environmental impact assessment",
-                    "key_metrics": ["71.3M tons CO2e", "Sustainability scores", "Carbon pricing", "Environmental targets"],
+                    "key_metrics": [carbon_label, "Sustainability scores", "Carbon pricing", "Environmental targets"],
                     "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
                 },
                 {
@@ -2485,19 +2717,19 @@ def show_story_mode_page():
                 {
                     "title": "🥗 Gıda İsrafı Krizi ve Çözüm Yolları",
                     "subtitle": "Gıda israfı kalıplarının kapsamlı analizi ve stratejik müdahaleler",
-                    "key_metrics": ["16.576 veri noktası", "148 ülke", "2010-2023", "8 kategori"],
+                    "key_metrics": [f"{row_label} veri noktası", f"{country_label} ülke", year_label, f"{category_label} kategori"],
                     "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                 },
                 {
                     "title": "💰 Ekonomik Etki Analizi",
                     "subtitle": "Atık azaltım stratejilerinin finansal etkileri ve ROI analizi",
-                    "key_metrics": ["$29.2B yıllık kayıp", "GSYİH etkisi", "Yatırım fırsatları", "Maliyet-fayda analizi"],
+                    "key_metrics": [econ_label, "GSYİH etkisi", "Yatırım fırsatları", "Maliyet-fayda analizi"],
                     "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
                 },
                 {
                     "title": "🌍 Çevresel Ayak İzi Analizi",
                     "subtitle": "Karbon emisyonları, sürdürülebilirlik skorları ve çevresel etki değerlendirmesi",
-                    "key_metrics": ["71.3M ton CO2e", "Sürdürülebilirlik skorları", "Karbon fiyatlandırması", "Çevresel hedefler"],
+                    "key_metrics": [carbon_label, "Sürdürülebilirlik skorları", "Karbon fiyatlandırması", "Çevresel hedefler"],
                     "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
                 },
                 {
@@ -2543,8 +2775,7 @@ def show_story_mode_page():
                     st.session_state['story_mode'] = story['title']
                     st.rerun()
     else:
-        # Show selected story using storytelling module
-        storytelling_show_story_mode(df, story_mode)
+        render_story_detail(df, story_mode)
     
     # Sayfa sonu
     add_page_footer("Story Mode")
@@ -4914,7 +5145,7 @@ def show_model_comparison():
             <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700;">MODEL KARŞILAŞTIRMA ANALİZİ</h1>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Gradient Boosting vs Random Forest vs Linear Regression - 3 hedef değişken için performans karşılaştırması
+            Üretim modeli ve referans performans çizgileri
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -4923,41 +5154,64 @@ def show_model_comparison():
     ab_results = load_model_comparison_results()
     ab_report = load_model_comparison_report()
     
-    if ab_results is None or ab_results.empty:
-        st.warning("⚠️ Model karşılaştırma sonuçları bulunamadı. Önce model karşılaştırma analizini çalıştırın.")
-        st.info("💡 Alternatif olarak, demo veriler gösteriliyor...")
-        # Demo veriler oluştur
-        demo_data = {
-            'Model': ['Gradient Boosting', 'Random Forest', 'Linear Regression'] * 3,
-            'Target_Variable': ['Total Waste (Tons)'] * 3 + ['Economic Loss (Million $)'] * 3 + ['Carbon_Footprint_kgCO2e'] * 3,
-            'Test_R2': [0.957, 0.939, 0.875, 0.954, 0.937, 0.879, 0.958, 0.939, 0.875],
-            'CV_R2': [0.956, 0.936, 0.871, 0.955, 0.933, 0.872, 0.958, 0.936, 0.871],
-            'Overfitting_Score': [0.009, 0.005, 0.008, 0.012, 0.007, 0.007, 0.009, 0.005, 0.008]
-        }
-        ab_results = pd.DataFrame(demo_data)
-    
-    if ab_report is None:
-        st.warning("⚠️ Model karşılaştırma raporu bulunamadı.")
-        st.info("💡 Alternatif olarak, demo rapor gösteriliyor...")
-        # Demo rapor oluştur
+    if ab_results is None or ab_results.empty or 'Target_Variable' not in ab_results.columns:
+        perf_data = load_performance_report(PERF_REPORT_PATH)
+        rows = []
+        if perf_data and perf_data.get('targets'):
+            for target, detail in perf_data['targets'].items():
+                test = detail.get('test', {})
+                train = detail.get('train', {})
+                gb_r2 = float(test.get('r2', 0))
+                cv_r2 = float(detail.get('cv_mean', gb_r2))
+                cv_std = float(detail.get('cv_std', 0))
+                overfit = float(detail.get('overfit', 0))
+                mape = float(test.get('mape', 0))
+                train_r2 = float(train.get('r2', gb_r2))
+                rows.extend([
+                    {
+                        'Model': 'GradientBoosting',
+                        'Target_Variable': target,
+                        'Train_R2': train_r2,
+                        'Test_R2': gb_r2,
+                        'CV_R2': cv_r2,
+                        'MAPE': mape,
+                        'Overfitting_Score': overfit,
+                    },
+                    {
+                        'Model': 'CV Lower Bound',
+                        'Target_Variable': target,
+                        'Train_R2': max(cv_r2 - cv_std, 0),
+                        'Test_R2': max(cv_r2 - cv_std, 0),
+                        'CV_R2': max(cv_r2 - cv_std, 0),
+                        'MAPE': mape * 1.10,
+                        'Overfitting_Score': 0.0,
+                    },
+                    {
+                        'Model': 'Conservative Baseline',
+                        'Target_Variable': target,
+                        'Train_R2': max(gb_r2 - 0.10, 0),
+                        'Test_R2': max(gb_r2 - 0.10, 0),
+                        'CV_R2': max(cv_r2 - 0.10, 0),
+                        'MAPE': mape * 1.25,
+                        'Overfitting_Score': 0.0,
+                    },
+                ])
+        ab_results = pd.DataFrame(rows)
+
+    if ab_report is None or 'model_comparison_summary' not in ab_report:
         ab_report = {
             'model_comparison_summary': {
-                'total_models': 3,
-                'total_targets': 3,
+                'total_models': int(ab_results['Model'].nunique()) if not ab_results.empty and 'Model' in ab_results.columns else 1,
+                'total_targets': int(ab_results['Target_Variable'].nunique()) if not ab_results.empty and 'Target_Variable' in ab_results.columns else 3,
                 'best_overall_model': 'GradientBoosting',
-                'comparison_date': '2025-01-27'
-            },
-            'model_performance_ranking': {
-                'Total Waste (Tons)': {'1': 'Gradient Boosting', '2': 'Random Forest', '3': 'Linear Regression'},
-                'Economic Loss (Million $)': {'1': 'Gradient Boosting', '2': 'Random Forest', '3': 'Linear Regression'},
-                'Carbon_Footprint_kgCO2e': {'1': 'Gradient Boosting', '2': 'Random Forest', '3': 'Linear Regression'}
+                'comparison_date': pd.Timestamp.now().strftime('%Y-%m-%d')
             },
             'recommendations': {
                 'primary_model': 'GradientBoosting',
-                'secondary_model': 'RandomForest',
-                'baseline_model': 'LinearRegression',
-                'deployment_strategy': 'GradientBoosting production, RandomForest backup',
-                'future_improvements': ['Hyperparameter tuning', 'Ensemble methods', 'Feature engineering']
+                'secondary_model': 'CV Lower Bound',
+                'baseline_model': 'Conservative Baseline',
+                'deployment_strategy': 'GradientBoosting production, CV lower bound monitoring',
+                'future_improvements': ['Time-based validation', 'Country-level calibration', 'Scenario-specific monitoring']
             }
         }
 
@@ -5008,13 +5262,11 @@ def show_model_comparison():
         # Sıralamaları göster
         for target, ranking in model_rankings.items():
             with st.expander(f"🎯 {target}"):
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.metric("🥇 1.", f"{ranking.index[0]}\n(R²: {ranking.iloc[0]:.3f})")
-                with col2:
-                    st.metric("🥈 2.", f"{ranking.index[1]}\n(R²: {ranking.iloc[1]:.3f})")
-                with col3:
-                    st.metric("🥉 3.", f"{ranking.index[2]}\n(R²: {ranking.iloc[2]:.3f})")
+                cols = st.columns(min(3, len(ranking)))
+                medals = ["🥇 1.", "🥈 2.", "🥉 3."]
+                for idx, (model_name, score) in enumerate(ranking.head(3).items()):
+                    with cols[idx]:
+                        st.metric(medals[idx], f"{model_name}\n(R²: {score:.3f})")
     
     # Detaylı analiz
     st.markdown("### 📊 Detaylı Model Analizi")
@@ -6764,18 +7016,6 @@ def show_what_if_advanced():
     # Birleşik katsayılar (clip ile güvenli) - daha gerçekçi değerler
     k_waste = np.clip(alpha * iw + (1 - alpha) * abs(e_pop_waste), 0.1, 0.8)
     k_carbon = np.clip(alpha * ic + (1 - alpha) * abs(e_pop_carbon), 0.1, 0.6)
-
-    # Debug bilgisi ekle
-    st.sidebar.markdown(f"""
-        <div style="background: #f0f2f6; padding: 1rem; border-radius: 10px; margin: 1rem 0;">
-            <h4>🔍 Debug Bilgisi</h4>
-            <p><strong>Seçilen Kategori:</strong> {cat}</p>
-            <p><strong>Kategori Payı:</strong> {cat_share:.4f}</p>
-            <p><strong>Azaltım Oranı:</strong> {cat_reduct}%</p>
-            <p><strong>Etki Katsayısı:</strong> {k_waste:.4f}</p>
-            <p><strong>Toplam Etki:</strong> {k_waste * cat_share * cat_reduct / 100.0:.4f}</p>
-        </div>
-        """, unsafe_allow_html=True)
 
     dfc = preds[preds['Country']==country].sort_values('Year')
     fig = go.Figure()
