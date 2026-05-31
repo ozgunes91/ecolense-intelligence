@@ -32,7 +32,17 @@ Platformun amacı, gıda israfını yalnızca geçmiş verilerle raporlamak değ
 
 ---
 
-## Görsel Özet
+## Dashboard Önizleme
+
+![Dashboard ana sayfa](docs/assets/dashboard_home.jpg)
+
+![Model performansı sayfası](docs/assets/dashboard_model_performance.jpg)
+
+![SHAP ve özellik etkisi bölümü](docs/assets/dashboard_shap_section.jpg)
+
+---
+
+## Analitik Görseller
 
 ![Tahmin trendleri](docs/assets/forecast_trends.png)
 
@@ -172,6 +182,9 @@ ecolense-intelligence/
 │   └── meta.json
 ├── docs/
 │   └── assets/
+│       ├── dashboard_home.jpg
+│       ├── dashboard_model_performance.jpg
+│       ├── dashboard_shap_section.jpg
 │       ├── forecast_trends.png
 │       ├── category_waste_2023.png
 │       ├── model_performance_summary.png
