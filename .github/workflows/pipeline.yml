@@ -40,12 +40,13 @@ jobs:
           python - <<'EOF'
           import os, json, pandas as pd
           assert os.path.exists("data/processed.csv"),        "processed.csv eksik"
-          assert os.path.exists("model_performance.json"),    "model_performance.json eksik"
-          assert os.path.exists("forecasts.csv"),             "forecasts.csv eksik"
-          perf = json.load(open("model_performance.json"))
+          assert os.path.exists("outputs/metrics/model_performance.json"), "model_performance.json eksik"
+          assert os.path.exists("outputs/forecasts/forecasts.csv"),        "forecasts.csv eksik"
+          assert os.path.exists("outputs/explainability/shap_Total_Waste_Tons.csv"), "SHAP çıktısı eksik"
+          perf = json.load(open("outputs/metrics/model_performance.json"))
           avg  = perf["average_test_r2"]
           assert avg > 0.85, f"Model R² çok düşük: {avg}"
-          fc   = pd.read_csv("forecasts.csv")
+          fc   = pd.read_csv("outputs/forecasts/forecasts.csv")
           assert fc["Year"].max() == 2030, "2030 tahmini yok"
           print(f"✅ Tüm kontroller geçti | Ort. Test R²={avg:.4f}")
           EOF
@@ -56,8 +57,9 @@ jobs:
         with:
           name: ecolense-outputs
           path: |
-            model_performance.json
-            forecasts.csv
-            shap_*.csv
+            outputs/metrics/model_performance.json
+            outputs/forecasts/forecasts.csv
+            outputs/explainability/shap_*.csv
+            docs/assets/shap_*.png
             data/meta.json
           retention-days: 30

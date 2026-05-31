@@ -4,7 +4,7 @@
 ========================
 Eğitilmiş modelleri kullanarak 2024-2030 tahminleri üretir.
 
-Çıktı: forecasts.csv
+Çıktı: outputs/forecasts/forecasts.csv
 """
 
 import pandas as pd
@@ -14,7 +14,9 @@ warnings.filterwarnings("ignore")
 
 DATA_PATH     = "data/processed.csv"
 MODEL_DIR     = "models"
-FORECAST_PATH = "forecasts.csv"
+OUTPUT_DIR    = "outputs"
+FORECAST_DIR  = os.path.join(OUTPUT_DIR, "forecasts")
+FORECAST_PATH = os.path.join(FORECAST_DIR, "forecasts.csv")
 
 TARGETS = [
     "Total Waste (Tons)",
@@ -302,6 +304,7 @@ def main():
     ) * 100
     out = out.merge(country_year[["Country", "Year", "Sustainability_Score"]], on=["Country", "Year"], how="left")
 
+    os.makedirs(FORECAST_DIR, exist_ok=True)
     out.to_csv(FORECAST_PATH, index=False)
     print(f"\n  ✅ {FORECAST_PATH}  ({len(out):,} satır)")
     print(f"  Ülke: {out['Country'].nunique()} | Yıl: {sorted(out['Year'].unique().tolist())}")

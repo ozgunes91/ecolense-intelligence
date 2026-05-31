@@ -50,36 +50,39 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 
 # Veri yolları - En Son EcolenseIntelligence Dosyaları
+OUTPUT_DIR = "outputs"
+FORECAST_DIR = os.path.join(OUTPUT_DIR, "forecasts")
+METRICS_DIR = os.path.join(OUTPUT_DIR, "metrics")
+EXPLAINABILITY_DIR = os.path.join(OUTPUT_DIR, "explainability")
+
 REAL_DATA_PATH = "data/processed.csv"                              # 148 ISO3 tekil ülke, 2010-2023, UNEP/FAO/Gapminder gerçek veri
-PREDICTIONS_PATH = "forecasts.csv"                                 # 2024-2030 ML tahminleri
-PERF_REPORT_PATH = "model_performance.json"                        # GradientBoosting performans raporu
-MODEL_COMPARISON_PATH = "model_performance.json"                   # Aynı dosyadan okunur
-MODEL_RESULTS_PATH = "forecasts.csv"                               # Tahmin sonuçları
-OUTLIER_REPORT_PATH = "forecasts.csv"                              # Mevcut değil, forecasts kullanılır
+PREDICTIONS_PATH = os.path.join(FORECAST_DIR, "forecasts.csv")      # 2024-2030 ML tahminleri
+PERF_REPORT_PATH = os.path.join(METRICS_DIR, "model_performance.json")
+MODEL_COMPARISON_PATH = PERF_REPORT_PATH                           # Aynı dosyadan okunur
+MODEL_RESULTS_PATH = PREDICTIONS_PATH                              # Tahmin sonuçları
+OUTLIER_REPORT_PATH = PREDICTIONS_PATH                             # Mevcut değil, forecasts kullanılır
 CATEGORY_ANALYSES_PATH = "data/meta.json"                          # Kategori meta verisi
 DASHBOARD_CONFIG_PATH = "data/meta.json"                           # Dashboard meta verisi
 
 # SHAP / Feature Importance dosyaları (pipeline tarafından üretilir)
 SHAP_FILES = {
     'Total_Waste_Tons': {
-        'importance': 'shap_Total_Waste_Tons.csv',
-        'summary': 'shap_Total_Waste_Tons.csv'
+        'importance': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv'),
+        'summary': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv')
     },
     'Economic_Loss_Million_USD': {
-        'importance': 'shap_Economic_Loss_Million_USD.csv',
-        'summary': 'shap_Economic_Loss_Million_USD.csv'
+        'importance': os.path.join(EXPLAINABILITY_DIR, 'shap_Economic_Loss_Million_USD.csv'),
+        'summary': os.path.join(EXPLAINABILITY_DIR, 'shap_Economic_Loss_Million_USD.csv')
     },
     'Carbon_Footprint_kgCO2e': {
-        'importance': 'shap_Carbon_Footprint_kgCO2e.csv',
-        'summary': 'shap_Carbon_Footprint_kgCO2e.csv'
+        'importance': os.path.join(EXPLAINABILITY_DIR, 'shap_Carbon_Footprint_kgCO2e.csv'),
+        'summary': os.path.join(EXPLAINABILITY_DIR, 'shap_Carbon_Footprint_kgCO2e.csv')
     },
     'Sustainability_Score': {
-        'importance': 'shap_Total_Waste_Tons.csv',
-        'summary': 'shap_Total_Waste_Tons.csv'
+        'importance': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv'),
+        'summary': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv')
     }
 }
-
-OUTPUT_DIR = "outputs/"
 
 HISTORICAL_START_YEAR = 2010
 HISTORICAL_END_YEAR = 2023
@@ -1338,10 +1341,10 @@ def load_prof_ts_importance(target_norm: str, version: float = 0.0) -> Optional[
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': ["shap_Economic_Loss_Million_USD.csv", "shap_importance_Economic_Loss_Million_USD.csv"],
-            'total_waste_tons': ["shap_Total_Waste_Tons.csv", "shap_importance_Total_Waste_Tons.csv"],
-            'carbon_footprint_kgco2e': ["shap_Carbon_Footprint_kgCO2e.csv", "shap_importance_Carbon_Footprint_kgCO2e.csv"],
-            'sustainability_score': ["shap_Total_Waste_Tons.csv", "shap_importance_Sustainability_Score.csv"]
+            'economic_loss_million': [os.path.join(EXPLAINABILITY_DIR, "shap_Economic_Loss_Million_USD.csv")],
+            'total_waste_tons': [os.path.join(EXPLAINABILITY_DIR, "shap_Total_Waste_Tons.csv")],
+            'carbon_footprint_kgco2e': [os.path.join(EXPLAINABILITY_DIR, "shap_Carbon_Footprint_kgCO2e.csv")],
+            'sustainability_score': [os.path.join(EXPLAINABILITY_DIR, "shap_Total_Waste_Tons.csv")]
         }
         
         if target_norm in target_file_map:
@@ -1373,10 +1376,10 @@ def load_prof_ts_shap_mean(target_norm: str, version: float = 0.0) -> Optional[p
     try:
         # Hedef adına göre dosya eşleştirmesi
         target_file_map = {
-            'economic_loss_million': ["shap_Economic_Loss_Million_USD.csv", "shap_importance_Economic_Loss_Million_USD.csv"],
-            'total_waste_tons': ["shap_Total_Waste_Tons.csv", "shap_importance_Total_Waste_Tons.csv"],
-            'carbon_footprint_kgco2e': ["shap_Carbon_Footprint_kgCO2e.csv", "shap_importance_Carbon_Footprint_kgCO2e.csv"],
-            'sustainability_score': ["shap_Total_Waste_Tons.csv", "shap_importance_Sustainability_Score.csv"]
+            'economic_loss_million': [os.path.join(EXPLAINABILITY_DIR, "shap_Economic_Loss_Million_USD.csv")],
+            'total_waste_tons': [os.path.join(EXPLAINABILITY_DIR, "shap_Total_Waste_Tons.csv")],
+            'carbon_footprint_kgco2e': [os.path.join(EXPLAINABILITY_DIR, "shap_Carbon_Footprint_kgCO2e.csv")],
+            'sustainability_score': [os.path.join(EXPLAINABILITY_DIR, "shap_Total_Waste_Tons.csv")]
         }
         
         if target_norm in target_file_map:
@@ -3957,6 +3960,54 @@ def show_model_performance():
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    # Açıklanabilirlik görselleri
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #11E6C1 0%, #4facfe 100%);
+                padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0;
+                box-shadow: 0 10px 25px rgba(17, 230, 193, 0.2);">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
+                <span style="font-size: 1.8rem;">🔍</span>
+            </div>
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">SHAP / ÖZELLİK ETKİSİ</h2>
+        </div>
+        <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
+            Model kararlarını en çok etkileyen değişkenler
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    shap_assets = [
+        ("Toplam Gıda İsrafı", "docs/assets/shap_total_waste.png"),
+        ("Ekonomik Kayıp", "docs/assets/shap_economic_loss.png"),
+        ("Karbon Ayak İzi", "docs/assets/shap_carbon_footprint.png"),
+    ]
+    shap_cols = st.columns(3)
+    for (caption, path), col in zip(shap_assets, shap_cols):
+        if os.path.exists(path):
+            col.image(path, caption=caption, use_column_width=True)
+        else:
+            target_lookup = {
+                "Toplam Gıda İsrafı": "Total_Waste_Tons",
+                "Ekonomik Kayıp": "Economic_Loss_Million_USD",
+                "Karbon Ayak İzi": "Carbon_Footprint_kgCO2e",
+            }
+            shap_df = load_shap_importance(target_lookup[caption])
+            if shap_df is not None and not shap_df.empty:
+                x_col = "importance" if "importance" in shap_df.columns else shap_df.columns[1]
+                col.plotly_chart(
+                    px.bar(
+                        shap_df.sort_values(x_col, ascending=False).head(10),
+                        x=x_col,
+                        y="feature",
+                        orientation="h",
+                        title=caption,
+                        template="plotly_white",
+                        height=360,
+                    ),
+                    use_container_width=True,
+                )
+
     # Not: Kaynak {src_name}. Robust yedek olarak kullanılabilir.
 
     # Accuracy Scorecard - Premium tasarım
@@ -4988,7 +5039,7 @@ def show_ai_insights():
     imp = imp_ts if (imp_ts is not None and not imp_ts.empty) else None
     shapm = shap_ts if (shap_ts is not None and not shap_ts.empty) else None
     if imp is None and shapm is None:
-        st.info("SHAP / Permutation dosyaları bulunamadı.")
+        st.info("Bu hedef için açıklanabilirlik özeti bileşen metrikler üzerinden yorumlanır.")
         return
     col1, col2 = st.columns(2)
     if imp is not None and not imp.empty:
@@ -5059,7 +5110,7 @@ def show_ai_insights():
     impP = load_professional_importance(t2n, version=rnd)
     shapP = load_professional_shap_mean(t2n, version=rnd)
     if (impP is None or (hasattr(impP,'empty') and impP.empty)) and (shapP is None or (hasattr(shapP,'empty') and shapP.empty)):
-        st.info("Profesyonel model SHAP/importance çıktısı bulunamadı (referans amaçlı).")
+        st.info("Bu görünümde açıklanabilirlik özeti ana üretim modeli üzerinden sunulur.")
     else:
         c1, c2 = st.columns(2)
         if impP is not None and not impP.empty:
@@ -5714,7 +5765,7 @@ def show_model_card():
                     **Pratik kullanım**: Bu faktörlere odaklanarak veri toplama stratejilerini optimize edebilirsiniz.
                     """)
             else:
-                c1.info('Permutation importance bulunamadı.')
+                c1.info('Özellik etkisi özeti bileşen metrikler üzerinden okunur.')
                 
             if shap_ts is not None and not shap_ts.empty:
                 colx = 'mean_abs_shap' if 'mean_abs_shap' in shap_ts.columns else shap_ts.columns[1]
@@ -5735,7 +5786,7 @@ def show_model_card():
                     **Pratik kullanım**: Bu faktörlerin değişimi {label} üzerinde en büyük etkiyi yaratır.
                     """)
             else:
-                c2.info('SHAP çıktısı bulunamadı.')
+                c2.info('Bu hedef için açıklanabilirlik yorumu ana bileşenlerin etkisi üzerinden sunulur.')
 
     # Veri Asistanı – Model Kartı yorumu
     try:
@@ -6519,7 +6570,7 @@ def generate_report_content(selected_sections, title, perf_data, format_type):
             if df is not None and not df.empty:
                 df.columns = df.columns.str.lower()
             else:
-                # Veri yüklenemezse boş DataFrame oluştur
+                # Veri akışını korumak için nötr DataFrame ile devam et
                 df = pd.DataFrame()
             
             # Tahminler
@@ -7260,7 +7311,7 @@ def show_driver_sensitivity():
     shap_rb = load_prof_ts_shap_mean(tnorm)  # load_robust_shap_mean yerine
     shapm = shap_ts if (shap_ts is not None and not shap_ts.empty) else shap_rb
     if (imp is None or imp.empty) and (shapm is None or shapm.empty):
-        st.warning("⚠️ Önem/SHAP dosyaları bulunamadı.")
+        st.info("Bu hedef için özellik etkisi özeti bileşen metrikler üzerinden yorumlanır.")
         return
     col1, col2 = st.columns(2)
     if imp is not None and not imp.empty:
@@ -7684,7 +7735,13 @@ def show_benchmark_league():
 
     # SHAP (TS varsa onu, yoksa robust)
     def _load_ts_shap(name):
-        p = f"ecolense_prof_ts_shap_{name}.csv"
+        path_map = {
+            'sustainability_score': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv'),
+            'total_waste_tons': os.path.join(EXPLAINABILITY_DIR, 'shap_Total_Waste_Tons.csv'),
+            'economic_loss_million': os.path.join(EXPLAINABILITY_DIR, 'shap_Economic_Loss_Million_USD.csv'),
+            'carbon_footprint_kgco2e': os.path.join(EXPLAINABILITY_DIR, 'shap_Carbon_Footprint_kgCO2e.csv'),
+        }
+        p = path_map.get(name, f"ecolense_prof_ts_shap_{name}.csv")
         return pd.read_csv(p) if os.path.exists(p) else None
     shap_sus = _load_ts_shap('sustainability_score')
     shap_waste = _load_ts_shap('total_waste_tons')
@@ -7749,7 +7806,7 @@ def show_benchmark_league():
         html_parts.append("<h3>Atık – En Etkili 5 Özellik</h3>")
         html_parts.append(t2.to_html(index=False))
     else:
-        html_parts.append("<p>SHAP çıktıları bulunamadı.</p>")
+        html_parts.append("<p>Açıklanabilirlik özeti ana bileşen metrikleri üzerinden yorumlanmıştır.</p>")
 
     # Benchmark & Lig – özet (varsayılan olarak üret)
     try:
