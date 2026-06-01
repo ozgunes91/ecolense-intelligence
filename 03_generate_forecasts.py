@@ -193,13 +193,15 @@ def apply_projection_dynamics(future, target):
     base_pred_raw = group[pred_col].transform("first")
     anchor_2024 = work["hist_anchor"].fillna(group[pred_col].transform("median")).clip(lower=0)
     anchor_2024 = anchor_2024 * (1 + work["annual_trend"]).clip(0.85, 1.15)
-    base_pred = base_pred_raw.where(base_pred_raw > 0, anchor_2024).replace(0, np.nan)
+    raw_base = base_pred_raw.where(base_pred_raw > 0, anchor_2024).replace(0, np.nan)
+    clipped_raw_base = raw_base.clip(lower=anchor_2024 * 0.60, upper=anchor_2024 * 1.60)
+    base_pred = (0.75 * anchor_2024 + 0.25 * clipped_raw_base).replace(0, np.nan)
     base_pop = group["Population (Million)"].transform("first").clip(lower=0.001)
     base_gdp = group["GDP_Per_Capita_USD"].transform("first").clip(lower=1)
     base_price = group["FAO_Food_Price_Index"].transform("first").clip(lower=0.001)
 
     dt = (work["Year"] - FORECAST_YEARS[0]).clip(lower=0)
-    raw_ratio = (work[pred_col] / base_pred).replace([np.inf, -np.inf], np.nan).fillna(1.0)
+    raw_ratio = (work[pred_col] / raw_base).replace([np.inf, -np.inf], np.nan).fillna(1.0)
     trend_ratio = (1 + work["annual_trend"]) ** dt
     macro_ratio = (
         (work["Population (Million)"].clip(lower=0.001) / base_pop) ** weights["pop"] *
@@ -313,11 +315,23 @@ def main():
     for col in ["base_waste_pc", "base_loss_pc", "base_carbon_pc"]:
         country_year[col] = country_year[col].fillna(country_year[col].median()).clip(lower=1e-9)
     country_year["base_score"] = country_year["base_score"].fillna(ref["Sustainability_Score"].mean())
-    pressure_change = (
-        0.40 * np.log((country_year["Waste_Per_Capita_kg"] / country_year["base_waste_pc"]).clip(0.25, 4.0))
-        + 0.30 * np.log((country_year["Economic_Loss_Per_Capita_USD"] / country_year["base_loss_pc"]).clip(0.25, 4.0))
-        + 0.30 * np.log((country_year["Carbon_Per_Capita_kgCO2e"] / country_year["base_carbon_pc"]).clip(0.25, 4.0))
+    # Aşırı ülke sıçramalarını sınırlarken yıllar arası gerçek yönü koru.
+    # Sadece tarihsel baza göre kırpmek küçük ülkelerde tüm yılları aynı skora
+    # sıkıştırabildiği için forecast dönemi içindeki göreli değişimi de ekliyoruz.
+    absolute_pressure = (
+        0.40 * np.log((country_year["Waste_Per_Capita_kg"] / country_year["base_waste_pc"]).clip(0.15, 12.0))
+        + 0.30 * np.log((country_year["Economic_Loss_Per_Capita_USD"] / country_year["base_loss_pc"]).clip(0.15, 12.0))
+        + 0.30 * np.log((country_year["Carbon_Per_Capita_kgCO2e"] / country_year["base_carbon_pc"]).clip(0.15, 12.0))
     )
+    first_waste_pc = country_year.groupby("Country")["Waste_Per_Capita_kg"].transform("first").clip(lower=1e-9)
+    first_loss_pc = country_year.groupby("Country")["Economic_Loss_Per_Capita_USD"].transform("first").clip(lower=1e-9)
+    first_carbon_pc = country_year.groupby("Country")["Carbon_Per_Capita_kgCO2e"].transform("first").clip(lower=1e-9)
+    relative_pressure = (
+        0.40 * np.log((country_year["Waste_Per_Capita_kg"] / first_waste_pc).clip(0.50, 2.00))
+        + 0.30 * np.log((country_year["Economic_Loss_Per_Capita_USD"] / first_loss_pc).clip(0.50, 2.00))
+        + 0.30 * np.log((country_year["Carbon_Per_Capita_kgCO2e"] / first_carbon_pc).clip(0.50, 2.00))
+    )
+    pressure_change = absolute_pressure + 0.35 * relative_pressure
     country_year["Sustainability_Score"] = (country_year["base_score"] - 24 * pressure_change).clip(5, 98)
     out = out.merge(country_year[["Country", "Year", "Sustainability_Score"]], on=["Country", "Year"], how="left")
 

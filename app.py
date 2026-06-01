@@ -708,6 +708,13 @@ def _t(key: str) -> str:
     lang = _lang()  # Varsayılan dil Türkçe
     return I18N.get(lang, I18N['TR']).get(key, key)  # Anahtar bulunamazsa kendisini döndür
 
+
+def navigate_to_page(page_name: str):
+    """Sidebar selectbox state'i ile çakışmadan sayfa değiştirir."""
+    st.session_state['pending_page'] = page_name
+    st.rerun()
+
+
 def add_page_footer(page_name: str):
     """Sayfa sonu yazısı ekler - Kompakt ve şık footer"""
 
@@ -3299,7 +3306,19 @@ def main():
             _t('PAGE_JUSTICE'),
             _t('PAGE_STORY')
         ]
+        pending_page = st.session_state.pop('pending_page', None)
+        if pending_page in pages_list:
+            st.session_state['page'] = pending_page
+            st.session_state['page_select'] = pending_page
+
         current_page = st.session_state.get('page', pages_list[0])
+        if current_page not in pages_list:
+            current_page = pages_list[0]
+            st.session_state['page'] = current_page
+
+        if st.session_state.get('page_select') not in pages_list:
+            st.session_state['page_select'] = current_page
+
         try:
             default_idx = pages_list.index(current_page)
         except ValueError:
@@ -3446,19 +3465,19 @@ def show_home_page():
 
     with col1:
         if st.button(f"🎯 {_t('TARGET_FORECASTS')}\n", use_container_width=True, key="quick_target"):
-            st.session_state['page'] = _t('PAGE_TARGET_FORECASTS')
+            navigate_to_page(_t('PAGE_TARGET_FORECASTS'))
 
     with col2:
         if st.button(f"📊 {_t('DATA_ANALYSIS')}\n", use_container_width=True, key="quick_analysis"):
-            st.session_state['page'] = _t('PAGE_ANALYSIS')
+            navigate_to_page(_t('PAGE_ANALYSIS'))
 
     with col3:
         if st.button(f"📊 {_t('MODEL_PERFORMANCE')}\n", use_container_width=True, key="quick_model"):
-            st.session_state['page'] = _t('PAGE_PERF')
+            navigate_to_page(_t('PAGE_PERF'))
 
     with col4:
         if st.button(f"🔮 {_t('FUTURE_FORECASTS_BTN')}\n", use_container_width=True, key="quick_future"):
-            st.session_state['page'] = _t('PAGE_FORECASTS')
+            navigate_to_page(_t('PAGE_FORECASTS'))
 
     # Veri chatbotu
     st.markdown("---")
@@ -3493,24 +3512,20 @@ def show_home_page():
     with col1:
         if st.button(_copy("🥗 Gıda İsrafı Hikayesi", "🥗 Food Waste Story"), use_container_width=True, key="story1"):
             st.session_state['story_mode'] = "🥗 Gıda İsrafı Krizi ve Çözüm Yolları"
-            st.session_state['page'] = _t('PAGE_STORY')
-            st.rerun()
+            navigate_to_page(_t('PAGE_STORY'))
 
         if st.button(_copy("💰 Ekonomik Etki Hikayesi", "💰 Economic Impact Story"), use_container_width=True, key="story2"):
             st.session_state['story_mode'] = "💰 Gıda İsrafının Ekonomik Etkileri"
-            st.session_state['page'] = _t('PAGE_STORY')
-            st.rerun()
+            navigate_to_page(_t('PAGE_STORY'))
 
     with col2:
         if st.button(_copy("🌍 Çevresel Etki Hikayesi", "🌍 Environmental Impact Story"), use_container_width=True, key="story3"):
             st.session_state['story_mode'] = "🌍 Gıda İsrafının Çevresel Ayak İzi"
-            st.session_state['page'] = _t('PAGE_STORY')
-            st.rerun()
+            navigate_to_page(_t('PAGE_STORY'))
 
         if st.button(_copy("🎯 Sürdürülebilir Sistemler Hikayesi", "🎯 Sustainable Systems Story"), use_container_width=True, key="story4"):
             st.session_state['story_mode'] = "🎯 Sürdürülebilir Gıda Sistemleri"
-            st.session_state['page'] = _t('PAGE_STORY')
-            st.rerun()
+            navigate_to_page(_t('PAGE_STORY'))
 
     # Sayfa sonu yazısı
     add_page_footer("Ana Sayfa")
@@ -4499,7 +4514,8 @@ def show_forecasts():
             options=[
                 ('food_waste_tons', 'Total Waste (Tons)', 'Toplam Atık'),
                 ('economic_loss_usd', 'Economic Loss (Million $)', 'Ekonomik Kayıp (M$)'),
-                ('carbon_footprint_kgco2e', 'Carbon_Footprint_kgCO2e', 'Karbon Ayak İzi')
+                ('carbon_footprint_kgco2e', 'Carbon_Footprint_kgCO2e', 'Karbon Ayak İzi'),
+                ('sustainability_score', 'Sustainability_Score', 'Sürdürülebilirlik Skoru')
             ],
             format_func=lambda x: x[2],
             key="forecast_target"
@@ -4509,6 +4525,9 @@ def show_forecasts():
 
     # Tarihsel gerçek veri (kolon isimleri normalize edilmiş olabilir)
     hist_df = load_data(REAL_DATA_PATH, announce=False)
+    if hist_df is None or hist_df.empty:
+        st.warning("⚠️ Tarihsel veri dosyası yüklenemedi.")
+        return
     country_col_hist = 'country' if 'country' in hist_df.columns else ('Country' if 'Country' in hist_df.columns else None)
     ycol = 'Years_From_2018' if 'Years_From_2018' in hist_df.columns else ('Year' if 'Year' in hist_df.columns else ('year' if 'year' in hist_df.columns else None))
     if not country_col_hist or not ycol:
@@ -4552,7 +4571,19 @@ def show_forecasts():
     # Grafik
     fig = go.Figure()
     if hist_col and ycol in hist_country.columns:
-        hist_series = hist_country[[ycol, hist_col]].groupby(ycol).mean().reset_index()
+        hist_country[hist_col] = pd.to_numeric(hist_country[hist_col], errors='coerce')
+        hist_agg = 'mean' if short_key in {
+            'sustainability_score',
+            'waste_per_capita',
+            'economic_loss_per_capita',
+            'carbon_per_capita'
+        } else 'sum'
+        hist_series = (
+            hist_country[[ycol, hist_col]]
+            .dropna()
+            .groupby(ycol, as_index=False)[hist_col]
+            .agg(hist_agg)
+        )
         try:
             hmin, hmax = int(hist_series[ycol].min()), int(hist_series[ycol].max())
             hist_name = f'Gerçek ({hmin}–{hmax})'
@@ -4617,9 +4648,9 @@ def show_forecasts():
                     'Carbon_Footprint_kgCO2e': 'Carbon_Footprint_kgCO2e',
                 }
 
-                target_key = target_rmse_map.get(pred_col)
-                if target_key and target_key in perf_src['targets']:
-                    rmse = perf_src['targets'][target_key].get('test_rmse')
+                target_perf_key = target_rmse_map.get(pred_col)
+                if target_perf_key and target_perf_key in perf_src['targets']:
+                    rmse = perf_src['targets'][target_perf_key].get('test_rmse')
 
             # Sustainability_Score için varsayılan RMSE değeri
             if pred_col == 'Sustainability_Score' and rmse is None:
@@ -4628,6 +4659,18 @@ def show_forecasts():
             if rmse is not None and pred_col in pred_country.columns:
                 y_pred = pred_country[pred_col].astype(float).values
                 x_pred = pred_country['Year'].values
+                series_scale = float(np.nanmedian(np.abs(y_pred))) if len(y_pred) else 1.0
+                if not np.isfinite(series_scale) or series_scale <= 0:
+                    series_scale = max(float(np.nanmax(np.abs(y_pred))) if len(y_pred) else 1.0, 1.0)
+                rmse = float(rmse)
+                if not np.isfinite(rmse) or rmse <= 0:
+                    diffs = np.diff(y_pred) if len(y_pred) > 1 else np.array([])
+                    fallback = float(np.nanstd(diffs)) if len(diffs) else 0.0
+                    rmse = max(fallback, series_scale * 0.05)
+                if pred_col == 'Sustainability_Score':
+                    rmse = min(max(rmse, 1.0), 10.0)
+                else:
+                    rmse = min(max(rmse, series_scale * 0.03), series_scale * 0.15)
 
                 # Zamanla artan belirsizlik (geleceğe doğru artar)
                 time_factor = np.linspace(1.0, 1.5, len(x_pred))  # 2025'ten 2030'a %50 artış
@@ -4645,6 +4688,14 @@ def show_forecasts():
                 p90 = y_pred + uncertainty_p10_p90
                 p05 = y_pred - uncertainty_p05_p95
                 p95 = y_pred + uncertainty_p05_p95
+                if pred_col == 'Sustainability_Score':
+                    p10 = np.clip(p10, 0, 100)
+                    p90 = np.clip(p90, 0, 100)
+                    p05 = np.clip(p05, 0, 100)
+                    p95 = np.clip(p95, 0, 100)
+                else:
+                    p10 = np.clip(p10, 0, None)
+                    p05 = np.clip(p05, 0, None)
 
                 # %90 güven aralığı (dış bant)
                 fig.add_trace(go.Scatter(x=x_pred, y=p95, mode='lines', name='P95 (%90 Güven)',
@@ -4663,8 +4714,9 @@ def show_forecasts():
                 # Belirsizlik metrikleri
                 avg_uncertainty = np.mean(uncertainty_p10_p90)
                 uncertainty_growth = (uncertainty_p10_p90[-1] - uncertainty_p10_p90[0]) / uncertainty_p10_p90[0] * 100
+                uncertainty_label = _format_metric(pred_col, avg_uncertainty, _lang())
 
-                st.info(f"📊 **Belirsizlik Analizi:** Ortalama belirsizlik ±{avg_uncertainty:.1f}, 2030'a kadar %{uncertainty_growth:.1f} artış")
+                st.info(f"📊 **Belirsizlik Analizi:** Ortalama belirsizlik ±{uncertainty_label}; 2030'a kadar %{uncertainty_growth:.1f} artış")
             else:
                 st.warning("⚠️ RMSE değeri bulunamadı, belirsizlik bantları gösterilemiyor.")
 
@@ -4744,8 +4796,9 @@ def show_target_based_forecasts():
     if preds is None or preds.empty:
         st.warning(_copy("⚠️ Tahmin dosyası bulunamadı.", "⚠️ Forecast file was not found."))
         return
+    real_df = load_data(REAL_DATA_PATH, announce=False)
     if real_df is not None and not real_df.empty:
-        render_data_chatbot(real_df, preds, scope="insight_panel")
+        render_data_chatbot(real_df, preds, scope="target_based_forecasts")
     country = st.selectbox("Ülke", sorted(preds['Country'].dropna().unique()), key="tbf_country")
     target = st.selectbox("Hedef", [
         ('Total Waste (Tons)', 'Toplam Atık (ton) - Azalt', '↓'),
