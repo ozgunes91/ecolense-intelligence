@@ -26,6 +26,8 @@ Ecolense Intelligence, küresel gıda israfını ülke, yıl ve gıda kategorisi
 | Tahmin ufku | 2024-2030 |
 | Toplam gözlem | 16.576 |
 | Ortalama test R² | 0,9534 |
+| 2023 ortalama sürdürülebilirlik skoru | 82,7/100 |
+| 2030 ortalama sürdürülebilirlik projeksiyonu | 77,9/100 |
 | Dashboard modülü | 22 |
 
 ---
@@ -51,6 +53,14 @@ Tahmin grafiği farklı ölçekleri aynı eksene sıkıştırmaz; israf, ekonomi
 ![Model performansı](docs/assets/model_performance_summary.png)
 
 ![SHAP ve özellik etkisi özeti](docs/assets/shap_feature_impact_overview.png)
+
+---
+
+## Sürdürülebilirlik Skoru
+
+Sürdürülebilirlik skoru, ülke düzeyinde kişi başı gıda israfı, kişi başı ekonomik kayıp ve kişi başı karbon baskısını birlikte okuyan 0-100 arası bileşik göstergedir. Yüksek skor, bu üç baskının aynı anda daha kontrollü olduğu bir profili gösterir.
+
+2023 verisinde ortalama skor 82,7/100, ülke medyanı 82,9/100 seviyesindedir. En yüksek skorlar India, Russia, Romania, South Africa ve Lithuania tarafında yoğunlaşır. 2024-2030 projeksiyonunda skor 2023 ölçeğinden koparılmadan, aynı ülkenin kişi başı atık, ekonomik kayıp ve karbon baskısındaki değişime göre güncellenir.
 
 ---
 
@@ -120,13 +130,13 @@ Gradient Boosting Regressor ana üretim modeli olarak kullanılır. Açıklanabi
 | Rapor Oluşturucu | Seçilen rapor türüne göre farklı, veri kaynaklı HTML/Markdown rapor üretir. |
 | Model Kartı | Model yaklaşımı, performans, sınırlılıklar ve etik notları tek sayfada toplar. |
 | Adalet / Etki Paneli | Etkinin ülke, bölge ve gelir grubu kırılımında adil dağılımını inceler. |
-| Story Mode | Başlığına uygun veri kesitlerinden oluşturulan özgün veri hikayeleri sunar. |
+| Story Mode | Başlığına uygun veri kesitlerinden bulgu, yorum ve önerilen aksiyon içeren veri hikayeleri sunar. |
 
 ---
 
 ## Veri Chatbotu
 
-Dashboarddaki veri chatbotu sabit metin döndürmez. Soru metninden ülke, metrik, kategori, yıl ve niyet bilgisini yakalar; ardından tarihsel veri, tahmin çıktısı ve açıklanabilirlik dosyalarından ilgili kesiti okuyarak yanıt üretir. Belirsiz sorularda en yakın veri bağlamını seçer ve kullandığı veri dayanağını yanıtın sonunda belirtir.
+Dashboarddaki veri chatbotu sabit metin döndürmez. Soru metninden ülke, metrik, kategori, yıl ve niyet bilgisini yakalar; birden fazla soru varsa parçalayarak ayrı ayrı yanıtlar. Yanıtlar tarihsel veri, tahmin çıktısı ve açıklanabilirlik dosyalarından ilgili kesiti okuyarak üretilir; kullanılan veri dayanağı yanıtın sonunda belirtilir.
 
 ---
 

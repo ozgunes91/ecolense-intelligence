@@ -19,6 +19,8 @@ Ecolense Intelligence is a sustainability decision support platform that analyze
 | Forecast horizon | 2024-2030 |
 | Observations | 16,576 |
 | Average test R² | 0.9534 |
+| 2023 average sustainability score | 82.7/100 |
+| 2030 average sustainability projection | 77.9/100 |
 | Dashboard modules | 22 |
 
 ---
@@ -79,13 +81,21 @@ The forecast visual uses separate panels for the four metrics. This prevents eco
 
 | Year | Food waste | Economic loss | Carbon footprint | Average score |
 |---:|---:|---:|---:|---:|
-| 2024 | 545.7 million tons | 2.29 trillion USD | 3.46 trillion kg CO2e | 42.5 |
-| 2025 | 554.7 million tons | 2.38 trillion USD | 3.54 trillion kg CO2e | 42.9 |
-| 2026 | 566.0 million tons | 2.45 trillion USD | 3.56 trillion kg CO2e | 43.6 |
-| 2027 | 571.3 million tons | 2.50 trillion USD | 3.59 trillion kg CO2e | 44.2 |
-| 2028 | 578.2 million tons | 2.56 trillion USD | 3.63 trillion kg CO2e | 44.3 |
-| 2029 | 583.2 million tons | 2.62 trillion USD | 3.67 trillion kg CO2e | 44.3 |
-| 2030 | 590.5 million tons | 2.68 trillion USD | 3.73 trillion kg CO2e | 44.4 |
+| 2024 | 545.7 million tons | 2.29 trillion USD | 3.46 trillion kg CO2e | 77.6 |
+| 2025 | 554.7 million tons | 2.38 trillion USD | 3.54 trillion kg CO2e | 77.6 |
+| 2026 | 566.0 million tons | 2.45 trillion USD | 3.56 trillion kg CO2e | 77.8 |
+| 2027 | 571.3 million tons | 2.50 trillion USD | 3.59 trillion kg CO2e | 77.9 |
+| 2028 | 578.2 million tons | 2.56 trillion USD | 3.63 trillion kg CO2e | 77.9 |
+| 2029 | 583.2 million tons | 2.62 trillion USD | 3.67 trillion kg CO2e | 77.9 |
+| 2030 | 590.5 million tons | 2.68 trillion USD | 3.73 trillion kg CO2e | 77.9 |
+
+---
+
+## Sustainability Score
+
+The sustainability score is a 0-100 composite indicator that reads food waste per capita, economic loss per capita, and carbon pressure per capita together. As the score rises, the country is managing these three pressures more consistently.
+
+In the 2023 data, the average score is 82.7/100 and the country median is 82.9/100. The highest scores are observed in India, Russia, Romania, South Africa, and Lithuania. The lowest scores are concentrated in Kuwait, Nigeria, Saudi Arabia, Qatar, and Australia. The 2024-2030 projection uses each country's 2023 score as the baseline and updates it according to projected changes in per-capita waste, economic loss, and carbon pressure.
 
 ---
 
@@ -114,13 +124,13 @@ The forecast visual uses separate panels for the four metrics. This prevents eco
 | Report Builder | Different HTML/Markdown outputs by report type. |
 | Model Card | Methodology, performance, limitations, and ethics summary. |
 | Justice / Impact Panel | Impact analysis by country, region, and income group. |
-| Story Mode | Original stories generated from data slices matching each title. |
+| Story Mode | Stories with findings, interpretation, and recommended actions generated from title-specific data slices. |
 
 ---
 
 ## Data Chatbot
 
-The data chatbot is not a fixed-response text box. It extracts country, category, metric, year, and intent from the question, then retrieves the relevant historical, forecast, and explainability slices. Each answer includes an evidence note.
+The data chatbot is not a fixed-response text box. It extracts country, category, metric, year, and intent from the question; when the input contains multiple questions, it separates them into distinct data-reading steps. It then retrieves the relevant historical, forecast, and explainability slices. Each answer includes an evidence note.
 
 ---
 

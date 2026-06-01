@@ -34,6 +34,7 @@ import pickle
 import json
 import os
 import html
+import re
 from typing import Dict, List, Tuple, Optional, Any
 
 # Performans optimizasyonları
@@ -1067,49 +1068,52 @@ def load_css():
     .feature-card p { margin: 0; color: rgba(255,255,255,0.85); }
     .feature-card:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(0,0,0,0.3); }
 
-    /* Veri Asistanı kutusu (yüksek kontrast + yeşil glow + animasyon) */
+    /* Veri asistanı bilgi kutuları */
     .ai-assistant {
         position: relative;
-        background: linear-gradient(180deg, #F1FFFA 0%, #E9FFF6 100%);
+        background: #F8FAFC;
         color: #0F172A;
-        border: 1px solid rgba(17,230,193,0.55);
-        border-left: 4px solid #11E6C1;
-        border-radius: 14px;
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        border-left: 4px solid #2DD4BF;
+        border-radius: 12px;
         padding: 16px 18px;
         margin-top: 0.3rem;
-        box-shadow: 0 14px 36px rgba(17,230,193,0.28), 0 6px 18px rgba(35,46,92,0.15);
-        animation: aiGlow 3.6s ease-in-out infinite;
-        will-change: box-shadow, transform;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
     }
-    .ai-assistant h4 { margin: 0 0 8px 0; color: #0B183B; letter-spacing: 0.2px; }
+    .ai-assistant h4 { margin: 0 0 8px 0; color: #0B183B; letter-spacing: 0; }
     .ai-assistant p { color: #111827; }
-    .ai-badge { display:inline-block; background: rgba(17,230,193,0.16); color:#065F55; padding:4px 10px; border-radius:10px; margin-right:6px; font-size: 12px; font-weight: 700; }
-
-    /* Emoji/logonun büyütülmesi ve göz kırpma efekti */
+    .ai-badge { display:inline-block; background: rgba(45,212,191,0.14); color:#0F766E; padding:4px 10px; border-radius:8px; margin-right:6px; font-size: 12px; font-weight: 700; }
     .ai-emoji {
         display: inline-block;
-        font-size: 1.6em;
-        transform-origin: center bottom;
-        animation: aiBlink 2.8s ease-in-out infinite;
+        font-size: 1.2em;
         margin-right: 6px;
     }
-
-    /* Hafif sallanma (oynak) hover'da */
-    .ai-assistant:hover { animation: aiFloat 2.2s ease-in-out infinite; }
-
-    @keyframes aiGlow {
-        0%, 100% { box-shadow: 0 14px 36px rgba(17,230,193,0.22), 0 6px 18px rgba(35,46,92,0.12); }
-        50% { box-shadow: 0 18px 44px rgba(17,230,193,0.38), 0 8px 24px rgba(35,46,92,0.18); }
+    .chatbot-heading {
+        background: #172033;
+        color: #F8FAFC;
+        border: 1px solid rgba(45,212,191,0.35);
+        border-radius: 12px 12px 0 0;
+        padding: 16px 18px;
+        margin: 4px 0 0 0;
     }
-    @keyframes aiBlink {
-        0%, 40%, 100% { transform: scaleY(1) translateY(0); filter: none; }
-        45% { transform: scaleY(0.6) translateY(2px); filter: brightness(0.9); }
-        50% { transform: scaleY(0.4) translateY(3px); filter: brightness(0.85); }
-        55% { transform: scaleY(0.7) translateY(1px); filter: brightness(0.95); }
+    .chatbot-heading h4 { margin: 0 0 4px 0; color: #F8FAFC; letter-spacing: 0; }
+    .chatbot-heading p { margin: 0; color: #CBD5E1; }
+    div[data-testid="stChatMessage"] {
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
     }
-    @keyframes aiFloat {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-2px); }
+    div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+        background: #EEF6FF;
+        border-color: rgba(37, 99, 235, 0.14);
+    }
+    div[data-testid="stForm"] {
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        border-radius: 12px;
+        padding: 12px;
+        background: #FFFFFF;
     }
 
     /* Butonlar */
@@ -1308,6 +1312,8 @@ def load_predictions_dashboard() -> Optional[pd.DataFrame]:
                 'Economic Loss (Million $)': 'sum',
                 'Carbon_Footprint_kgCO2e': 'sum',
             }
+            if 'Sustainability_Score' in df.columns:
+                agg['Sustainability_Score'] = 'mean'
             for optional in ['Population (Million)', 'GDP_Per_Capita_USD', 'Income_Group']:
                 if optional in df.columns:
                     agg[optional] = 'first'
@@ -2697,6 +2703,19 @@ def _story_bullet_html(items: list[str]) -> str:
     """
 
 
+def _story_action_html(items: list[str]) -> str:
+    body = "".join(f"<li>{html.escape(str(item))}</li>" for item in items if item)
+    return f"""
+    <div style="background: #F8FAFC; border: 1px solid rgba(15,23,42,0.10);
+                border-left: 5px solid #232E5C; padding: 1rem 1.25rem;
+                border-radius: 12px; margin: 0.5rem 0 1.5rem 0;
+                box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);">
+        <h4 style="margin: 0 0 0.75rem 0; color: #0F172A;">{html.escape(_copy('Önerilen Aksiyonlar', 'Recommended Actions'))}</h4>
+        <ul style="margin: 0; padding-left: 1.2rem;">{body}</ul>
+    </div>
+    """
+
+
 def render_story_detail(df: pd.DataFrame, story_mode: str):
     """Seçilen hikayeyi yerel veri ve tahminlerle üretir."""
     year_col = _resolve_column_name(df, ['Year', 'year'])
@@ -2717,7 +2736,7 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
     total_waste = float(df[waste_col].sum()) if waste_col else 0.0
     total_econ = float(df[econ_col].sum()) if econ_col else 0.0
     total_carbon = float(df[carbon_col].sum()) if carbon_col else 0.0
-    avg_score = float(df[score_col].mean()) if score_col else 0.0
+    avg_score = float(latest_df[score_col].mean()) if score_col and not latest_df.empty else 0.0
 
     top_country = latest_df.groupby(country_col)[waste_col].sum().sort_values(ascending=False).head(1)
     top_category = latest_df.groupby(category_col)[waste_col].sum().sort_values(ascending=False).head(1)
@@ -2735,6 +2754,13 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
     waste_delta = _pct_change_numeric(first_waste_total, latest_waste_total)
     top_econ_country, top_econ_value, top_econ_share = _top_label_value(latest_df, country_col, econ_col) if econ_col else ("-", 0.0, 0.0)
     top_carbon_category, top_carbon_value, top_carbon_share = _top_label_value(latest_df, category_col, carbon_col) if carbon_col else ("-", 0.0, 0.0)
+    top_carbon_country, top_carbon_country_value, top_carbon_country_share = _top_label_value(latest_df, country_col, carbon_col) if carbon_col else ("-", 0.0, 0.0)
+    top_pair_country, top_pair_category = "-", "-"
+    if country_col and category_col and waste_col:
+        pair_rank = latest_df.groupby([country_col, category_col], as_index=False)[waste_col].sum().sort_values(waste_col, ascending=False)
+        if not pair_rank.empty:
+            top_pair_country = str(pair_rank.iloc[0][country_col])
+            top_pair_category = str(pair_rank.iloc[0][category_col])
     best_score_country = "-"
     best_score_value = 0.0
     high_pressure_country = top_country_name
@@ -2865,6 +2891,94 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
 
     st.markdown(_story_bullet_html(story_lines), unsafe_allow_html=True)
 
+    action_items = {
+        "crisis": [
+            _copy(
+                f"{top_pair_country} - {top_pair_category} kesişimini ilk müdahale alanı yap; bu kesit son yılın en yüksek ülke-kategori atık hacmini taşıyor.",
+                f"Use the {top_pair_country} - {top_pair_category} slice as the first intervention area; it carries the highest latest-year country-category waste volume."
+            ),
+            _copy(
+                f"{top_category_name} kategorisi için fire ölçümünü haftalık takip et ve yeniden dağıtım/bağış kanalını bu kategoriye göre planla.",
+                f"Track waste weekly for {top_category_name} and plan redistribution/donation channels around this category."
+            ),
+            _copy(
+                f"{top_country_name} için 2030 tahmin sayfasında atık ve sürdürülebilirlik skorunu birlikte izle; hacim düşerken skorun bozulmaması ana kontrol noktası olsun.",
+                f"For {top_country_name}, monitor waste and sustainability score together on the 2030 forecast page; the key control is reducing volume without weakening the score."
+            ),
+        ],
+        "economic": [
+            _copy(
+                f"{top_econ_country} ülkesinde ekonomik kaybı ayrı bir izleme KPI'ı yap; son yıl payı %{top_econ_share:.1f}.",
+                f"Track economic loss as a separate KPI for {top_econ_country}; its latest-year share is {top_econ_share:.1f}%."
+            ),
+            _copy(
+                f"{top_category_name} kategorisinde stok devri, raf ömrü ve indirim/bağış kararlarını birlikte tasarla; finansal kayıp hacimle aynı yönde büyüyor.",
+                f"For {top_category_name}, design stock rotation, shelf-life, discount, and donation decisions together; financial loss moves with volume."
+            ),
+            _copy(
+                f"ROI / NPV modülünde {top_econ_country} için azaltım senaryosunu test et; raporda çıkan ekonomik kayıp değerini yatırım geri dönüş hesabına bağla.",
+                f"Test a reduction scenario for {top_econ_country} in the ROI / NPV module and connect the economic loss value to the return calculation."
+            ),
+        ],
+        "environment": [
+            _copy(
+                f"{top_carbon_category} kategorisini karbon azaltım planının ilk başlığı yap; son yıl karbon payı %{top_carbon_share:.1f}.",
+                f"Make {top_carbon_category} the first item in the carbon reduction plan; its latest-year carbon share is {top_carbon_share:.1f}%."
+            ),
+            _copy(
+                f"{top_carbon_country} ülkesinde kategori bazlı karbon akışlarını kontrol et; ülke payı %{top_carbon_country_share:.1f}.",
+                f"Review category-level carbon flows for {top_carbon_country}; its country share is {top_carbon_country_share:.1f}%."
+            ),
+            _copy(
+                "Atık azaltımıyla karbon azaltımını aynı grafikte takip et; düşük tonajlı ama yüksek karbon katsayılı kategorileri ayrıca işaretle.",
+                "Track waste reduction and carbon reduction in the same view; separately flag low-tonnage but high-carbon-factor categories."
+            ),
+        ],
+        "roadmap": [
+            _copy(
+                f"{high_pressure_country} için skor iyileştirme planını kişi başı atık, ekonomik kayıp ve karbon göstergelerine böl.",
+                f"For {high_pressure_country}, split the score improvement plan into per-capita waste, economic loss, and carbon indicators."
+            ),
+            _copy(
+                f"{best_score_country} profilini referans ülke olarak kullan; yüksek skorun hangi düşük baskı bileşenlerinden geldiğini Country Deep Dive içinde karşılaştır.",
+                f"Use {best_score_country} as the reference profile and compare which low-pressure components drive its high score in Country Deep Dive."
+            ),
+            _copy(
+                f"{top_country_name} ve {top_category_name} kesitinde hedef planlayıcıyla yıllık değişim gereksinimini hesapla.",
+                f"Use the Target Planner to calculate the required annual change for the {top_country_name} and {top_category_name} slice."
+            ),
+        ],
+        "analytics": [
+            _copy(
+                f"Veri Analizi modülünde {top_category_name} dağılımını ve korelasyonları kontrol et; model yorumunu tek bir toplam değere indirme.",
+                f"Check {top_category_name} distribution and correlations in Data Analysis; do not reduce model interpretation to a single total."
+            ),
+            _copy(
+                "Model Performansı sayfasında hedef bazlı R² ve hata metriklerini ayrı oku; israf, ekonomik kayıp ve karbon aynı güven aralığında olmayabilir.",
+                "Read target-level R² and error metrics separately in Model Performance; waste, economic loss, and carbon may not share the same confidence level."
+            ),
+            _copy(
+                "SHAP çıktılarında kategori ve nüfus temelli değişkenleri rapora ekle; hikaye bulgularını açıklanabilirlik ile destekle.",
+                "Add category and population-based variables from SHAP outputs to the report; support story findings with explainability."
+            ),
+        ],
+        "forecast": [
+            _copy(
+                "2024-2030 çizgisini tek hedef gibi yorumlama; atık, ekonomik kayıp, karbon ve sürdürülebilirlik skorunu ayrı panellerde takip et.",
+                "Do not treat the 2024-2030 line as one target; track waste, economic loss, carbon, and sustainability score in separate panels."
+            ),
+            _copy(
+                f"2030 senaryosu için {top_country_name} ülkesini ve {top_category_name} kategorisini erken uyarı kesiti olarak izle.",
+                f"For the 2030 scenario, monitor {top_country_name} and {top_category_name} as the early-warning slice."
+            ),
+            _copy(
+                "Tahmin çıktısını politika simülatörüyle birlikte kullan; varsayım değişmeden tahmin değeri karar önerisine dönüşmez.",
+                "Use forecast output together with the Policy Simulator; without changing assumptions, a forecast value is not yet a decision recommendation."
+            ),
+        ],
+    }.get(story_type, [])
+    st.markdown(_story_action_html(action_items), unsafe_allow_html=True)
+
     if story_type == "economic" and econ_col:
         rank_df = latest_df.groupby([country_col, category_col], as_index=False)[econ_col].sum()
         rank_df = rank_df.sort_values(econ_col, ascending=False).head(12)
@@ -2902,7 +3016,7 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
     elif story_type == "forecast":
         preds = load_predictions_dashboard()
         if preds is not None and not preds.empty and 'Year' in preds.columns:
-            forecast_col = _resolve_column_name(preds, ['Total_Waste_Tons', 'Predicted_Total_Waste_Tons', 'total_waste'])
+            forecast_col = _resolve_column_name(preds, ['Total Waste (Tons)', 'Total_Waste_Tons', 'Predicted_Total_Waste_Tons', 'total_waste'])
             score_forecast_col = _resolve_column_name(preds, ['Sustainability_Score', 'Predicted_Sustainability_Score'])
             if forecast_col:
                 trend = preds.groupby('Year', as_index=False)[forecast_col].sum()
@@ -4870,6 +4984,8 @@ def _find_countries(question_norm: str, *frames: pd.DataFrame) -> List[str]:
         country_col = _assistant_col(frame, "Country")
         if frame is not None and not frame.empty and country_col:
             names.update(frame[country_col].dropna().astype(str).unique())
+    def contains_term(term: str) -> bool:
+        return bool(re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", question_norm))
     aliases = {
         "turkiye": "Turkey",
         "türkiye": "Turkey",
@@ -4894,13 +5010,19 @@ def _find_countries(question_norm: str, *frames: pd.DataFrame) -> List[str]:
         "china": "China",
         "hindistan": "India",
         "india": "India",
+        "romanya": "Romania",
+        "romania": "Romania",
+        "rusya": "Russia",
+        "polonya": "Poland",
+        "ukrayna": "Ukraine",
+        "guney afrika": "South Africa",
     }
     found = []
     for alias, country in aliases.items():
-        if f" {alias} " in f" {question_norm} " and country in names:
+        if contains_term(_normalize_query_text(alias)) and country in names:
             found.append(country)
     for country in sorted(names, key=len, reverse=True):
-        if _normalize_query_text(country) in question_norm and country not in found:
+        if contains_term(_normalize_query_text(country)) and country not in found:
             found.append(country)
     return found[:3]
 
@@ -4934,19 +5056,172 @@ def _assistant_data_note(hist: pd.DataFrame, forecast: pd.DataFrame, metric: str
     )
 
 
+def _split_assistant_question(question: str) -> List[str]:
+    """Birden fazla niyet içeren soruları ayrı veri okuma adımlarına böler."""
+    raw = str(question or "").strip()
+    if not raw:
+        return []
+    protected = re.sub(r"\?\s+(?=[\"'“”]?[A-Za-zÇĞİÖŞÜçğıöşü0-9])", "?|||", raw)
+    protected = re.sub(
+        r"\s+(?:veya|ya da|or|and)\s+(?=[\"'“”]?[A-Za-zÇĞİÖŞÜçğıöşü0-9])",
+        "|||",
+        protected,
+        flags=re.IGNORECASE,
+    )
+    parts = []
+    for part in protected.split("|||"):
+        cleaned = part.strip().strip(" '\"“”")
+        if len(cleaned) >= 5:
+            parts.append(cleaned)
+    return parts if len(parts) > 1 else [raw.strip().strip(" '\"“”")]
+
+
+def _extract_years(question_norm: str) -> List[int]:
+    years = [int(match) for match in re.findall(r"\b(?:20[1-3]\d)\b", question_norm)]
+    return [year for year in years if 2010 <= year <= 2030]
+
+
+def _asks_zero_score_question(question_norm: str) -> bool:
+    score_context = any(key in question_norm for key in [
+        "surdurulebilir", "sustainability", "score", "skor", "puan"
+    ])
+    explicit_zero = bool(re.search(r"(?<!\d)0(?:[.,]0+)?(?!\d)", question_norm))
+    zero_word = any(key in question_norm for key in ["zero", "sifir"])
+    return score_context and (explicit_zero or zero_word)
+
+
+def _metric_target_key(metric: str) -> Optional[str]:
+    return {
+        "Total Waste (Tons)": "Total_Waste_Tons",
+        "Economic Loss (Million $)": "Economic_Loss_Million_USD",
+        "Carbon_Footprint_kgCO2e": "Carbon_Footprint_kgCO2e",
+    }.get(metric)
+
+
+def _assistant_feature_note(metric: str, lang: Optional[str] = None) -> str:
+    target = _metric_target_key(metric)
+    if not target and metric == "Sustainability_Score":
+        return _copy(
+            "Sürdürülebilirlik skoru; kişi başı atık, ekonomik kayıp ve karbon baskısını birlikte yorumlayan bileşik göstergedir.",
+            "The sustainability score is a composite indicator that reads per-capita waste, economic loss, and carbon pressure together.",
+            lang
+        )
+    if not target:
+        return ""
+    shap_df = load_shap_importance(target)
+    if shap_df is None or shap_df.empty or "feature" not in shap_df.columns:
+        return ""
+    value_col = "importance" if "importance" in shap_df.columns else shap_df.columns[-1]
+    top_features = (
+        shap_df.sort_values(value_col, ascending=False)
+        .head(3)["feature"]
+        .astype(str)
+        .tolist()
+    )
+    if not top_features:
+        return ""
+    return _copy(
+        f"Model açıklanabilirliği bu metrikte en güçlü sürücüleri {', '.join(top_features)} olarak gösteriyor.",
+        f"Model explainability highlights {', '.join(top_features)} as the strongest drivers for this metric.",
+        lang
+    )
+
+
+def _country_reason_lines(country: str, metric: str, hist: pd.DataFrame, real_df: pd.DataFrame,
+                          latest_hist_year: Optional[int], lang: Optional[str] = None) -> List[str]:
+    lines = []
+    if hist is not None and not hist.empty and latest_hist_year:
+        peer = hist[hist["Year"] == latest_hist_year].copy()
+        row = peer[peer["Country"] == country]
+        if not row.empty:
+            value = float(row[metric].iloc[0])
+            median = float(peer[metric].median())
+            if metric == "Sustainability_Score":
+                relation = _copy("üzerinde", "above", lang) if value >= median else _copy("altında", "below", lang)
+                lines.append(_copy(
+                    f"- Veri okuması: {latest_hist_year} skoru {_format_metric(metric, value, lang)}; ülke medyanı {_format_metric(metric, median, lang)}. Bu ülke medyanın {relation}.",
+                    f"- Data reading: {latest_hist_year} score is {_format_metric(metric, value, lang)}; peer median is {_format_metric(metric, median, lang)}. The country is {relation} the median.",
+                    lang
+                ))
+            else:
+                relation = _copy("üzerinde", "above", lang) if value >= median else _copy("altında", "below", lang)
+                lines.append(_copy(
+                    f"- Veri okuması: {latest_hist_year} değeri {_format_metric(metric, value, lang)}; ülke medyanı {_format_metric(metric, median, lang)}. Değer medyanın {relation}.",
+                    f"- Data reading: {latest_hist_year} value is {_format_metric(metric, value, lang)}; peer median is {_format_metric(metric, median, lang)}. The value is {relation} the median.",
+                    lang
+                ))
+
+    if metric == "Sustainability_Score" and real_df is not None and not real_df.empty and latest_hist_year:
+        country_col = _assistant_col(real_df, "Country")
+        year_col = _assistant_col(real_df, "Year")
+        waste_col = _assistant_col(real_df, "Total Waste (Tons)")
+        econ_col = _assistant_col(real_df, "Economic Loss (Million $)")
+        carbon_col = _assistant_col(real_df, "Carbon_Footprint_kgCO2e")
+        pop_col = _resolve_column_name(real_df, ["Population (Million)"])
+        needed = [country_col, year_col, waste_col, econ_col, carbon_col, pop_col]
+        if all(needed):
+            latest = real_df[real_df[year_col] == latest_hist_year]
+            grouped = latest.groupby(country_col, as_index=False).agg(
+                waste=(waste_col, "sum"),
+                econ=(econ_col, "sum"),
+                carbon=(carbon_col, "sum"),
+                pop=(pop_col, "first"),
+            )
+            grouped["waste_pc"] = grouped["waste"] * 1000 / (grouped["pop"].clip(lower=0.001) * 1_000_000)
+            grouped["econ_pc"] = grouped["econ"] / grouped["pop"].clip(lower=0.001)
+            grouped["carbon_pc"] = grouped["carbon"] / (grouped["pop"].clip(lower=0.001) * 1_000_000)
+            row = grouped[grouped[country_col] == country]
+            if not row.empty:
+                checks = [
+                    (_copy("kişi başı atık", "waste per capita", lang), "waste_pc", _copy("kg/kişi", "kg/person", lang)),
+                    (_copy("kişi başı ekonomik kayıp", "economic loss per capita", lang), "econ_pc", "USD/kişi" if not _is_en(lang) else "USD/person"),
+                    (_copy("kişi başı karbon", "carbon per capita", lang), "carbon_pc", "kg CO2e/kişi" if not _is_en(lang) else "kg CO2e/person"),
+                ]
+                fragments = []
+                for label, col, unit in checks:
+                    val = float(row[col].iloc[0])
+                    med = float(grouped[col].median())
+                    if med > 0:
+                        pct = (val / med - 1) * 100
+                        direction = _copy("altında", "below", lang) if pct < 0 else _copy("üzerinde", "above", lang)
+                        fragments.append(f"{label} {abs(pct):.1f}% {direction}")
+                if fragments:
+                    lines.append(_copy(
+                        f"- Bileşen izi: {', '.join(fragments)}. Skorun yönü bu üç baskı göstergesinin birlikte hareketinden oluşur.",
+                        f"- Component trace: {', '.join(fragments)}. The score direction comes from these three pressure indicators moving together.",
+                        lang
+                    ))
+    feature_note = _assistant_feature_note(metric, lang)
+    if feature_note:
+        lines.append(f"- {feature_note}")
+    return lines
+
+
 def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None):
     """Soruyu ülke, metrik, kategori ve yıl bağlamında veriye dayalı cevaplar."""
     lang = lang or _lang()
     en = _is_en(lang)
+    parts = _split_assistant_question(question)
+    if len(parts) > 1:
+        answers = []
+        for i, part in enumerate(parts[:3], 1):
+            clean_part = part.rstrip("?") + "?"
+            answer = generate_ai_response(part, preds_df, real_df, lang=lang)
+            answers.append(f"**{i}. {clean_part}**\n\n{answer}")
+        return "\n\n".join(answers)
+
     q_norm = _normalize_query_text(question)
     metric = _assistant_metric(q_norm)
     countries = _find_countries(q_norm, preds_df, real_df)
+    years = _extract_years(q_norm)
+    requested_year = years[-1] if years else None
     wants_low = any(k in q_norm for k in ["en dusuk", "en az", "lowest", "minimum", "iyi", "best"])
     wants_rank = any(k in q_norm for k in ["en yuksek", "en cok", "top", "sirala", "kotu", "highest", "rank", "worst"])
     wants_trend = any(k in q_norm for k in ["trend", "degisim", "change", "artis", "increase", "azalis", "decrease", "gelecek", "future", "tahmin", "forecast", "2030"])
     wants_category = any(k in q_norm for k in ["kategori", "category", "urun", "product", "gida grubu", "food group"])
     wants_advice = any(k in q_norm for k in ["oner", "recommend", "ne yap", "what should", "azalt", "reduce", "cozum", "solution", "strateji", "strategy", "aksiyon", "action"])
-    asks_zero_score = metric == "Sustainability_Score" and any(k in q_norm for k in ["0", "zero", "sifir", "sıfır", "normal"])
+    wants_reason = any(k in q_norm for k in ["neden", "why", "niye", "sebep", "reason", "explain", "acikla"])
+    asks_zero_score = metric == "Sustainability_Score" and _asks_zero_score_question(q_norm)
 
     hist = _country_year_table(real_df, metric)
     forecast = _country_year_table(preds_df, metric)
@@ -5037,6 +5312,8 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         country_col = _assistant_col(real_df, "Country")
         year_col = _assistant_col(real_df, "Year")
         metric_col = _assistant_col(real_df, metric)
+        if wants_reason:
+            lines.extend(_country_reason_lines(country, metric, hist, real_df, latest_hist_year, lang))
         if wants_category and food_col and country_col and year_col and metric_col:
             cat_base = real_df[real_df[country_col] == country]
             if latest_hist_year:
@@ -5070,8 +5347,15 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         return "\n".join(lines) + _assistant_data_note(h, f, metric, lang)
 
     def ranking_answer(limit: int = 5) -> str:
-        source = forecast[forecast["Year"] == last_forecast_year] if not forecast.empty else hist[hist["Year"] == latest_hist_year]
-        year = last_forecast_year if not forecast.empty else latest_hist_year
+        if requested_year and not forecast.empty and requested_year in set(forecast["Year"]):
+            source = forecast[forecast["Year"] == requested_year]
+            year = requested_year
+        elif requested_year and not hist.empty and requested_year in set(hist["Year"]):
+            source = hist[hist["Year"] == requested_year]
+            year = requested_year
+        else:
+            source = forecast[forecast["Year"] == last_forecast_year] if not forecast.empty else hist[hist["Year"] == latest_hist_year]
+            year = last_forecast_year if not forecast.empty else latest_hist_year
         ascending = wants_low if metric != "Sustainability_Score" else not wants_low
         ranked = source.sort_values(metric, ascending=ascending).head(limit)
         direction = _copy("en düşük" if ascending else "en yüksek", "lowest" if ascending else "highest", lang)
@@ -5099,6 +5383,8 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
 
     def trend_answer() -> str:
         source = forecast if not forecast.empty else hist
+        if requested_year and not forecast.empty and requested_year in set(forecast["Year"]):
+            source = forecast[forecast["Year"] <= requested_year]
         year_series = source.groupby("Year")[metric].agg(_metric_agg(metric)).sort_index()
         first_year, last_year = int(year_series.index.min()), int(year_series.index.max())
         first_value, last_value = year_series.iloc[0], year_series.iloc[-1]
@@ -5143,46 +5429,51 @@ def render_data_chatbot(real_df: pd.DataFrame, preds_df: pd.DataFrame, scope: st
         st.session_state[history_key] = [{
             "role": "assistant",
             "content": _copy(
-                "Merhaba. Sorunu ülke, kategori, metrik veya yıl içeriğine göre veri tablolarından okuyup yanıtlıyorum. Örnek: 'Romanya'nın sürdürülebilirlik skoru neden yüksek?' veya '2030'da karbon yükü nasıl değişiyor?'",
-                "Hi. I answer by retrieving the relevant country, category, metric, or year slices from the data tables. Try: 'Why is Romania's sustainability score high?' or 'How does carbon load change by 2030?'",
+                "Merhaba. Sorunu ülke, yıl, metrik veya kategoriyle yaz; önce ilgili veri kesitini bulup sonra yanıtı kuruyorum.",
+                "Hi. Ask with a country, year, metric, or category; I first retrieve the relevant data slice, then build the answer.",
                 lang
             )
         }]
 
     st.markdown(f"""
-    <div class='ai-assistant'>
-      <h4><span class='ai-emoji'>📊</span>{_copy('Veri Chatbotu', 'Data Chatbot', lang)}</h4>
-      <p>{_copy('Yanıtlar tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından üretilir; soru belirsizse en yakın metrik bağlamı seçilir.', 'Answers are generated from historical data, forecast outputs, and explainability files; if the question is broad, the closest metric context is selected.', lang)}</p>
+    <div class='chatbot-heading'>
+      <h4>{_copy('Veri Chatbotu', 'Data Chatbot', lang)}</h4>
+      <p>{_copy('Tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt verir.', 'Answers by reading the relevant slice from historical data, forecasts, and explainability outputs.', lang)}</p>
     </div>
     """, unsafe_allow_html=True)
 
-    quick_prompts = [
-        _copy("Sürdürülebilirlik skoru 0 normal mi?", "Is a sustainability score of 0 normal?", lang),
-        _copy("2030 için en yüksek gıda israfı hangi ülkelerde?", "Which countries have the highest food waste in 2030?", lang),
-        _copy("Kategori bazında karbon etkisini sırala", "Rank carbon impact by category", lang),
-        _copy("Atığı azaltmak için hangi aksiyonlar öncelikli?", "Which actions should be prioritized to reduce waste?", lang),
-    ]
-    cols = st.columns(len(quick_prompts))
-    for i, prompt in enumerate(quick_prompts):
-        if cols[i].button(prompt, key=f"{scope}_quick_chat_{i}", use_container_width=True):
+    with st.container(border=True):
+        quick_prompts = [
+            _copy("Romanya'nın sürdürülebilirlik skoru neden yüksek?", "Why is Romania's sustainability score high?", lang),
+            _copy("2030'da karbon yükü nasıl değişiyor?", "How does carbon load change by 2030?", lang),
+            _copy("Hangi kategori ekonomik kaybı büyütüyor?", "Which category drives economic loss?", lang),
+            _copy("Türkiye için atık eğilimi nasıl?", "What is the waste trend for Turkey?", lang),
+        ]
+        cols = st.columns(len(quick_prompts))
+        for i, prompt in enumerate(quick_prompts):
+            if cols[i].button(prompt, key=f"{scope}_quick_chat_{i}", use_container_width=True):
+                response = generate_ai_response(prompt, preds_df, real_df, lang=lang)
+                st.session_state[history_key].append({"role": "user", "content": prompt})
+                st.session_state[history_key].append({"role": "assistant", "content": response})
+                st.rerun()
+
+        for message in st.session_state[history_key][-8:]:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+        with st.form(f"{scope}_chat_form", clear_on_submit=True):
+            input_col, button_col = st.columns([6, 1])
+            prompt = input_col.text_input(
+                _copy("Soru", "Question", lang),
+                placeholder=_copy("Örn. 2030'da karbon yükü nasıl değişiyor?", "E.g. How does carbon load change by 2030?", lang),
+                label_visibility="collapsed",
+            )
+            submitted = button_col.form_submit_button(_copy("Gönder", "Send", lang), use_container_width=True)
+        if submitted and prompt.strip():
             response = generate_ai_response(prompt, preds_df, real_df, lang=lang)
             st.session_state[history_key].append({"role": "user", "content": prompt})
             st.session_state[history_key].append({"role": "assistant", "content": response})
             st.rerun()
-
-    for message in st.session_state[history_key][-8:]:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    prompt = st.chat_input(
-        _copy("Veriye dayalı sorunuzu yazın...", "Ask a data-driven question...", lang),
-        key=f"{scope}_chat_input"
-    )
-    if prompt:
-        response = generate_ai_response(prompt, preds_df, real_df, lang=lang)
-        st.session_state[history_key].append({"role": "user", "content": prompt})
-        st.session_state[history_key].append({"role": "assistant", "content": response})
-        st.rerun()
 
 
 def show_ai_insights():
@@ -6746,12 +7037,22 @@ def _build_report_context(df: pd.DataFrame, perf_data: Optional[dict], lang: Opt
     total_waste = float(df[waste_col].sum()) if waste_col else 0.0
     total_econ = float(df[econ_col].sum()) if econ_col else 0.0
     total_carbon = float(df[carbon_col].sum()) if carbon_col else 0.0
-    avg_score = float(df[score_col].mean()) if score_col else 0.0
+    avg_score = float(latest_df[score_col].mean()) if score_col and not latest_df.empty else 0.0
 
     top_country, _, top_country_share = _top_label_value(latest_df, country_col, waste_col) if country_col and waste_col else ("-", 0.0, 0.0)
     top_category, _, top_category_share = _top_label_value(latest_df, category_col, waste_col) if category_col and waste_col else ("-", 0.0, 0.0)
     top_econ_country, _, top_econ_share = _top_label_value(latest_df, country_col, econ_col) if country_col and econ_col else ("-", 0.0, 0.0)
     top_carbon_category, _, top_carbon_share = _top_label_value(latest_df, category_col, carbon_col) if category_col and carbon_col else ("-", 0.0, 0.0)
+    top_score_country, top_score, low_score_country, low_score = "-", 0.0, "-", 0.0
+    score_median = 0.0
+    if country_col and score_col:
+        score_by_country = latest_df.groupby(country_col)[score_col].mean().sort_values(ascending=False)
+        if not score_by_country.empty:
+            top_score_country = str(score_by_country.index[0])
+            top_score = float(score_by_country.iloc[0])
+            low_score_country = str(score_by_country.index[-1])
+            low_score = float(score_by_country.iloc[-1])
+            score_median = float(score_by_country.median())
 
     country_rows = []
     if country_col and waste_col:
@@ -6807,7 +7108,9 @@ def _build_report_context(df: pd.DataFrame, perf_data: Optional[dict], lang: Opt
             forecast["econ_2030"] = _format_million_usd(econ_trend.iloc[-1][pred_econ])
         if pred_score:
             score_trend = preds.groupby('Year', as_index=False)[pred_score].mean().sort_values('Year')
+            forecast["score_2024"] = f"{score_trend.iloc[0][pred_score]:.1f}/100"
             forecast["score_2030"] = f"{score_trend.iloc[-1][pred_score]:.1f}/100"
+            forecast["score_delta"] = _pct_change_numeric(score_trend.iloc[0][pred_score], score_trend.iloc[-1][pred_score])
 
     shap_rows = []
     for label, target in [
@@ -6854,6 +7157,11 @@ def _build_report_context(df: pd.DataFrame, perf_data: Optional[dict], lang: Opt
         "top_econ_share": top_econ_share,
         "top_carbon_category": top_carbon_category,
         "top_carbon_share": top_carbon_share,
+        "top_score_country": top_score_country,
+        "top_score": f"{top_score:.1f}/100",
+        "low_score_country": low_score_country,
+        "low_score": f"{low_score:.1f}/100",
+        "score_median": f"{score_median:.1f}/100",
         "country_rows": country_rows,
         "category_rows": category_rows,
         "forecast": forecast,
@@ -6878,6 +7186,39 @@ def _compose_report_sections(report_type: str, ctx: dict, flags: dict, lang: Opt
         f"<li>{html.escape(_copy('Karbon yükü', 'Carbon load', lang))}: {ctx['total_carbon']}</li><li>{html.escape(_copy('Ortalama sürdürülebilirlik skoru', 'Average sustainability score', lang))}: {ctx['avg_score']}</li></ul>"
     )
     sections.append((_copy("Özet Metrikler", "Summary Metrics", lang), overview_md, overview_html))
+
+    score_delta = ctx["forecast"].get("score_delta")
+    score_delta_text = "-"
+    if score_delta is not None:
+        try:
+            score_delta_text = f"%{float(score_delta):+.1f}" if not _is_en(lang) else f"{float(score_delta):+.1f}%"
+        except Exception:
+            score_delta_text = "-"
+    sustainability_md = (
+        _copy(
+            f"- Son tarihsel yılda ortalama sürdürülebilirlik skoru: {ctx['avg_score']}.\n",
+            f"- Latest historical average sustainability score: {ctx['avg_score']}.\n",
+            lang
+        )
+        + _copy(
+            f"- En yüksek skor: {ctx['top_score_country']} ({ctx['top_score']}); en düşük skor: {ctx['low_score_country']} ({ctx['low_score']}).\n",
+            f"- Highest score: {ctx['top_score_country']} ({ctx['top_score']}); lowest score: {ctx['low_score_country']} ({ctx['low_score']}).\n",
+            lang
+        )
+        + _copy(
+            f"- Ülke medyanı: {ctx['score_median']}. Skor yükseldikçe kişi başı atık, ekonomik kayıp ve karbon baskısı birlikte daha kontrollü görünür.\n",
+            f"- Country median: {ctx['score_median']}. A higher score indicates more controlled per-capita waste, economic loss, and carbon pressure together.\n",
+            lang
+        )
+    )
+    if ctx["forecast"].get("score_2030"):
+        sustainability_md += _copy(
+            f"- 2030 ortalama skor projeksiyonu: {ctx['forecast'].get('score_2030')} ({score_delta_text} 2024-2030 değişim).\n",
+            f"- 2030 average score projection: {ctx['forecast'].get('score_2030')} ({score_delta_text} 2024-2030 change).\n",
+            lang
+        )
+    sustainability_html = "<ul>" + "".join(f"<li>{html.escape(line[2:])}</li>" for line in sustainability_md.splitlines() if line.startswith("- ")) + "</ul>"
+    sections.append((_copy("Sürdürülebilirlik Skoru", "Sustainability Score", lang), sustainability_md, sustainability_html))
 
     if flags.get("insights"):
         md = (

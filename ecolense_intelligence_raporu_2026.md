@@ -21,6 +21,8 @@ Dashboard, gıda israfını yalnızca toplam ton değeriyle değil; ekonomik kay
 | Tahmin ufku | 2024-2030 |
 | Toplam gözlem | 16.576 |
 | Ortalama test R² | 0,9534 |
+| 2023 ortalama sürdürülebilirlik skoru | 82,7/100 |
+| 2030 ortalama sürdürülebilirlik projeksiyonu | 77,9/100 |
 | Dashboard modülü | 22 |
 
 ---
@@ -81,13 +83,21 @@ Tahmin grafiği dört farklı metriği ayrı panellerde gösterir. Bu tercih, ek
 
 | Yıl | Gıda israfı | Ekonomik kayıp | Karbon ayak izi | Ortalama skor |
 |---:|---:|---:|---:|---:|
-| 2024 | 545,7 milyon ton | 2,29 trilyon USD | 3,46 trilyon kg CO2e | 42,5 |
-| 2025 | 554,7 milyon ton | 2,38 trilyon USD | 3,54 trilyon kg CO2e | 42,9 |
-| 2026 | 566,0 milyon ton | 2,45 trilyon USD | 3,56 trilyon kg CO2e | 43,6 |
-| 2027 | 571,3 milyon ton | 2,50 trilyon USD | 3,59 trilyon kg CO2e | 44,2 |
-| 2028 | 578,2 milyon ton | 2,56 trilyon USD | 3,63 trilyon kg CO2e | 44,3 |
-| 2029 | 583,2 milyon ton | 2,62 trilyon USD | 3,67 trilyon kg CO2e | 44,3 |
-| 2030 | 590,5 milyon ton | 2,68 trilyon USD | 3,73 trilyon kg CO2e | 44,4 |
+| 2024 | 545,7 milyon ton | 2,29 trilyon USD | 3,46 trilyon kg CO2e | 77,6 |
+| 2025 | 554,7 milyon ton | 2,38 trilyon USD | 3,54 trilyon kg CO2e | 77,6 |
+| 2026 | 566,0 milyon ton | 2,45 trilyon USD | 3,56 trilyon kg CO2e | 77,8 |
+| 2027 | 571,3 milyon ton | 2,50 trilyon USD | 3,59 trilyon kg CO2e | 77,9 |
+| 2028 | 578,2 milyon ton | 2,56 trilyon USD | 3,63 trilyon kg CO2e | 77,9 |
+| 2029 | 583,2 milyon ton | 2,62 trilyon USD | 3,67 trilyon kg CO2e | 77,9 |
+| 2030 | 590,5 milyon ton | 2,68 trilyon USD | 3,73 trilyon kg CO2e | 77,9 |
+
+---
+
+## Sürdürülebilirlik Skoru
+
+Sürdürülebilirlik skoru, kişi başı gıda israfı, kişi başı ekonomik kayıp ve kişi başı karbon baskısını birlikte okuyan 0-100 arası bileşik göstergedir. Skor yükseldikçe ülkenin bu üç baskıyı aynı anda daha dengeli yönettiği anlaşılır.
+
+2023 verisinde ortalama skor 82,7/100, ülke medyanı 82,9/100 seviyesindedir. En yüksek skorlar India, Russia, Romania, South Africa ve Lithuania ülkelerinde görülür. En düşük skorlar Kuwait, Nigeria, Saudi Arabia, Qatar ve Australia tarafında yoğunlaşır. 2024-2030 projeksiyonu, her ülkenin 2023 skorunu baz alır ve gelecekteki kişi başı atık, ekonomik kayıp ve karbon baskısı değişimine göre skoru günceller.
 
 ---
 
@@ -116,13 +126,13 @@ Tahmin grafiği dört farklı metriği ayrı panellerde gösterir. Bu tercih, ek
 | Rapor Oluşturucu | Rapor türüne göre farklı HTML/Markdown çıktılar. |
 | Model Kartı | Metodoloji, performans, sınırlılıklar ve etik özet. |
 | Adalet / Etki Paneli | Etkinin ülke, bölge ve gelir grubu kırılımında incelenmesi. |
-| Story Mode | Başlığına uygun veri kesitlerinden üretilen özgün hikayeler. |
+| Story Mode | Başlığa uygun veri kesitlerinden bulgu, yorum ve önerilen aksiyon içeren hikayeler. |
 
 ---
 
 ## Veri Chatbotu
 
-Veri chatbotu, sabit cevap veren bir metin kutusu değildir. Soru metninden ülke, kategori, metrik, yıl ve niyet bilgisini ayıklar; ardından tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt üretir. Yanıtın sonunda kullanılan veri dayanağı belirtilir.
+Veri chatbotu, sabit cevap veren bir metin kutusu değildir. Soru metninden ülke, kategori, metrik, yıl ve niyet bilgisini ayıklar; birden fazla soru varsa bunları ayrı veri okuma adımlarına böler. Ardından tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt üretir. Yanıtın sonunda kullanılan veri dayanağı belirtilir.
 
 ---
 

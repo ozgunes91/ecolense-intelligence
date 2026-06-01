@@ -273,19 +273,12 @@ def main():
         "Economic Loss (Million $)": "sum",
         "Carbon_Footprint_kgCO2e": "sum",
         "Population (Million)": "first",
+        "Sustainability_Score": "mean",
     })
-    ref_pop = ref["Population (Million)"].clip(lower=0.001) * 1_000_000
-    ref_waste_pc = ref["Total Waste (Tons)"] * 1000 / ref_pop
-    ref_loss_pc = ref["Economic Loss (Million $)"] / ref["Population (Million)"].clip(lower=0.001)
-    ref_carbon_pc = ref["Carbon_Footprint_kgCO2e"] / ref_pop
-
-    def inverse_score(values, reference):
-        low = float(reference.quantile(0.05))
-        high = float(reference.quantile(0.95))
-        if high <= low:
-            high = float(reference.max()) or 1.0
-            low = float(reference.min())
-        return (1 - (values - low) / (high - low + 1e-9)).clip(0.05, 0.98)
+    ref_pop_people = ref["Population (Million)"].clip(lower=0.001) * 1_000_000
+    ref["Waste_Per_Capita_kg"] = ref["Total Waste (Tons)"] * 1000 / ref_pop_people
+    ref["Economic_Loss_Per_Capita_USD"] = ref["Economic Loss (Million $)"] / ref["Population (Million)"].clip(lower=0.001)
+    ref["Carbon_Per_Capita_kgCO2e"] = ref["Carbon_Footprint_kgCO2e"] / ref_pop_people
 
     country_year = out.groupby(["Country", "Year"], as_index=False).agg({
         "Total Waste (Tons)": "sum",
@@ -298,11 +291,34 @@ def main():
     country_year["Waste_Per_Capita_kg"] = country_year["Total Waste (Tons)"] * 1000 / cy_pop_people
     country_year["Economic_Loss_Per_Capita_USD"] = country_year["Economic Loss (Million $)"] / cy_pop_m
     country_year["Carbon_Per_Capita_kgCO2e"] = country_year["Carbon_Footprint_kgCO2e"] / cy_pop_people
-    country_year["Sustainability_Score"] = (
-        0.40 * inverse_score(country_year["Waste_Per_Capita_kg"], ref_waste_pc)
-        + 0.30 * inverse_score(country_year["Economic_Loss_Per_Capita_USD"], ref_loss_pc)
-        + 0.30 * inverse_score(country_year["Carbon_Per_Capita_kgCO2e"], ref_carbon_pc)
-    ) * 100
+
+    # 2023 ülke skorunu baz al; gelecek skoru kişi başı atık, ekonomik kayıp
+    # ve karbon baskısındaki değişime göre aynı 0-100 ölçeğinde güncelle.
+    base = (
+        ref[ref["Year"] == int(ref["Year"].max())][[
+            "Country",
+            "Waste_Per_Capita_kg",
+            "Economic_Loss_Per_Capita_USD",
+            "Carbon_Per_Capita_kgCO2e",
+            "Sustainability_Score",
+        ]]
+        .rename(columns={
+            "Waste_Per_Capita_kg": "base_waste_pc",
+            "Economic_Loss_Per_Capita_USD": "base_loss_pc",
+            "Carbon_Per_Capita_kgCO2e": "base_carbon_pc",
+            "Sustainability_Score": "base_score",
+        })
+    )
+    country_year = country_year.merge(base, on="Country", how="left")
+    for col in ["base_waste_pc", "base_loss_pc", "base_carbon_pc"]:
+        country_year[col] = country_year[col].fillna(country_year[col].median()).clip(lower=1e-9)
+    country_year["base_score"] = country_year["base_score"].fillna(ref["Sustainability_Score"].mean())
+    pressure_change = (
+        0.40 * np.log((country_year["Waste_Per_Capita_kg"] / country_year["base_waste_pc"]).clip(0.25, 4.0))
+        + 0.30 * np.log((country_year["Economic_Loss_Per_Capita_USD"] / country_year["base_loss_pc"]).clip(0.25, 4.0))
+        + 0.30 * np.log((country_year["Carbon_Per_Capita_kgCO2e"] / country_year["base_carbon_pc"]).clip(0.25, 4.0))
+    )
+    country_year["Sustainability_Score"] = (country_year["base_score"] - 24 * pressure_change).clip(5, 98)
     out = out.merge(country_year[["Country", "Year", "Sustainability_Score"]], on=["Country", "Year"], how="left")
 
     os.makedirs(FORECAST_DIR, exist_ok=True)
@@ -342,7 +358,7 @@ def create_forecast_visual(out):
         ("Waste_MTon", "Gıda israfı", "Milyon ton", "#2563eb"),
         ("Economic_TUSD", "Ekonomik kayıp", "Trilyon USD", "#dc2626"),
         ("Carbon_Tkg", "Karbon ayak izi", "Trilyon kg CO2e", "#16a34a"),
-        ("Sustainability_Score", "Ortalama sürdürülebilirlik skoru", "0-100 skor", "#7c3aed"),
+        ("Sustainability_Score", "Ortalama sürdürülebilirlik skoru", "0-100 skor", "#0f766e"),
     ]
     for ax, (col, title, ylabel, color) in zip(axes.ravel(), series):
         ax.plot(trend["Year"], trend[col], marker="o", linewidth=2.6, color=color)

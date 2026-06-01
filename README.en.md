@@ -26,6 +26,8 @@ Ecolense Intelligence is a data-driven decision support platform for global food
 | Forecast horizon | 2024-2030 |
 | Observations | 16,576 |
 | Average test R² | 0.9534 |
+| 2023 average sustainability score | 82.7/100 |
+| 2030 average sustainability projection | 77.9/100 |
 | Dashboard modules | 22 |
 
 ---
@@ -51,6 +53,14 @@ The forecast visual does not compress unrelated scales onto one axis. Waste, eco
 ![Model performance](docs/assets/model_performance_summary.png)
 
 ![SHAP feature impact overview](docs/assets/shap_feature_impact_overview.png)
+
+---
+
+## Sustainability Score
+
+The sustainability score is a 0-100 composite indicator that reads country-level food waste per capita, economic loss per capita, and carbon pressure per capita together. A higher score means these three pressures are more controlled at the same time.
+
+In 2023, the average score is 82.7/100 and the country median is 82.9/100. The strongest scores are concentrated in India, Russia, Romania, South Africa, and Lithuania. The 2024-2030 projection keeps the score connected to the 2023 country scale and updates it according to projected changes in per-capita waste, economic loss, and carbon pressure.
 
 ---
 
@@ -120,13 +130,13 @@ Gradient Boosting Regressor is used as the production model. Explainability outp
 | Report Builder | Generates data-driven HTML/Markdown reports with different sections by report type. |
 | Model Card | Documents methodology, performance, limitations, and ethics in one view. |
 | Justice / Impact Panel | Reviews impact distribution by country, region, and income group. |
-| Story Mode | Presents original data stories generated from the slices that match each story title. |
+| Story Mode | Presents data stories with findings, interpretation, and recommended actions generated from slices that match each title. |
 
 ---
 
 ## Data Chatbot
 
-The dashboard chatbot does not return a fixed script. It detects country, metric, category, year, and intent from the question, retrieves the relevant historical, forecast, and explainability slices, then answers with evidence notes.
+The dashboard chatbot does not return a fixed script. It detects country, metric, category, year, and intent from the question; when the input contains multiple questions, it answers each part separately. Answers are generated from the relevant historical, forecast, and explainability slices and include an evidence note.
 
 ---
 
