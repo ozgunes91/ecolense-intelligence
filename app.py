@@ -765,6 +765,33 @@ def load_css():
     /* Ana tema */
     .main { background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 50%, #CBD5E1 100%); }
 
+    /* Koyu marka başlıklarında Streamlit'in varsayılan başlık rengini bastır */
+    div[style*="#232E5C"] h1, div[style*="#232E5C"] h2, div[style*="#232E5C"] h3,
+    div[style*="#1A1C2C"] h1, div[style*="#1A1C2C"] h2, div[style*="#1A1C2C"] h3,
+    div[style*="#1F3B4D"] h1, div[style*="#1F3B4D"] h2, div[style*="#1F3B4D"] h3,
+    div[style*="#182235"] h1, div[style*="#182235"] h2, div[style*="#182235"] h3,
+    div[style*="#28445E"] h1, div[style*="#28445E"] h2, div[style*="#28445E"] h3,
+    div[style*="#1A2838"] h1, div[style*="#1A2838"] h2, div[style*="#1A2838"] h3,
+    div[style*="#173F35"] h1, div[style*="#173F35"] h2, div[style*="#173F35"] h3,
+    div[style*="#132E2A"] h1, div[style*="#132E2A"] h2, div[style*="#132E2A"] h3,
+    div[style*="#203F2F"] h1, div[style*="#203F2F"] h2, div[style*="#203F2F"] h3,
+    div[style*="#17291F"] h1, div[style*="#17291F"] h2, div[style*="#17291F"] h3,
+    div[style*="#2D3748"] h1, div[style*="#2D3748"] h2, div[style*="#2D3748"] h3,
+    div[style*="#5B5136"] h1, div[style*="#5B5136"] h2, div[style*="#5B5136"] h3,
+    div[style*="#5B3636"] h1, div[style*="#5B3636"] h2, div[style*="#5B3636"] h3 {
+        color: #FFFFFF !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.32);
+    }
+    div[style*="color: white"] h1,
+    div[style*="color: white"] h2,
+    div[style*="color: white"] h3,
+    div[style*="color: white"] h4,
+    div[style*="color: white"] h5,
+    div[style*="color: white"] h6 {
+        color: #FFFFFF !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.35);
+    }
+
     /* Ana başlık */
     .main-header {
         --brand-side: clamp(72px, 7vw, 96px);
