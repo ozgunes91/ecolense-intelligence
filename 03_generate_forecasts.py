@@ -17,6 +17,7 @@ MODEL_DIR     = "models"
 OUTPUT_DIR    = "outputs"
 FORECAST_DIR  = os.path.join(OUTPUT_DIR, "forecasts")
 FORECAST_PATH = os.path.join(FORECAST_DIR, "forecasts.csv")
+ASSET_DIR     = os.path.join("docs", "assets")
 
 TARGETS = [
     "Total Waste (Tons)",
@@ -306,8 +307,66 @@ def main():
 
     os.makedirs(FORECAST_DIR, exist_ok=True)
     out.to_csv(FORECAST_PATH, index=False)
+    create_forecast_visual(out)
     print(f"\n  ✅ {FORECAST_PATH}  ({len(out):,} satır)")
     print(f"  Ülke: {out['Country'].nunique()} | Yıl: {sorted(out['Year'].unique().tolist())}")
+
+
+def create_forecast_visual(out):
+    """Rapor/README için ölçekleri ayrılmış 2024-2030 tahmin görseli üret."""
+    os.environ.setdefault("MPLCONFIGDIR", os.path.join("/tmp", "ecolense_mpl"))
+    os.environ.setdefault("XDG_CACHE_HOME", os.path.join("/tmp", "ecolense_cache"))
+    os.makedirs(os.environ["MPLCONFIGDIR"], exist_ok=True)
+    os.makedirs(os.environ["XDG_CACHE_HOME"], exist_ok=True)
+    try:
+        import matplotlib.pyplot as plt
+        from matplotlib.ticker import StrMethodFormatter
+    except Exception:
+        print("  Tahmin görseli için matplotlib yüklenemedi; PNG üretimi atlandı.")
+        return
+
+    trend = out.groupby("Year", as_index=False).agg({
+        "Total Waste (Tons)": "sum",
+        "Economic Loss (Million $)": "sum",
+        "Carbon_Footprint_kgCO2e": "sum",
+        "Sustainability_Score": "mean",
+    }).sort_values("Year")
+    trend["Waste_MTon"] = trend["Total Waste (Tons)"] / 1_000_000
+    trend["Economic_TUSD"] = trend["Economic Loss (Million $)"] / 1_000_000
+    trend["Carbon_Tkg"] = trend["Carbon_Footprint_kgCO2e"] / 1_000_000_000_000
+
+    plt.style.use("seaborn-v0_8-whitegrid")
+    fig, axes = plt.subplots(2, 2, figsize=(13, 8), sharex=True)
+    fig.patch.set_facecolor("white")
+    series = [
+        ("Waste_MTon", "Gıda israfı", "Milyon ton", "#2563eb"),
+        ("Economic_TUSD", "Ekonomik kayıp", "Trilyon USD", "#dc2626"),
+        ("Carbon_Tkg", "Karbon ayak izi", "Trilyon kg CO2e", "#16a34a"),
+        ("Sustainability_Score", "Ortalama sürdürülebilirlik skoru", "0-100 skor", "#7c3aed"),
+    ]
+    for ax, (col, title, ylabel, color) in zip(axes.ravel(), series):
+        ax.plot(trend["Year"], trend[col], marker="o", linewidth=2.6, color=color)
+        ax.set_title(title, fontsize=12, fontweight="bold", color="#1f2937")
+        ax.set_ylabel(ylabel, color="#374151")
+        ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.1f}"))
+        ax.grid(alpha=0.25)
+        ax.spines[["top", "right"]].set_visible(False)
+        start = float(trend[col].iloc[0])
+        end = float(trend[col].iloc[-1])
+        delta = ((end / start) - 1) * 100 if start else 0.0
+        ax.text(
+            0.02, 0.92, f"2024→2030: {delta:+.1f}%", transform=ax.transAxes,
+            fontsize=10, color="#111827",
+            bbox=dict(boxstyle="round,pad=0.3", fc="#ecfdf5", ec="#11E6C1", alpha=0.9)
+        )
+    for ax in axes[1]:
+        ax.set_xlabel("Yıl")
+    fig.suptitle("Ecolense 2024-2030 Projeksiyon Özeti", fontsize=16, fontweight="bold", color="#111827", y=0.98)
+    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    os.makedirs(ASSET_DIR, exist_ok=True)
+    fig.savefig(os.path.join(ASSET_DIR, "forecast_trends.png"), dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  ✅ Tahmin görseli: {os.path.join(ASSET_DIR, 'forecast_trends.png')}")
 
 
 if __name__ == "__main__":
