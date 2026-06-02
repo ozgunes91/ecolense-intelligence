@@ -1105,6 +1105,79 @@ def load_css():
     }
     .chatbot-heading h4 { margin: 0 0 4px 0; color: #F8FAFC; letter-spacing: 0; }
     .chatbot-heading p { margin: 0; color: #CBD5E1; }
+    div[data-testid="stPopover"] {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 9999;
+    }
+    div[data-testid="stPopover"] > button {
+        background: #172033 !important;
+        color: #F8FAFC !important;
+        border: 1px solid rgba(45,212,191,0.55) !important;
+        border-radius: 999px !important;
+        min-height: 48px;
+        padding: 0 18px !important;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(17, 230, 193, 0.10);
+        font-weight: 700;
+    }
+    div[data-testid="stPopover"] > button:hover {
+        border-color: rgba(45,212,191,0.95) !important;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.28), 0 0 18px rgba(45,212,191,0.22);
+    }
+    div[data-testid="stPopover"] button:focus,
+    div[data-testid="stPopover"] button:active,
+    div[data-testid="stPopover"] button:focus-visible {
+        color: #F8FAFC !important;
+        border-color: rgba(45,212,191,0.90) !important;
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgba(45,212,191,0.24), 0 12px 28px rgba(15,23,42,0.18) !important;
+    }
+    .rag-bot-title {
+        background: #172033;
+        color: #F8FAFC;
+        border: 1px solid rgba(45,212,191,0.32);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+    }
+    .rag-bot-title h4 {
+        margin: 0 0 4px 0;
+        color: #F8FAFC;
+        letter-spacing: 0;
+    }
+    .rag-bot-title p {
+        margin: 0;
+        color: #CBD5E1;
+        font-size: 0.9rem;
+    }
+    .rag-question {
+        background: #EEF6FF;
+        border: 1px solid rgba(37, 99, 235, 0.16);
+        border-radius: 12px;
+        padding: 10px 12px;
+        margin: 8px 0;
+        color: #0F172A;
+        font-weight: 650;
+    }
+    .rag-answer {
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        border-left: 4px solid #2DD4BF;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin: 8px 0 12px 0;
+        color: #0F172A;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    }
+    .rag-empty {
+        background: #F8FAFC;
+        border: 1px dashed rgba(15, 23, 42, 0.18);
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: #475569;
+        margin: 8px 0 12px 0;
+    }
     div[data-testid="stChatMessage"] {
         background: #FFFFFF;
         border: 1px solid rgba(15, 23, 42, 0.08);
@@ -1153,6 +1226,30 @@ def load_css():
             0 0 60px rgba(17, 230, 193, 0.2);
         border-color: rgba(17, 230, 193, 0.8);
         background: linear-gradient(135deg, #2D3748 0%, #232E5C 100%);
+    }
+
+    .stButton > button:focus,
+    .stButton > button:active,
+    .stButton > button:focus-visible,
+    button[data-testid="stBaseButton-secondary"]:focus,
+    button[data-testid="stBaseButton-secondary"]:active,
+    button[data-testid="stBaseButton-secondary"]:focus-visible {
+        color: #F8FAFC !important;
+        border-color: rgba(17, 230, 193, 0.86) !important;
+        outline: none !important;
+        box-shadow:
+            0 0 0 3px rgba(17, 230, 193, 0.22),
+            0 12px 30px rgba(35, 46, 92, 0.28) !important;
+        background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%) !important;
+    }
+
+    .stButton > button:focus p,
+    .stButton > button:active p,
+    .stButton > button:focus-visible p,
+    button[data-testid="stBaseButton-secondary"]:focus p,
+    button[data-testid="stBaseButton-secondary"]:active p,
+    button[data-testid="stBaseButton-secondary"]:focus-visible p {
+        color: #F8FAFC !important;
     }
 
     /* Animasyonlar */
@@ -3328,6 +3425,15 @@ def main():
             st.session_state['page'] = page
             st.rerun()
 
+    # Sayfa akışını kalabalıklaştırmadan veri asistanını sabit kenar botu olarak sun.
+    bot_real_df = load_data(REAL_DATA_PATH, announce=False)
+    bot_preds_df = load_predictions_dashboard()
+    if (
+        bot_real_df is not None and not bot_real_df.empty and
+        bot_preds_df is not None and not bot_preds_df.empty
+    ):
+        render_data_chatbot(bot_real_df, bot_preds_df, scope="global")
+
     # Ana içerik
     if page == _t('PAGE_HOME'):
         show_home_page()
@@ -3478,16 +3584,6 @@ def show_home_page():
     with col4:
         if st.button(f"🔮 {_t('FUTURE_FORECASTS_BTN')}\n", use_container_width=True, key="quick_future"):
             navigate_to_page(_t('PAGE_FORECASTS'))
-
-    # Veri chatbotu
-    st.markdown("---")
-    real_df = load_data(REAL_DATA_PATH, announce=False)
-    preds = load_predictions_dashboard()
-    if preds is not None and not preds.empty and real_df is not None and not real_df.empty:
-        render_data_chatbot(real_df, preds, scope="home")
-    else:
-        st.error(_copy("Veri yüklenemedi. Chatbot için tarihsel veri ve tahmin dosyası gerekli.", "Data could not be loaded. The chatbot needs both historical data and forecast outputs."))
-
 
     # Storytelling bölümü
     st.markdown(f"""
@@ -4796,9 +4892,6 @@ def show_target_based_forecasts():
     if preds is None or preds.empty:
         st.warning(_copy("⚠️ Tahmin dosyası bulunamadı.", "⚠️ Forecast file was not found."))
         return
-    real_df = load_data(REAL_DATA_PATH, announce=False)
-    if real_df is not None and not real_df.empty:
-        render_data_chatbot(real_df, preds, scope="target_based_forecasts")
     country = st.selectbox("Ülke", sorted(preds['Country'].dropna().unique()), key="tbf_country")
     target = st.selectbox("Hedef", [
         ('Total Waste (Tons)', 'Toplam Atık (ton) - Azalt', '↓'),
@@ -5072,7 +5165,7 @@ def _find_countries(question_norm: str, *frames: pd.DataFrame) -> List[str]:
     }
     found = []
     for alias, country in aliases.items():
-        if contains_term(_normalize_query_text(alias)) and country in names:
+        if contains_term(_normalize_query_text(alias)) and country in names and country not in found:
             found.append(country)
     for country in sorted(names, key=len, reverse=True):
         if contains_term(_normalize_query_text(country)) and country not in found:
@@ -5107,6 +5200,15 @@ def _assistant_data_note(hist: pd.DataFrame, forecast: pd.DataFrame, metric: str
         f"\n\n**Evidence used:** {source}; metric: {_metric_title(metric, lang)}.",
         lang
     )
+
+
+def _strip_assistant_data_note(answer: str) -> str:
+    """Birleşik yanıtlarda yinelenen veri dayanağı satırlarını sadeleştirir."""
+    return re.sub(
+        r"\n\n\*\*(?:Veri dayanağı|Evidence used):\*\* [^\n]+",
+        "",
+        str(answer or "").strip()
+    ).strip()
 
 
 def _split_assistant_question(question: str) -> List[str]:
@@ -5259,9 +5361,14 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         answers = []
         for i, part in enumerate(parts[:3], 1):
             clean_part = part.rstrip("?") + "?"
-            answer = generate_ai_response(part, preds_df, real_df, lang=lang)
+            answer = _strip_assistant_data_note(generate_ai_response(part, preds_df, real_df, lang=lang))
             answers.append(f"**{i}. {clean_part}**\n\n{answer}")
-        return "\n\n".join(answers)
+        evidence = _copy(
+            "\n\n**Veri dayanağı:** Her alt yanıt ilgili tarihsel veri, tahmin verisi veya kategori kesitinden yeniden okunarak üretildi.",
+            "\n\n**Evidence used:** Each sub-answer was regenerated from the relevant historical, forecast, or category slice.",
+            lang
+        )
+        return "\n\n".join(answers) + evidence
 
     q_norm = _normalize_query_text(question)
     metric = _assistant_metric(q_norm)
@@ -5455,7 +5562,8 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
     if asks_zero_score:
         return zero_score_answer()
     if len(countries) >= 2:
-        return "\n\n".join(country_answer(country) for country in countries[:2])
+        answers = [_strip_assistant_data_note(country_answer(country)) for country in countries[:2]]
+        return "\n\n".join(answers) + _assistant_data_note(hist, forecast, metric, lang)
     if countries:
         return country_answer(countries[0])
     if wants_category:
@@ -5477,55 +5585,60 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
 def render_data_chatbot(real_df: pd.DataFrame, preds_df: pd.DataFrame, scope: str):
     """Corrective-RAG tarzı veri sohbet bileşeni."""
     lang = _lang()
-    history_key = f"{scope}_data_chat_history"
-    if history_key not in st.session_state:
-        st.session_state[history_key] = [{
-            "role": "assistant",
-            "content": _copy(
-                "Merhaba. Sorunu ülke, yıl, metrik veya kategoriyle yaz; önce ilgili veri kesitini bulup sonra yanıtı kuruyorum.",
-                "Hi. Ask with a country, year, metric, or category; I first retrieve the relevant data slice, then build the answer.",
-                lang
-            )
-        }]
+    active_key = "data_chat_active"
+    for state_key in list(st.session_state.keys()):
+        if str(state_key).endswith("_data_chat_history"):
+            st.session_state.pop(state_key, None)
 
-    st.markdown(f"""
-    <div class='chatbot-heading'>
-      <h4>{_copy('Veri Chatbotu', 'Data Chatbot', lang)}</h4>
-      <p>{_copy('Tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt verir.', 'Answers by reading the relevant slice from historical data, forecasts, and explainability outputs.', lang)}</p>
-    </div>
-    """, unsafe_allow_html=True)
+    with st.popover(_copy("🤖 Veri Asistanı", "🤖 Data Assistant", lang), use_container_width=False):
+        st.markdown(f"""
+        <div class='rag-bot-title'>
+          <h4>{_copy('Corrective RAG Veri Botu', 'Corrective RAG Data Bot', lang)}</h4>
+          <p>{_copy('Soruyu veri tablosundan okur; yeni yanıt öncekinin yerine geçer.', 'Reads the relevant data slice; each new answer replaces the previous one.', lang)}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    with st.container(border=True):
         quick_prompts = [
             _copy("Romanya'nın sürdürülebilirlik skoru neden yüksek?", "Why is Romania's sustainability score high?", lang),
             _copy("2030'da karbon yükü nasıl değişiyor?", "How does carbon load change by 2030?", lang),
             _copy("Hangi kategori ekonomik kaybı büyütüyor?", "Which category drives economic loss?", lang),
             _copy("Türkiye için atık eğilimi nasıl?", "What is the waste trend for Turkey?", lang),
         ]
-        cols = st.columns(len(quick_prompts))
+        cols = st.columns(2)
         for i, prompt in enumerate(quick_prompts):
-            if cols[i].button(prompt, key=f"{scope}_quick_chat_{i}", use_container_width=True):
+            if cols[i % 2].button(prompt, key=f"{scope}_quick_chat_{i}", use_container_width=True):
                 response = generate_ai_response(prompt, preds_df, real_df, lang=lang)
-                st.session_state[history_key].append({"role": "user", "content": prompt})
-                st.session_state[history_key].append({"role": "assistant", "content": response})
+                st.session_state[active_key] = {"question": prompt, "answer": response, "scope": scope}
                 st.rerun()
 
-        for message in st.session_state[history_key][-8:]:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
+        active = st.session_state.get(active_key)
+        if active:
+            st.markdown(
+                f"<div class='rag-question'>{html.escape(active.get('question', ''))}</div>",
+                unsafe_allow_html=True
+            )
+            with st.container(border=True):
+                st.markdown(active.get("answer", ""))
+        else:
+            st.markdown(
+                f"<div class='rag-empty'>{_copy('Bir ülke, kategori, metrik veya yıl sorusu yaz. Bot yalnızca son yanıtı gösterecek.', 'Ask a country, category, metric, or year question. The bot will show only the latest answer.', lang)}</div>",
+                unsafe_allow_html=True
+            )
 
         with st.form(f"{scope}_chat_form", clear_on_submit=True):
-            input_col, button_col = st.columns([6, 1])
-            prompt = input_col.text_input(
+            prompt = st.text_input(
                 _copy("Soru", "Question", lang),
                 placeholder=_copy("Örn. 2030'da karbon yükü nasıl değişiyor?", "E.g. How does carbon load change by 2030?", lang),
                 label_visibility="collapsed",
             )
-            submitted = button_col.form_submit_button(_copy("Gönder", "Send", lang), use_container_width=True)
+            submitted = st.form_submit_button(_copy("Yanıtla", "Answer", lang), use_container_width=True)
         if submitted and prompt.strip():
             response = generate_ai_response(prompt, preds_df, real_df, lang=lang)
-            st.session_state[history_key].append({"role": "user", "content": prompt})
-            st.session_state[history_key].append({"role": "assistant", "content": response})
+            st.session_state[active_key] = {"question": prompt.strip(), "answer": response, "scope": scope}
+            st.rerun()
+
+        if active and st.button(_copy("Yanıtı temizle", "Clear answer", lang), key=f"{scope}_clear_chat", use_container_width=True):
+            st.session_state.pop(active_key, None)
             st.rerun()
 
 
@@ -5554,8 +5667,6 @@ def show_ai_insights():
     if preds is None or preds.empty:
         st.warning(_copy("⚠️ Tahmin dosyası bulunamadı.", "⚠️ Forecast file was not found."))
         return
-    if real_df is not None and not real_df.empty:
-        render_data_chatbot(real_df, preds, scope="insight_panel")
     # Seçim paneli - Premium tasarım
     st.markdown(f"""
     <div style="background: linear-gradient(135deg, #1F3B4D 0%, #182235 100%);
