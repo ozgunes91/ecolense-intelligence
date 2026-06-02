@@ -27,7 +27,7 @@ Ecolense Intelligence, küresel gıda israfını ülke, yıl ve gıda kategorisi
 | Toplam gözlem | 16.576 |
 | Ortalama test R² | 0,9534 |
 | 2023 ortalama sürdürülebilirlik skoru | 82,7/100 |
-| 2030 ortalama sürdürülebilirlik projeksiyonu | 77,9/100 |
+| 2030 ortalama sürdürülebilirlik projeksiyonu | 82,5/100 |
 | Dashboard modülü | 22 |
 
 ---
@@ -68,14 +68,15 @@ Sürdürülebilirlik skoru, ülke düzeyinde kişi başı gıda israfı, kişi b
 
 Veri seti ülke-yıl-kategori kırılımında hazırlanmıştır. Analizde gıda israfı, ekonomik kayıp, karbon ayak izi, nüfus, kişi başı gelir, materyal ayak izi, gıda fiyat endeksi, gelir grubu ve bölge bilgileri birlikte kullanılır.
 
-| Kaynak | Kullanım |
-|---|---|
-| UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri |
-| FAO Food Price Index | Gıda fiyat endeksi ve dönemsel fiyat hareketleri |
-| Gapminder GDP per capita | Ülke bazlı gelir serileri |
-| IMF WEO varsayımları | 2024-2030 makro projeksiyon girdileri |
-| Poore & Nemecek katsayıları | Gıda kategorilerine göre karbon etkisi |
-| Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri |
+| Yayın / veri sürümü | Kaynak | Kullanım | Proje kapsamı |
+|---|---|---|---|
+| 2010-2023 serisi | Gapminder GDP per capita | Ülke bazlı gelir serileri | GDP per capita değişkenleri |
+| 2010-2023 serisi | FAO Food Price Index | Gıda fiyat endeksi ve dönemsel fiyat hareketleri | Yıl etkisi ve fiyat endeksi değişkenleri |
+| 2018 | Poore & Nemecek, *Science* | Gıda kategorilerine göre karbon etkisi | Kategori bazlı CO2e katsayıları |
+| 2021 | UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri | Tablo A4.1 ve ülke göstergeleri |
+| 2024 güncel veri tabanı | UNEP IRP Global Material Flows Database | Materyal ayak izi göstergeleri | Kişi başına materyal ayak izi |
+| Ekim 2024 | IMF World Economic Outlook Database | 2024-2030 makro projeksiyon girdileri | Büyüme varsayımları |
+| Erişim: 2 Haziran 2026 | Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri | Dashboard etiketleri ve ülke kırılımları |
 
 Veri hattı üç temel adımdan oluşur:
 
@@ -198,13 +199,17 @@ ecolense-intelligence/
 
 ---
 
-## Referanslar
+## Kaynakça
 
-- FAO. *The State of Food and Agriculture.*
-- UNEP. *Food Waste Index Report.*
-- Poore, J. & Nemecek, T. Reducing food's environmental impacts through producers and consumers. *Science.*
-- IMF. *World Economic Outlook.*
-- Lundberg, S. M. & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. *NeurIPS.*
+Kaynaklar yayın/veri sürümü tarihine göre kronolojik sıralanmıştır. Web kaynakları için erişim tarihi: 2 Haziran 2026.
+
+- 2010-2023 veri serisi — Gapminder Foundation. [*GDP per capita / income per person data*](https://www.gapminder.org/data/). Ülke bazlı gelir değişkenleri için kullanıldı.
+- 2010-2023 veri serisi — FAO. [*Food Price Index*](https://www.fao.org/worldfoodsituation/foodpricesindex/en/). Gıda fiyat endeksi ve dönemsel fiyat hareketleri için kullanıldı.
+- 2017 — Lundberg, S. M. & Lee, S.-I. [*A Unified Approach to Interpreting Model Predictions*](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). NeurIPS 2017. SHAP tabanlı model açıklanabilirliği için kullanıldı.
+- 2018 — Poore, J. & Nemecek, T. [*Reducing food's environmental impacts through producers and consumers*](https://doi.org/10.1126/science.aaq0216). *Science*, 360(6392), 987-992. Gıda kategorisi karbon etkisi katsayıları için kullanıldı.
+- 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Ülke bazlı gıda atığı göstergeleri ve Tablo A4.1 için kullanıldı.
+- 2024 güncel veri tabanı — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Kişi başına materyal ayak izi için kullanıldı.
+- Ekim 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). 2024-2030 makro büyüme varsayımları için kullanıldı.
 
 ---
 

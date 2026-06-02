@@ -3570,7 +3570,7 @@ def show_data_analysis():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown(_copy("**🎯 Kaynak:** UNEP/FAO/Gapminder/IMF + ülke ve LCA zenginleştirmeleri", "**🎯 Source:** UNEP/FAO/Gapminder/IMF plus country and LCA enrichments"))
+        st.markdown(_copy("**🎯 Kaynak:** UNEP 2021, FAO/Gapminder 2010-2023, UNEP IRP 2024, IMF WEO Ekim 2024 ve LCA katsayıları", "**🎯 Source:** UNEP 2021, FAO/Gapminder 2010-2023, UNEP IRP 2024, IMF WEO October 2024, and LCA factors"))
         st.markdown(_copy("**📊 Boyut:** 16,576 gözlem × 56 değişken", "**📊 Size:** 16,576 observations × 56 variables"))
         st.markdown(_copy("**🌍 Kapsam:** 148 tekil ISO3 ülke (2010-2023)", "**🌍 Scope:** 148 unique ISO3 countries (2010-2023)"))
         st.markdown(_copy("**🔧 İşleme:** Gerçek kaynaklardan derlenmiş veri, özellik mühendisliği ve kalite kontrolleri", "**🔧 Processing:** Data compiled from real sources with feature engineering and quality checks"))
@@ -4181,7 +4181,7 @@ def show_model_performance():
                 box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-left: 4px solid #11E6C1;">
         <div style="font-weight: 600; color: #232E5C;">📊 Model: {model_type}</div>
         <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.3rem;">Veri kaynağı: data/processed.csv · {data_scope}</div>
-        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.2rem;">Kaynak kapsamı: UNEP, FAO, Gapminder, IMF ve ülke meta verileri</div>
+        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.2rem;">Kaynak kapsamı: UNEP Food Waste Index 2021, Gapminder/FAO 2010-2023, UNEP IRP 2024 ve IMF WEO Ekim 2024</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -8875,6 +8875,42 @@ def show_data_lineage_quality():
     - **Tahmin üretimi**: `03_generate_forecasts.py`
     - **Dashboard**: `app.py`
     """)
+
+    st.subheader("📚 Kaynakça ve Veri Sürümleri")
+    lineage_sources = pd.DataFrame([
+        {
+            "Tarih / Sürüm": "2010-2023",
+            "Kaynak": "Gapminder GDP per capita",
+            "Kullanım": "Ülke bazlı gelir değişkenleri",
+        },
+        {
+            "Tarih / Sürüm": "2010-2023",
+            "Kaynak": "FAO Food Price Index",
+            "Kullanım": "Gıda fiyat endeksi ve dönemsel fiyat hareketleri",
+        },
+        {
+            "Tarih / Sürüm": "2018",
+            "Kaynak": "Poore & Nemecek, Science",
+            "Kullanım": "Gıda kategorisi CO2e katsayıları",
+        },
+        {
+            "Tarih / Sürüm": "2021",
+            "Kaynak": "UNEP Food Waste Index Report",
+            "Kullanım": "Tablo A4.1 ve ülke bazlı gıda atığı göstergeleri",
+        },
+        {
+            "Tarih / Sürüm": "2024",
+            "Kaynak": "UNEP IRP Global Material Flows Database",
+            "Kullanım": "Kişi başına materyal ayak izi",
+        },
+        {
+            "Tarih / Sürüm": "Ekim 2024",
+            "Kaynak": "IMF World Economic Outlook Database",
+            "Kullanım": "2024-2030 makro büyüme varsayımları",
+        },
+    ])
+    st.dataframe(lineage_sources, use_container_width=True, hide_index=True)
+    st.caption("Web kaynakları için erişim tarihi: 2 Haziran 2026.")
 
     # Veri kalitesi kontrolü
     st.subheader("🔍 Veri Kalitesi Kontrolü")

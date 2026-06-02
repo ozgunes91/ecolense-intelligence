@@ -20,7 +20,7 @@ Ecolense Intelligence is a sustainability decision support platform that analyze
 | Observations | 16,576 |
 | Average test R² | 0.9534 |
 | 2023 average sustainability score | 82.7/100 |
-| 2030 average sustainability projection | 77.9/100 |
+| 2030 average sustainability projection | 82.5/100 |
 | Dashboard modules | 22 |
 
 ---
@@ -29,14 +29,15 @@ Ecolense Intelligence is a sustainability decision support platform that analyze
 
 The dataset is prepared at country-year-food category level. It includes food waste, economic loss, carbon footprint, population, GDP per capita, material footprint, food price index, income group, and regional metadata.
 
-| Source | Content |
-|---|---|
-| UNEP Food Waste Index Report | Country-level food waste indicators |
-| FAO Food Price Index | Food price index and time effects |
-| Gapminder GDP per capita | Income series |
-| IMF WEO assumptions | 2024-2030 macro projection inputs |
-| Poore & Nemecek carbon factors | Category-level CO2e impact |
-| Country metadata | Region, income group, ISO code, and population |
+| Publication / data version | Source | Content | Project usage |
+|---|---|---|---|
+| 2010-2023 series | Gapminder GDP per capita | Income series | GDP per capita variables |
+| 2010-2023 series | FAO Food Price Index | Food price index | Year effect and price movement variables |
+| 2018 | Poore & Nemecek, *Science* | Food-category life-cycle impacts | CO2e factors |
+| 2021 | UNEP Food Waste Index Report | Country-level food waste indicators | Table A4.1 and country indicators |
+| 2024 database update | UNEP IRP Global Material Flows Database | Material footprint | Material footprint per capita |
+| October 2024 | IMF World Economic Outlook Database | Macro growth assumptions | 2024-2030 projection inputs |
+| Accessed June 2, 2026 | Country metadata | Region, income group, ISO code, and population | Dashboard slices |
 
 ![2023 category distribution](docs/assets/category_waste_2023.png)
 
@@ -81,13 +82,13 @@ The forecast visual uses separate panels for the four metrics. This prevents eco
 
 | Year | Food waste | Economic loss | Carbon footprint | Average score |
 |---:|---:|---:|---:|---:|
-| 2024 | 545.7 million tons | 2.29 trillion USD | 3.46 trillion kg CO2e | 77.6 |
-| 2025 | 554.7 million tons | 2.38 trillion USD | 3.54 trillion kg CO2e | 77.6 |
-| 2026 | 566.0 million tons | 2.45 trillion USD | 3.56 trillion kg CO2e | 77.8 |
-| 2027 | 571.3 million tons | 2.50 trillion USD | 3.59 trillion kg CO2e | 77.9 |
-| 2028 | 578.2 million tons | 2.56 trillion USD | 3.63 trillion kg CO2e | 77.9 |
-| 2029 | 583.2 million tons | 2.62 trillion USD | 3.67 trillion kg CO2e | 77.9 |
-| 2030 | 590.5 million tons | 2.68 trillion USD | 3.73 trillion kg CO2e | 77.9 |
+| 2024 | 524.4 million tons | 2.30 trillion USD | 3.28 trillion kg CO2e | 82.1 |
+| 2025 | 533.2 million tons | 2.38 trillion USD | 3.34 trillion kg CO2e | 82.2 |
+| 2026 | 543.8 million tons | 2.45 trillion USD | 3.36 trillion kg CO2e | 82.4 |
+| 2027 | 549.1 million tons | 2.51 trillion USD | 3.40 trillion kg CO2e | 82.5 |
+| 2028 | 555.9 million tons | 2.56 trillion USD | 3.44 trillion kg CO2e | 82.5 |
+| 2029 | 561.0 million tons | 2.62 trillion USD | 3.48 trillion kg CO2e | 82.5 |
+| 2030 | 568.1 million tons | 2.69 trillion USD | 3.53 trillion kg CO2e | 82.5 |
 
 ---
 
@@ -142,11 +143,15 @@ Ecolense Intelligence combines food waste, economic loss, and carbon impact into
 
 ## References
 
-- FAO. *The State of Food and Agriculture.*
-- UNEP. *Food Waste Index Report.*
-- Poore, J. & Nemecek, T. Reducing food's environmental impacts through producers and consumers. *Science.*
-- IMF. *World Economic Outlook.*
-- Lundberg, S. M. & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. *NeurIPS.*
+References are listed chronologically by publication or data-version date. Web sources were accessed on June 2, 2026.
+
+- 2010-2023 data series — Gapminder Foundation. [*GDP per capita / income per person data*](https://www.gapminder.org/data/). Used for country income variables.
+- 2010-2023 data series — FAO. [*Food Price Index*](https://www.fao.org/worldfoodsituation/foodpricesindex/en/). Used for food price index and time-effect variables.
+- 2017 — Lundberg, S. M. & Lee, S.-I. [*A Unified Approach to Interpreting Model Predictions*](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). NeurIPS 2017. Used for SHAP-based model explainability.
+- 2018 — Poore, J. & Nemecek, T. [*Reducing food's environmental impacts through producers and consumers*](https://doi.org/10.1126/science.aaq0216). *Science*, 360(6392), 987-992. Used for food-category carbon impact factors.
+- 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Used for country-level food waste indicators and Table A4.1.
+- 2024 database update — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Used for material footprint per capita.
+- October 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). Used for 2024-2030 macro growth assumptions.
 
 ---
 

@@ -227,10 +227,12 @@
     "Carbon_Footprint_kgCO2e"
   ],
   "sources": [
-    "UNEP Food Waste Index Report 2021 – Tablo A4.1",
-    "Gapminder Foundation – GDP per capita (gerçek ölçüm)",
-    "FAO Food Price Index 2010-2023",
-    "Poore & Nemecek 2018 Science – LCA karbon faktörleri",
-    "countryinfo paketi – UN nüfus & bölge verisi"
+    "2010-2023 veri serisi – Gapminder Foundation – GDP per capita",
+    "2010-2023 veri serisi – FAO Food Price Index",
+    "2018 – Poore & Nemecek, Science – gıda kategorisi CO2e katsayıları",
+    "2021 – UNEP Food Waste Index Report – Tablo A4.1 ve ülke göstergeleri",
+    "2024 güncel veri tabanı – UNEP IRP Global Material Flows Database – material footprint",
+    "Ekim 2024 – IMF World Economic Outlook Database – 2024-2030 büyüme varsayımları",
+    "Erişim: 2 Haziran 2026 – ülke meta verileri – bölge, gelir grubu ve ISO kodları"
   ]
 }

@@ -27,7 +27,7 @@ Ecolense Intelligence is a data-driven decision support platform for global food
 | Observations | 16,576 |
 | Average test R² | 0.9534 |
 | 2023 average sustainability score | 82.7/100 |
-| 2030 average sustainability projection | 77.9/100 |
+| 2030 average sustainability projection | 82.5/100 |
 | Dashboard modules | 22 |
 
 ---
@@ -68,14 +68,15 @@ In 2023, the average score is 82.7/100 and the country median is 82.9/100. The s
 
 The dataset is prepared at country-year-food category level. It uses food waste, economic loss, carbon footprint, population, GDP per capita, material footprint, food price index, income group, and regional metadata.
 
-| Source | Usage |
-|---|---|
-| UNEP Food Waste Index Report | Country-level food waste indicators |
-| FAO Food Price Index | Food price index and time effects |
-| Gapminder GDP per capita | Country income series |
-| IMF WEO assumptions | 2024-2030 macro projection inputs |
-| Poore & Nemecek factors | Category-level carbon impact |
-| Country metadata | Region, income group, ISO code, and population |
+| Publication / data version | Source | Usage | Project scope |
+|---|---|---|---|
+| 2010-2023 series | Gapminder GDP per capita | Country income series | GDP per capita variables |
+| 2010-2023 series | FAO Food Price Index | Food price index and time effects | Year effect and food price variables |
+| 2018 | Poore & Nemecek, *Science* | Category-level carbon impact | Food-category CO2e factors |
+| 2021 | UNEP Food Waste Index Report | Country-level food waste indicators | Table A4.1 and country indicators |
+| 2024 database update | UNEP IRP Global Material Flows Database | Material footprint indicators | Material footprint per capita |
+| October 2024 | IMF World Economic Outlook Database | 2024-2030 macro projection inputs | Growth assumptions |
+| Accessed June 2, 2026 | Country metadata | Region, income group, ISO code, and population | Dashboard labels and country slices |
 
 The pipeline has three main steps:
 
@@ -187,11 +188,15 @@ ecolense-intelligence/
 
 ## References
 
-- FAO. *The State of Food and Agriculture.*
-- UNEP. *Food Waste Index Report.*
-- Poore, J. & Nemecek, T. Reducing food's environmental impacts through producers and consumers. *Science.*
-- IMF. *World Economic Outlook.*
-- Lundberg, S. M. & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. *NeurIPS.*
+References are listed chronologically by publication or data-version date. Web sources were accessed on June 2, 2026.
+
+- 2010-2023 data series — Gapminder Foundation. [*GDP per capita / income per person data*](https://www.gapminder.org/data/). Used for country income variables.
+- 2010-2023 data series — FAO. [*Food Price Index*](https://www.fao.org/worldfoodsituation/foodpricesindex/en/). Used for food price index and time-effect variables.
+- 2017 — Lundberg, S. M. & Lee, S.-I. [*A Unified Approach to Interpreting Model Predictions*](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). NeurIPS 2017. Used for SHAP-based model explainability.
+- 2018 — Poore, J. & Nemecek, T. [*Reducing food's environmental impacts through producers and consumers*](https://doi.org/10.1126/science.aaq0216). *Science*, 360(6392), 987-992. Used for food-category carbon impact factors.
+- 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Used for country-level food waste indicators and Table A4.1.
+- 2024 database update — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Used for material footprint per capita.
+- October 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). Used for 2024-2030 macro growth assumptions.
 
 ---
 

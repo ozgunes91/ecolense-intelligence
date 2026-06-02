@@ -22,7 +22,7 @@ Dashboard, gıda israfını yalnızca toplam ton değeriyle değil; ekonomik kay
 | Toplam gözlem | 16.576 |
 | Ortalama test R² | 0,9534 |
 | 2023 ortalama sürdürülebilirlik skoru | 82,7/100 |
-| 2030 ortalama sürdürülebilirlik projeksiyonu | 77,9/100 |
+| 2030 ortalama sürdürülebilirlik projeksiyonu | 82,5/100 |
 | Dashboard modülü | 22 |
 
 ---
@@ -31,14 +31,15 @@ Dashboard, gıda israfını yalnızca toplam ton değeriyle değil; ekonomik kay
 
 Veri seti ülke-yıl-gıda kategorisi seviyesinde hazırlanmıştır. Çalışmada gıda israfı, ekonomik kayıp, karbon ayak izi, nüfus, kişi başı gelir, materyal ayak izi, gıda fiyat endeksi, gelir grubu ve bölge bilgileri birlikte kullanılmıştır.
 
-| Kaynak | İçerik |
-|---|---|
-| UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri |
-| FAO Food Price Index | Gıda fiyat endeksi ve dönemsel fiyat hareketleri |
-| Gapminder GDP per capita | Gelir serileri |
-| IMF WEO varsayımları | 2024-2030 makro projeksiyon girdileri |
-| Poore & Nemecek karbon katsayıları | Gıda kategorilerine göre CO2e etkisi |
-| Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri |
+| Yayın / veri sürümü | Kaynak | İçerik | Projedeki kullanım |
+|---|---|---|---|
+| 2010-2023 serisi | Gapminder GDP per capita | Gelir serileri | GDP per capita değişkenleri |
+| 2010-2023 serisi | FAO Food Price Index | Gıda fiyat endeksi | Yıl etkisi ve fiyat hareketleri |
+| 2018 | Poore & Nemecek, *Science* | Gıda kategorisi yaşam döngüsü etkileri | CO2e katsayıları |
+| 2021 | UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri | Tablo A4.1 ve ülke göstergeleri |
+| 2024 güncel veri tabanı | UNEP IRP Global Material Flows Database | Materyal ayak izi | Kişi başına materyal ayak izi |
+| Ekim 2024 | IMF World Economic Outlook Database | Makro büyüme varsayımları | 2024-2030 projeksiyon girdileri |
+| Erişim: 2 Haziran 2026 | Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri | Dashboard kırılımları |
 
 ![2023 kategori dağılımı](docs/assets/category_waste_2023.png)
 
@@ -83,13 +84,13 @@ Tahmin grafiği dört farklı metriği ayrı panellerde gösterir. Bu tercih, ek
 
 | Yıl | Gıda israfı | Ekonomik kayıp | Karbon ayak izi | Ortalama skor |
 |---:|---:|---:|---:|---:|
-| 2024 | 545,7 milyon ton | 2,29 trilyon USD | 3,46 trilyon kg CO2e | 77,6 |
-| 2025 | 554,7 milyon ton | 2,38 trilyon USD | 3,54 trilyon kg CO2e | 77,6 |
-| 2026 | 566,0 milyon ton | 2,45 trilyon USD | 3,56 trilyon kg CO2e | 77,8 |
-| 2027 | 571,3 milyon ton | 2,50 trilyon USD | 3,59 trilyon kg CO2e | 77,9 |
-| 2028 | 578,2 milyon ton | 2,56 trilyon USD | 3,63 trilyon kg CO2e | 77,9 |
-| 2029 | 583,2 milyon ton | 2,62 trilyon USD | 3,67 trilyon kg CO2e | 77,9 |
-| 2030 | 590,5 milyon ton | 2,68 trilyon USD | 3,73 trilyon kg CO2e | 77,9 |
+| 2024 | 524,4 milyon ton | 2,30 trilyon USD | 3,28 trilyon kg CO2e | 82,1 |
+| 2025 | 533,2 milyon ton | 2,38 trilyon USD | 3,34 trilyon kg CO2e | 82,2 |
+| 2026 | 543,8 milyon ton | 2,45 trilyon USD | 3,36 trilyon kg CO2e | 82,4 |
+| 2027 | 549,1 milyon ton | 2,51 trilyon USD | 3,40 trilyon kg CO2e | 82,5 |
+| 2028 | 555,9 milyon ton | 2,56 trilyon USD | 3,44 trilyon kg CO2e | 82,5 |
+| 2029 | 561,0 milyon ton | 2,62 trilyon USD | 3,48 trilyon kg CO2e | 82,5 |
+| 2030 | 568,1 milyon ton | 2,69 trilyon USD | 3,53 trilyon kg CO2e | 82,5 |
 
 ---
 
@@ -142,13 +143,17 @@ Ecolense Intelligence; gıda israfı, ekonomik kayıp ve karbon etkisini birlikt
 
 ---
 
-## Referanslar
+## Kaynakça
 
-- FAO. *The State of Food and Agriculture.*
-- UNEP. *Food Waste Index Report.*
-- Poore, J. & Nemecek, T. Reducing food's environmental impacts through producers and consumers. *Science.*
-- IMF. *World Economic Outlook.*
-- Lundberg, S. M. & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. *NeurIPS.*
+Kaynaklar yayın/veri sürümü tarihine göre kronolojik sıralanmıştır. Web kaynakları için erişim tarihi: 2 Haziran 2026.
+
+- 2010-2023 veri serisi — Gapminder Foundation. [*GDP per capita / income per person data*](https://www.gapminder.org/data/). Ülke bazlı gelir değişkenleri için kullanıldı.
+- 2010-2023 veri serisi — FAO. [*Food Price Index*](https://www.fao.org/worldfoodsituation/foodpricesindex/en/). Gıda fiyat endeksi ve dönemsel fiyat hareketleri için kullanıldı.
+- 2017 — Lundberg, S. M. & Lee, S.-I. [*A Unified Approach to Interpreting Model Predictions*](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). NeurIPS 2017. SHAP tabanlı model açıklanabilirliği için kullanıldı.
+- 2018 — Poore, J. & Nemecek, T. [*Reducing food's environmental impacts through producers and consumers*](https://doi.org/10.1126/science.aaq0216). *Science*, 360(6392), 987-992. Gıda kategorisi karbon etkisi katsayıları için kullanıldı.
+- 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Ülke bazlı gıda atığı göstergeleri ve Tablo A4.1 için kullanıldı.
+- 2024 güncel veri tabanı — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Kişi başına materyal ayak izi için kullanıldı.
+- Ekim 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). 2024-2030 makro büyüme varsayımları için kullanıldı.
 
 ---
 
