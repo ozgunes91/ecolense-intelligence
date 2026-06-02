@@ -106,7 +106,7 @@ Sürdürülebilirlik skoru, kişi başı gıda israfı, kişi başı ekonomik ka
 
 | Modül | İşlev |
 |---|---|
-| Ana Sayfa | Ana KPI kartları, hızlı geçişler, veri chatbotu ve hikaye girişleri. |
+| Ana Sayfa | Ana KPI kartları, hızlı geçişler ve hikaye girişleri. |
 | Veri Analizi | Veri kapsamı, kalite, dağılım, korelasyon ve kategori analizi. |
 | Model Performansı | Test/CV metrikleri, hata ölçümleri ve hedef bazlı model kalitesi. |
 | Gelecek Tahminleri | 2024-2030 ülke ve metrik tahminleri. |
@@ -121,7 +121,7 @@ Sürdürülebilirlik skoru, kişi başı gıda israfı, kişi başı ekonomik ka
 | Karbon Akışları | Karbon yükünün kategori, ülke veya kıta dağılımı. |
 | Model Karşılaştırma | Model sonuçları, hedef performansı ve özellik etkisi. |
 | Politika Simülatörü | Atık azaltımı, karbon fiyatı ve teknoloji benimseme senaryoları. |
-| İçgörü Paneli | Veri chatbotu, CAGR analizi, SHAP etkileri ve bağlamsal yanıtlar. |
+| İçgörü Paneli | CAGR analizi, SHAP etkileri ve bağlamsal içgörüler. |
 | Risk & Fırsat | Ülkelerin risk ve fırsat eksenlerinde konumlandırılması. |
 | Hedef Planlayıcı | 2030 hedefi için gerekli yıllık değişim oranı. |
 | Rapor Oluşturucu | Rapor türüne göre farklı HTML/Markdown çıktılar. |
@@ -131,9 +131,13 @@ Sürdürülebilirlik skoru, kişi başı gıda israfı, kişi başı ekonomik ka
 
 ---
 
-## Veri Chatbotu
+## Yapay Zeka Asistanı
 
-Veri chatbotu, sabit cevap veren bir metin kutusu değildir. Soru metninden ülke, kategori, metrik, yıl ve niyet bilgisini ayıklar; birden fazla soru varsa bunları ayrı veri okuma adımlarına böler. Ardından tarihsel veri, tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt üretir. Yanıtın sonunda kullanılan veri dayanağı belirtilir.
+Yapay Zeka Asistanı, dashboard genelinde sağ alt köşeden açılan sabit bir karar destek bileşenidir. Soru metninden ülke, kategori, metrik, yıl ve niyet bilgisini ayıklar; birden fazla soru varsa bunları ayrı veri okuma adımlarına böler. Ardından tarihsel veri, 2024-2030 tahmin dosyası ve açıklanabilirlik çıktılarından ilgili kesiti okuyarak yanıt üretir.
+
+Asistan arayüzü tek aktif yanıt mantığıyla tasarlanmıştır. Her yeni soru önceki yanıt alanını günceller; ekranda yalnızca son soruya ait veri dayanaklı cevap görünür. Bu yaklaşım, dashboard içinde rapor veya analiz alanlarının gereksiz sohbet geçmişiyle bölünmesini engeller.
+
+![Yapay Zeka Asistanı](docs/assets/dashboard_home_tr.png)
 
 ---
 

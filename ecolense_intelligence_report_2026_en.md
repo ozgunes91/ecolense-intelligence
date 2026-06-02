@@ -39,7 +39,7 @@ The dataset is prepared at country-year-food category level. It includes food wa
 | October 2024 | IMF World Economic Outlook Database | Macro growth assumptions | 2024-2030 projection inputs |
 | Accessed June 2, 2026 | Country metadata | Region, income group, ISO code, and population | Dashboard slices |
 
-![2023 category distribution](docs/assets/category_waste_2023.png)
+![2023 category distribution](docs/assets/category_waste_2023_en.png)
 
 ---
 
@@ -54,7 +54,7 @@ Gradient Boosting Regressor is used as the production model because it provides 
 | Carbon footprint | 0.9464 | 0.9609 | 0.0398 |
 | Average | 0.9534 | 0.9584 | 0.0300 |
 
-![Model performance](docs/assets/model_performance_summary.png)
+![Model performance](docs/assets/model_performance_summary_en.png)
 
 ---
 
@@ -62,13 +62,13 @@ Gradient Boosting Regressor is used as the production model because it provides 
 
 Model explainability is tracked through target-level feature impact outputs. These outputs show which variables are most influential in model decisions.
 
-![SHAP feature impact overview](docs/assets/shap_feature_impact_overview.png)
+![SHAP feature impact overview](docs/assets/shap_feature_impact_overview_en.png)
 
-![Total waste feature impact](docs/assets/shap_total_waste.png)
+![Total waste feature impact](docs/assets/shap_total_waste_en.png)
 
-![Economic loss feature impact](docs/assets/shap_economic_loss.png)
+![Economic loss feature impact](docs/assets/shap_economic_loss_en.png)
 
-![Carbon footprint feature impact](docs/assets/shap_carbon_footprint.png)
+![Carbon footprint feature impact](docs/assets/shap_carbon_footprint_en.png)
 
 The results show that category and population-related variables play a strong role across targets. Policy interpretation should therefore consider both country scale and category composition.
 
@@ -78,7 +78,7 @@ The results show that category and population-related variables play a strong ro
 
 The forecast visual uses separate panels for the four metrics. This prevents economic loss and carbon lines from appearing incorrectly close to zero because of mixed units.
 
-![Forecast trends](docs/assets/forecast_trends.png)
+![Forecast trends](docs/assets/forecast_trends_en.png)
 
 | Year | Food waste | Economic loss | Carbon footprint | Average score |
 |---:|---:|---:|---:|---:|
@@ -104,7 +104,7 @@ In the 2023 data, the average score is 82.7/100 and the country median is 82.9/1
 
 | Module | Purpose |
 |---|---|
-| Home | Main KPI cards, quick navigation, data chatbot, and story entry points. |
+| Home | Main KPI cards, quick navigation, and story entry points. |
 | Data Analysis | Data coverage, quality, distributions, correlations, and category analysis. |
 | Model Performance | Test/CV metrics, errors, and target-level model quality. |
 | Forecasts | 2024-2030 country and metric forecasts. |
@@ -119,7 +119,7 @@ In the 2023 data, the average score is 82.7/100 and the country median is 82.9/1
 | Carbon Flows | Category, country, or continent distribution of carbon load. |
 | Model Comparison | Model results, target performance, and feature impact. |
 | Policy Simulator | Waste reduction, carbon price, and technology adoption scenarios. |
-| Insight Panel | Data chatbot, CAGR analysis, SHAP effects, and contextual answers. |
+| Insight Panel | CAGR analysis, SHAP effects, and contextual insights. |
 | Risk & Opportunity | Country positioning on risk and opportunity axes. |
 | Target Planner | Annual change required to reach a 2030 target. |
 | Report Builder | Different HTML/Markdown outputs by report type. |
@@ -129,9 +129,13 @@ In the 2023 data, the average score is 82.7/100 and the country median is 82.9/1
 
 ---
 
-## Data Chatbot
+## AI Assistant
 
-The data chatbot is not a fixed-response text box. It extracts country, category, metric, year, and intent from the question; when the input contains multiple questions, it separates them into distinct data-reading steps. It then retrieves the relevant historical, forecast, and explainability slices. Each answer includes an evidence note.
+The AI Assistant is a dashboard-wide decision support component opened from the lower-right corner. It extracts country, category, metric, year, and intent from the question; when the input contains multiple questions, it separates them into distinct data-reading steps. It then retrieves the relevant historical data, 2024-2030 forecast output, and explainability slices before generating the answer.
+
+The interface follows a single-active-answer pattern. Each new question updates the previous answer area, so only the latest evidence-backed response remains visible. This keeps reports and analysis views from being crowded by accumulated chat history.
+
+![AI Assistant](docs/assets/dashboard_home_en.png)
 
 ---
 

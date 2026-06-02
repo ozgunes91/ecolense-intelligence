@@ -136,8 +136,8 @@ I18N = {
         'ADVANCED_ANALYSIS_DESC': 'SHAP, korelasyon, 3D görselleştirme',
         'FUTURE_FORECASTS': 'Gelecek Tahminleri',
         'FUTURE_FORECASTS_DESC': '2024–2030 projeksiyonlar',
-        'AI_ASSISTANT': 'Veri Asistanı',
-        'AI_ASSISTANT_DESC': 'Akıllı öneriler ve içgörüler',
+        'AI_ASSISTANT': 'Yapay Zeka Asistanı',
+        'AI_ASSISTANT_DESC': 'Veriye göre soruları yanıtlar',
         'RISK_OPPORTUNITY': 'Risk & Fırsat Radar',
         'RISK_OPPORTUNITY_DESC': 'Ülkeleri 2×2 eksende konumlandır',
         'MODEL_CARD': 'Model Kartı',
@@ -155,7 +155,7 @@ I18N = {
         'AI_INSIGHTS_DESC': 'Veri odaklı içgörüler ve analizler',
         'AI_PARAMETERS_TITLE': 'Analiz Parametreleri',
         'AI_PARAMETERS_DESC': 'Gerçek veri: ülkeler×yıllar, tahmin ufku: 2024 → 2030',
-        'AI_CHAT_TITLE': 'İnteraktif Veri Asistanı',
+        'AI_CHAT_TITLE': 'Yapay Zeka Asistanı',
         'AI_CHAT_DESC': 'Gıda israfı verileri hakkında sorular sorun, gerçek zamanlı içgörüler alın ve kişiselleştirilmiş öneriler alın',
         'AI_ASK_PLACEHOLDER': "örn., 'Hangi ülkenin en yüksek gıda israfı var?' veya 'Almanya için trendleri göster'",
         'AI_ASK_BUTTON': 'Asistana Sor',
@@ -214,8 +214,8 @@ I18N = {
         'HOME_ADVANCED_ANALYSIS_DESC': 'SHAP, korelasyon, 3D görselleştirme',
         'HOME_FUTURE_FORECASTS': 'Gelecek Tahminleri',
         'HOME_FUTURE_FORECASTS_DESC': '2024–2030 projeksiyonlar',
-        'HOME_AI_ASSISTANT': 'Veri Asistanı',
-        'HOME_AI_ASSISTANT_DESC': 'Akıllı öneriler ve içgörüler',
+        'HOME_AI_ASSISTANT': 'Yapay Zeka Asistanı',
+        'HOME_AI_ASSISTANT_DESC': 'Veriye göre soruları yanıtlar',
         'HOME_RISK_OPPORTUNITY': 'Risk & Fırsat Radar',
         'HOME_RISK_OPPORTUNITY_DESC': 'Ülkeleri 2×2 eksende konumlandır',
         'HOME_MODEL_CARD': 'Model Kartı',
@@ -434,8 +434,8 @@ I18N = {
         'ADVANCED_ANALYSIS_DESC': 'SHAP, correlation, 3D visualization',
         'FUTURE_FORECASTS': 'Future Forecasts',
         'FUTURE_FORECASTS_DESC': '2024–2030 projections',
-        'AI_ASSISTANT': 'Data Assistant',
-        'AI_ASSISTANT_DESC': 'Smart recommendations and insights',
+        'AI_ASSISTANT': 'AI Assistant',
+        'AI_ASSISTANT_DESC': 'Answers questions with data-backed context',
         'RISK_OPPORTUNITY': 'Risk & Opportunity Radar',
         'RISK_OPPORTUNITY_DESC': 'Position countries on 2×2 axis',
         'MODEL_CARD': 'Model Card',
@@ -453,7 +453,7 @@ I18N = {
         'AI_INSIGHTS_DESC': 'Data-driven insights and analysis',
         'AI_PARAMETERS_TITLE': 'Analysis Parameters',
         'AI_PARAMETERS_DESC': 'Real data: countries×years, forecast horizon: 2024 → 2030',
-        'AI_CHAT_TITLE': 'Interactive Data Assistant',
+        'AI_CHAT_TITLE': 'AI Assistant',
         'AI_CHAT_DESC': 'Ask questions about food waste data, get real-time insights, and receive personalized recommendations',
         'AI_ASK_PLACEHOLDER': "e.g., 'Which country has the highest food waste?' or 'Show me trends for Germany'",
         'AI_ASK_BUTTON': 'Ask Assistant',
@@ -1106,52 +1106,111 @@ def load_css():
     .chatbot-heading h4 { margin: 0 0 4px 0; color: #F8FAFC; letter-spacing: 0; }
     .chatbot-heading p { margin: 0; color: #CBD5E1; }
     div[data-testid="stPopover"] {
-        position: fixed;
-        right: 24px;
-        bottom: 24px;
-        z-index: 9999;
+        position: fixed !important;
+        right: 24px !important;
+        bottom: 24px !important;
+        left: auto !important;
+        top: auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 64px !important;
+        z-index: 9999 !important;
     }
-    div[data-testid="stPopover"] > button {
-        background: #172033 !important;
+    div[data-testid="stPopover"] > div[aria-haspopup="true"],
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"] {
+        width: 58px !important;
+        min-width: 58px !important;
+        max-width: 58px !important;
+    }
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"] {
+        height: 58px !important;
+        min-height: 58px !important;
+        padding: 0 !important;
+        background:
+            radial-gradient(circle at 35% 25%, rgba(45,212,191,0.42), transparent 32%),
+            linear-gradient(135deg, #25305F 0%, #121827 100%) !important;
         color: #F8FAFC !important;
-        border: 1px solid rgba(45,212,191,0.55) !important;
+        border: 1px solid rgba(45,212,191,0.72) !important;
         border-radius: 999px !important;
-        min-height: 48px;
-        padding: 0 18px !important;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(17, 230, 193, 0.10);
-        font-weight: 700;
+        box-shadow:
+            0 18px 38px rgba(15, 23, 42, 0.34),
+            0 0 0 1px rgba(17, 230, 193, 0.12),
+            0 0 24px rgba(45, 212, 191, 0.22) !important;
+        overflow: hidden !important;
     }
-    div[data-testid="stPopover"] > button:hover {
-        border-color: rgba(45,212,191,0.95) !important;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.28), 0 0 18px rgba(45,212,191,0.22);
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"] p {
+        margin: 0 !important;
+        color: transparent !important;
+        font-size: 0 !important;
+        line-height: 1 !important;
     }
-    div[data-testid="stPopover"] button:focus,
-    div[data-testid="stPopover"] button:active,
-    div[data-testid="stPopover"] button:focus-visible {
-        color: #F8FAFC !important;
-        border-color: rgba(45,212,191,0.90) !important;
-        outline: none !important;
-        box-shadow: 0 0 0 2px rgba(45,212,191,0.24), 0 12px 28px rgba(15,23,42,0.18) !important;
-    }
-    .rag-bot-title {
-        background: #172033;
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"] p::before {
+        content: "🤖";
         color: #F8FAFC;
-        border: 1px solid rgba(45,212,191,0.32);
-        border-radius: 12px;
+        font-size: 25px;
+        line-height: 58px;
+    }
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"]:hover {
+        transform: translateY(-2px);
+        border-color: rgba(45,212,191,0.95) !important;
+        box-shadow:
+            0 22px 44px rgba(15, 23, 42, 0.38),
+            0 0 0 1px rgba(17, 230, 193, 0.20),
+            0 0 32px rgba(45, 212, 191, 0.32) !important;
+    }
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"]:focus,
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"]:active,
+    div[data-testid="stPopover"] button[data-testid="stPopoverButton"]:focus-visible {
+        outline: none !important;
+        border-color: rgba(45,212,191,0.95) !important;
+        box-shadow:
+            0 0 0 4px rgba(45,212,191,0.22),
+            0 18px 38px rgba(15,23,42,0.30) !important;
+    }
+    .ai-panel-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: linear-gradient(135deg, #172033 0%, #232E5C 100%);
+        color: #F8FAFC;
+        border: 1px solid rgba(45,212,191,0.28);
+        border-radius: 14px;
         padding: 14px 16px;
         margin-bottom: 12px;
+        box-shadow: 0 14px 32px rgba(15,23,42,0.16);
     }
-    .rag-bot-title h4 {
-        margin: 0 0 4px 0;
+    .ai-panel-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: rgba(45,212,191,0.14);
+        border: 1px solid rgba(45,212,191,0.34);
+        font-size: 1.35rem;
+    }
+    .ai-panel-copy h4 {
+        margin: 0;
         color: #F8FAFC;
         letter-spacing: 0;
+        font-size: 1.05rem;
     }
-    .rag-bot-title p {
+    .ai-panel-copy p {
         margin: 0;
         color: #CBD5E1;
-        font-size: 0.9rem;
+        font-size: 0.84rem;
     }
-    .rag-question {
+    .ai-panel-kicker {
+        display: inline-block;
+        margin-bottom: 3px;
+        color: #8DEDE0;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+    .assistant-question {
         background: #EEF6FF;
         border: 1px solid rgba(37, 99, 235, 0.16);
         border-radius: 12px;
@@ -1160,7 +1219,7 @@ def load_css():
         color: #0F172A;
         font-weight: 650;
     }
-    .rag-answer {
+    .assistant-answer {
         background: #FFFFFF;
         border: 1px solid rgba(15, 23, 42, 0.10);
         border-left: 4px solid #2DD4BF;
@@ -1170,7 +1229,7 @@ def load_css():
         color: #0F172A;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
     }
-    .rag-empty {
+    .assistant-empty {
         background: #F8FAFC;
         border: 1px dashed rgba(15, 23, 42, 0.18);
         border-radius: 12px;
@@ -1184,6 +1243,7 @@ def load_css():
         border-radius: 12px;
         padding: 10px 12px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        margin: 8px 0;
     }
     div[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         background: #EEF6FF;
@@ -3366,16 +3426,19 @@ def main():
 
     # Sidebar
     with st.sidebar:
+        if 'lang_select' not in st.session_state:
+            st.session_state['lang_select'] = st.session_state.get('lang', 'TR')
+        sidebar_lang = st.session_state.get('lang_select', st.session_state.get('lang', 'TR'))
         st.markdown(f"""
         <div style="text-align: center; padding: 1rem;">
             <h3>🌱 ECOLENSE</h3>
-            <p>Analitik Dashboard</p>
+            <p>{_copy('Analitik Dashboard', 'Analytical Dashboard', sidebar_lang)}</p>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("---")
         # Dil ve Lite mod
-        st.session_state['lang'] = st.selectbox("Language / Dil", ["TR", "EN"], index=(0 if st.session_state['lang']=="TR" else 1))
+        st.session_state['lang'] = st.selectbox("Language / Dil", ["TR", "EN"], key="lang_select")
         st.session_state['lite_mode'] = st.checkbox("Lite Mode (performans)", value=st.session_state['lite_mode'])
 
         # Sayfa seçimi
@@ -3416,11 +3479,7 @@ def main():
         if st.session_state.get('page_select') not in pages_list:
             st.session_state['page_select'] = current_page
 
-        try:
-            default_idx = pages_list.index(current_page)
-        except ValueError:
-            default_idx = 0
-        page = st.selectbox(_t('PAGE_SELECT'), pages_list, index=default_idx, key='page_select')
+        page = st.selectbox(_t('PAGE_SELECT'), pages_list, key='page_select')
         if page != st.session_state.get('page', pages_list[0]):
             st.session_state['page'] = page
             st.rerun()
@@ -4190,7 +4249,7 @@ def show_data_analysis():
     render_country_rankings(real_df, final_df)
     render_premium_visuals(real_df, final_df)
 
-    # Veri Asistanı – Premium tasarım
+    # Analitik not – Premium tasarım
     try:
         txts = []
         # Korelasyon hedef açıklaması
@@ -4213,7 +4272,7 @@ def show_data_analysis():
 
         st.markdown("""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Veri Analizi</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Veri Analizi</h4>
           <p><span class='ai-badge'>Korelasyon</span> {rows}</p>
           <p><span class='ai-badge'>Öneri</span> Aykırıları işaretleyip etkisini ayrı test edin; korelasyon tablosunu hedefe göre filtreleyin ve multikolinerliği (>|0.9|) düşürün.</p>
         </div>
@@ -4227,8 +4286,10 @@ def show_data_analysis():
 def show_model_performance():
     """Model performansı sayfası - Premium tasarım"""
 
+    lang = _lang()
+
     # Premium başlık
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%);
                 padding: 2rem; border-radius: 20px; color: white; margin: 1rem 0;
                 box-shadow: 0 10px 25px rgba(35, 46, 92, 0.22);">
@@ -4236,16 +4297,16 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">📊</span>
             </div>
-            <h1 style="margin: 0; font-size: 2.5rem; font-weight: 700;">Model Performansı</h1>
+            <h1 style="margin: 0; font-size: 2.5rem; font-weight: 700;">{_copy('Model Performansı', 'Model Performance', lang)}</h1>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Tahmin modellerinin performans analizi ve karşılaştırması
+            {_copy('Tahmin modellerinin performans analizi ve karşılaştırması', 'Forecast model performance analysis and comparison', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     # Model seçimi - Premium tasarım
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #1F3B4D 0%, #182235 100%);
                 padding: 1.5rem; border-radius: 15px; color: white; margin: 1rem 0;
                 box-shadow: 0 8px 20px rgba(31, 59, 77, 0.20);">
@@ -4253,7 +4314,7 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 8px; margin-right: 0.8rem;">
                 <span style="font-size: 1.2rem;">🔧</span>
             </div>
-            <h3 style="margin: 0; font-size: 1.5rem; font-weight: 600;">Model Seçimi</h3>
+            <h3 style="margin: 0; font-size: 1.5rem; font-weight: 600;">{_copy('Model Seçimi', 'Model Selection', lang)}</h3>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -4262,13 +4323,17 @@ def show_model_performance():
     perf = load_performance_report(PERF_REPORT_PATH)
 
     if not perf:
-        st.warning(f"⚠️ Model performans raporu bulunamadı.")
+        st.warning(_copy("⚠️ Model performans raporu bulunamadı.", "⚠️ Model performance report was not found.", lang))
         return
 
     # Model tipini ve veri kapsamını JSON'dan al
     model_type = perf.get('model_type', 'GradientBoosting')
     year_range = perf.get('year_range', [2010, 2023])
-    data_scope = f"{perf.get('n_countries', 148)} ülke · {year_range[0]}-{year_range[-1]} · {perf.get('n_rows', 16576):,} satır"
+    data_scope = _copy(
+        f"{perf.get('n_countries', 148)} ülke · {year_range[0]}-{year_range[-1]} · {perf.get('n_rows', 16576):,} satır",
+        f"{perf.get('n_countries', 148)} countries · {year_range[0]}-{year_range[-1]} · {perf.get('n_rows', 16576):,} rows",
+        lang
+    )
 
 
 
@@ -4276,13 +4341,13 @@ def show_model_performance():
     <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px; margin: 1rem 0;
                 box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-left: 4px solid #11E6C1;">
         <div style="font-weight: 600; color: #232E5C;">📊 Model: {model_type}</div>
-        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.3rem;">Veri kaynağı: data/processed.csv · {data_scope}</div>
-        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.2rem;">Kaynak kapsamı: UNEP Food Waste Index 2021, Gapminder/FAO 2010-2023, UNEP IRP 2024 ve IMF WEO Ekim 2024</div>
+        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.3rem;">{_copy('Veri kaynağı', 'Data source', lang)}: data/processed.csv · {data_scope}</div>
+        <div style="font-size: 0.9rem; color: #64748B; margin-top: 0.2rem;">{_copy('Kaynak kapsamı', 'Source coverage', lang)}: UNEP Food Waste Index 2021, Gapminder/FAO 2010-2023, UNEP IRP 2024 {_copy('ve', 'and', lang)} IMF WEO {_copy('Ekim', 'October', lang)} 2024</div>
     </div>
     """, unsafe_allow_html=True)
 
     # Ana KPI'lar - Premium tasarım
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #28445E 0%, #1A2838 100%);
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0;
                 box-shadow: 0 10px 25px rgba(40, 68, 94, 0.20);">
@@ -4290,18 +4355,18 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">📊</span>
             </div>
-            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">Ana Performans Metrikleri</h2>
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">{_copy('Ana Performans Metrikleri', 'Core Performance Metrics', lang)}</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Hedef değişkenlere göre model performansı
+            {_copy('Hedef değişkenlere göre model performansı', 'Model performance by target variable', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     targets_order = [
-        ('Total Waste (Tons)', '🗑️ Atık'),
-        ('Economic Loss (Million $)', '💰 Ekonomik Kayıp'),
-        ('Carbon_Footprint_kgCO2e', '🌍 Karbon')
+        ('Total Waste (Tons)', '🗑️', _copy('Atık', 'Waste', lang)),
+        ('Economic Loss (Million $)', '💰', _copy('Ekonomik', 'Economic', lang)),
+        ('Carbon_Footprint_kgCO2e', '🌍', _copy('Karbon', 'Carbon', lang))
     ]
 
     # Overfitting hesaplama fonksiyonu
@@ -4312,7 +4377,7 @@ def show_model_performance():
     total_overfitting = 0
     valid_targets = 0
 
-    for i, ((key, label), c) in enumerate(zip(targets_order, cols)):
+    for i, ((key, icon, label), c) in enumerate(zip(targets_order, cols)):
         # JSON dosyasından doğru anahtarları al
         target_data = perf.get('targets', {}).get(key, {})
         r2 = target_data.get('test_r2', 0)
@@ -4334,8 +4399,8 @@ def show_model_performance():
         <div style="background: linear-gradient(135deg, {color} 0%, {color}dd 100%);
                     padding: 2rem; border-radius: 20px; color: white; text-align: center;
                     box-shadow: 0 8px 25px rgba(35, 46, 92, 0.22); margin: 1rem 0;">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">{label.split()[0]}</div>
-            <h3 style="margin: 0 0 1rem 0; font-size: 1.3rem; font-weight: 600;">{label.split()[1]}</h3>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">{icon}</div>
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.3rem; font-weight: 600;">{label}</h3>
             <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">R² = {r2:.4f}</div>
             <div style="font-size: 1rem; opacity: 0.9; margin-bottom: 0.3rem;">RMSE = {rmse:,.4f}</div>
             <div style="font-size: 0.9rem; opacity: 0.8;">CV R² = {cv_r2:.4f}</div>
@@ -4347,24 +4412,36 @@ def show_model_performance():
 
     # Ortalama overfitting kartı - JSON'dan al
     avg_overfitting = perf.get('average_overfitting', 0)
+    overfitting_line = _copy(
+        f"CV R² > Test R² ({valid_targets} hedef)" if avg_overfitting > 0 else "Overfitting yok",
+        f"CV R² > Test R² ({valid_targets} targets)" if avg_overfitting > 0 else "No overfitting",
+        lang
+    )
+    risk_line = (
+        _copy('⚠️ Yüksek overfitting riski', '⚠️ High overfitting risk', lang)
+        if avg_overfitting > 0.1 else
+        _copy('✅ İyi genelleme', '✅ Good generalization', lang)
+        if avg_overfitting < 0.05 else
+        _copy('⚠️ Orta seviye overfitting', '⚠️ Moderate overfitting', lang)
+    )
     st.markdown(f"""
     <div style="background: linear-gradient(135deg, #5B3636 0%, #2D3748 100%);
                 padding: 2rem; border-radius: 20px; color: white; text-align: center;
                 box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3); margin: 2rem 0;">
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚠️</div>
-        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-weight: 600;">Overfitting Analizi</h3>
-        <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Ortalama Gap = {avg_overfitting:.4f}</div>
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-weight: 600;">{_copy('Overfitting Analizi', 'Overfitting Analysis', lang)}</h3>
+        <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">{_copy('Ortalama Gap', 'Average Gap', lang)} = {avg_overfitting:.4f}</div>
         <div style="font-size: 1rem; opacity: 0.9;">
-            {f'CV R² > Test R² ({valid_targets} hedef)' if avg_overfitting > 0 else 'Overfitting yok'}
+            {overfitting_line}
         </div>
         <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">
-            {f'⚠️ Yüksek overfitting riski' if avg_overfitting > 0.1 else '✅ İyi genelleme' if avg_overfitting < 0.05 else '⚠️ Orta seviye overfitting'}
+            {risk_line}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     # R2 grafiği - Premium tasarım
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #232E5C 0%, #1A1C2C 100%);
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0;
                 box-shadow: 0 10px 25px rgba(35, 46, 92, 0.22);">
@@ -4372,26 +4449,27 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">📈</span>
             </div>
-            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">R² Performans Grafiği</h2>
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">{_copy('R² Performans Grafiği', 'R² Performance Chart', lang)}</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Test ve Cross-Validation R² karşılaştırması
+            {_copy('Test ve Cross-Validation R² karşılaştırması', 'Test and cross-validation R² comparison', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     rows = []
-    for key, label in targets_order:
+    for key, icon, label in targets_order:
         target_data = perf.get('targets', {}).get(key, {})
         rows.append({
-            'Hedef': label,
+            _copy('Hedef', 'Target', lang): f"{icon} {label}",
             'R2_Test': target_data.get('test_r2', 0),
             'R2_CV': target_data.get('cv_r2', 0)
         })
     perf_df = pd.DataFrame(rows)
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=perf_df['Hedef'], y=perf_df['R2_Test'], name='Test R²', marker_color='#11E6C1'))
-    fig.add_trace(go.Bar(x=perf_df['Hedef'], y=perf_df['R2_CV'], name='CV R²', marker_color='#A9FF4F'))
+    target_axis = _copy('Hedef', 'Target', lang)
+    fig.add_trace(go.Bar(x=perf_df[target_axis], y=perf_df['R2_Test'], name='Test R²', marker_color='#11E6C1'))
+    fig.add_trace(go.Bar(x=perf_df[target_axis], y=perf_df['R2_CV'], name='CV R²', marker_color='#A9FF4F'))
     fig.update_layout(
         barmode='group',
         height=420,
@@ -4399,14 +4477,14 @@ def show_model_performance():
         plot_bgcolor='rgba(248, 250, 252, 0.8)',
         paper_bgcolor='rgba(248, 250, 252, 0.8)',
         title=dict(
-            text="Model Performans Karşılaştırması",
+            text=_copy("Model Performans Karşılaştırması", "Model Performance Comparison", lang),
             font=dict(size=18, color='#232E5C')
         )
     )
     st.plotly_chart(fig, use_container_width=True)
 
     # Açıklanabilirlik görselleri
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #173F35 0%, #28445E 100%);
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0;
                 box-shadow: 0 10px 25px rgba(17, 230, 193, 0.2);">
@@ -4414,18 +4492,18 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.8rem;">🔍</span>
             </div>
-            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">SHAP / Özellik Etkisi</h2>
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 700;">{_copy('SHAP / Özellik Etkisi', 'SHAP / Feature Impact', lang)}</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Model kararlarını en çok etkileyen değişkenler
+            {_copy('Model kararlarını en çok etkileyen değişkenler', 'Variables with the strongest effect on model decisions', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     shap_assets = [
-        ("Toplam Gıda İsrafı", "docs/assets/shap_total_waste.png"),
-        ("Ekonomik Kayıp", "docs/assets/shap_economic_loss.png"),
-        ("Karbon Ayak İzi", "docs/assets/shap_carbon_footprint.png"),
+        (_copy("Toplam Gıda İsrafı", "Total Food Waste", lang), "docs/assets/shap_total_waste.png"),
+        (_copy("Ekonomik Kayıp", "Economic Loss", lang), "docs/assets/shap_economic_loss.png"),
+        (_copy("Karbon Ayak İzi", "Carbon Footprint", lang), "docs/assets/shap_carbon_footprint.png"),
     ]
     shap_cols = st.columns(3)
     for (caption, path), col in zip(shap_assets, shap_cols):
@@ -4456,7 +4534,7 @@ def show_model_performance():
     # Not: Kaynak {src_name}. Robust yedek olarak kullanılabilir.
 
     # Accuracy Scorecard - Premium tasarım
-    st.markdown("""
+    st.markdown(f"""
     <div style="background: linear-gradient(135deg, #1F3B4D 0%, #182235 100%);
                 padding: 2rem; border-radius: 20px; color: white; margin: 2rem 0;
                 box-shadow: 0 10px 25px rgba(31, 59, 77, 0.20);">
@@ -4464,10 +4542,10 @@ def show_model_performance():
             <div style="background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; margin-right: 1rem;">
                 <span style="font-size: 1.5rem;">🏅</span>
             </div>
-            <h2 style="margin: 0; font-size: 1.8rem; font-weight: 700;">Accuracy Scorecard</h2>
+            <h2 style="margin: 0; font-size: 1.8rem; font-weight: 700;">{_copy('Doğruluk Karnesi', 'Accuracy Scorecard', lang)}</h2>
         </div>
         <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">
-            Genel model performans özeti ve overfitting analizi
+            {_copy('Genel model performans özeti ve overfitting analizi', 'Overall model performance summary and overfitting analysis', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -4488,32 +4566,32 @@ def show_model_performance():
                 padding: 2rem; border-radius: 20px; color: white; text-align: center;
                 box-shadow: 0 8px 25px rgba(35, 46, 92, 0.22); margin: 2rem 0;">
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">📊</div>
-        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-weight: 600;">Genel Model Performansı</h3>
-        <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Ortalama R² = {f"{avgR:.4f}" if avgR is not None else "-"}</div>
+        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem; font-weight: 600;">{_copy('Genel Model Performansı', 'Overall Model Performance', lang)}</h3>
+        <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">{_copy('Ortalama R²', 'Average R²', lang)} = {f"{avgR:.4f}" if avgR is not None else "-"}</div>
         <div style="font-size: 1rem; opacity: 0.9;">
-            {f'✅ Mükemmel performans' if avgR and avgR > 0.9 else f'🟡 İyi performans' if avgR and avgR > 0.7 else f'⚠️ Geliştirilebilir' if avgR else '❌ Veri yok'}
+            {_copy('✅ Mükemmel performans', '✅ Excellent performance', lang) if avgR and avgR > 0.9 else _copy('🟡 İyi performans', '🟡 Good performance', lang) if avgR and avgR > 0.7 else _copy('⚠️ Geliştirilebilir', '⚠️ Can be improved', lang) if avgR else _copy('❌ Veri yok', '❌ No data', lang)}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Veri Asistanı – akıllı özet
+    # Analitik not – akıllı özet
     try:
         hints = []
         def _fmt(x):
             return "-" if x is None else f"{x:.3f}"
-        for key, label in targets_order:
+        for key, icon, label in targets_order:
             target_data = perf.get('targets', {}).get(key, {})
             r2v, cvv = target_data.get('test_r2'), target_data.get('cv_r2')
             gap = None if (r2v is None or cvv is None) else abs(r2v-cvv)
             if r2v is not None and cvv is not None:
-                trend = "stabil" if (gap is not None and gap < 0.05) else "oynak"
-                hints.append(f"<span class='ai-badge'>{label}</span> R²={_fmt(r2v)} | CV={_fmt(cvv)} → {trend}")
+                trend = _copy("stabil", "stable", lang) if (gap is not None and gap < 0.05) else _copy("oynak", "volatile", lang)
+                hints.append(f"<span class='ai-badge'>{icon} {label}</span> R²={_fmt(r2v)} | CV={_fmt(cvv)} → {trend}")
         if hints:
-            st.markdown("""
+            st.markdown(f"""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Model Performansı</h4>
-              <p>“Kısa raporum hazır! Test ve CV skorlarına göre: {rows}.”</p>
-              <p><span class='ai-badge'>💡 Öneri</span> CV ile test arasında fark büyükse (>|0.05|) ilgili hedefte model karmaşıklığını sınırlayıp regularization parametrelerini artırmayı düşünebilirsin.</p>
+              <h4><span class='ai-emoji'>📊</span>{_copy('Analitik Not — Model Performansı', 'Analytical Note — Model Performance', lang)}</h4>
+              <p>{_copy('Kısa raporum hazır. Test ve CV skorlarına göre:', 'Quick readout is ready. Based on test and CV scores:', lang)} {{rows}}</p>
+              <p><span class='ai-badge'>💡 {_copy('Öneri', 'Recommendation', lang)}</span> {_copy('CV ile test arasında fark büyükse (>|0.05|) ilgili hedefte model karmaşıklığını sınırlayıp regularization parametrelerini artırmayı düşünebilirsin.', 'If the gap between CV and test is large (>|0.05|), limit model complexity and increase regularization for the relevant target.', lang)}</p>
             </div>
             """.replace("{rows}", " · ".join(hints)), unsafe_allow_html=True)
     except Exception:
@@ -4522,7 +4600,7 @@ def show_model_performance():
     # Model karşılaştırma bölümü kaldırıldı - Sadece GradientBoosting kullanılıyor
 
     # Sayfa sonu yazısı
-    add_page_footer("Model Performansı")
+    add_page_footer(_copy("Model Performansı", "Model Performance", lang))
 
 def show_forecasts():
     """Gelecek tahminleri sayfası - Premium tasarım"""
@@ -4830,7 +4908,7 @@ def show_forecasts():
         Tahminler zaman serisi modelleri kullanılarak hesaplanmıştır.
         """)
 
-    # Veri Asistanı – Tahmin yorumu (Gelecek Tahminleri)
+    # Analitik not – Tahmin yorumu (Gelecek Tahminleri)
     try:
         seq = pred_country.sort_values('Year')[["Year", pred_col]].dropna()
         yvals = seq[pred_col].astype(float).values
@@ -4852,7 +4930,7 @@ def show_forecasts():
         rec = "Stabilizasyon iyi. Yolunda!" if "yumuşak" in smooth_txt else "Daha pürüzsüz bir çizgi için λ (damping) ve k (yıllık delta sınırı) artırılabilir."
         st.markdown("""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Ülke Tahmini</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Ülke Tahmini</h4>
           <p>{rows}</p>
           <p>Öneri: {rec}</p>
         </div>
@@ -4860,7 +4938,7 @@ def show_forecasts():
     except Exception:
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Ülke Tahmini</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Ülke Tahmini</h4>
           <p>{country} için {label} serisi görüntüleniyor. Eğilimleri yumuşatmak için λ/k ayarlarına dikkat edin.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -4998,7 +5076,7 @@ def show_target_based_forecasts():
         showlegend=True
     )
     st.plotly_chart(fig, use_container_width=True)
-    # Veri Asistanı
+    # Analitik not
     try:
         diff2030 = (goal - cur)
         direction_txt = 'artış' if direction=='↑' else 'azalış'
@@ -5016,7 +5094,7 @@ def show_target_based_forecasts():
 
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Hedefe Gidiş</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Hedefe Gidiş</h4>
           <p><span class='ai-badge'>2030 Hedefi</span> {goal:,.0f} | <span class='ai-badge'>Gerekli CAGR</span> {req*100:.2f}%/yıl | <span class='ai-badge'>Zorluk</span> {difficulty}</p>
           <p><span class='ai-badge'>Analiz</span> {direction_txt} gereksinimi: {req*100:.2f}%/yıl ({years_to_2030} yıl kaldı).</p>
           <p>Öneri: {recommendation}</p>
@@ -5173,11 +5251,52 @@ def _find_countries(question_norm: str, *frames: pd.DataFrame) -> List[str]:
     return found[:3]
 
 
-def _pct_change(start: float, end: float) -> str:
+def _pct_change(start: float, end: float, lang: Optional[str] = None) -> str:
     if start is None or pd.isna(start) or abs(float(start)) < 1e-9:
-        return "hesaplanamadı"
+        return _copy("hesaplanamadı", "could not be calculated", lang)
     pct = (float(end) / float(start) - 1) * 100
     return f"{pct:+.1f}%"
+
+
+def _display_country(country: str, lang: Optional[str] = None) -> str:
+    """Dashboard verisi İngilizce ülke adı tutar; TR görünümde yaygın karşılıkları göster."""
+    if _is_en(lang):
+        return str(country)
+    translations = {
+        "Turkey": "Türkiye",
+        "Romania": "Romanya",
+        "Russia": "Rusya",
+        "Poland": "Polonya",
+        "Ukraine": "Ukrayna",
+        "South Africa": "Güney Afrika",
+        "United Kingdom": "Birleşik Krallık",
+        "USA": "ABD",
+        "Germany": "Almanya",
+        "France": "Fransa",
+        "Italy": "İtalya",
+        "Spain": "İspanya",
+        "China": "Çin",
+        "India": "Hindistan",
+        "Brazil": "Brezilya",
+        "Japan": "Japonya",
+        "Colombia": "Kolombiya",
+        "Afghanistan": "Afganistan",
+    }
+    return translations.get(str(country), str(country))
+
+
+def _assistant_change_phrase(metric: str, start: float, end: float, lang: Optional[str] = None) -> str:
+    """Yüzde değişimi yorumlayarak daha doğal bir sohbet cümlesi üretir."""
+    if start is None or pd.isna(start) or abs(float(start)) < 1e-9 or end is None or pd.isna(end):
+        return _copy("değişim hesaplanamıyor", "the change cannot be calculated", lang)
+    pct = (float(end) / float(start) - 1) * 100
+    if abs(pct) < 0.5:
+        return _copy(f"neredeyse yatay ({pct:+.1f}%)", f"almost flat ({pct:+.1f}%)", lang)
+    if metric == "Sustainability_Score":
+        direction = _copy("iyileşme", "improvement", lang) if pct > 0 else _copy("zayıflama", "softening", lang)
+    else:
+        direction = _copy("artış", "increase", lang) if pct > 0 else _copy("azalış", "decrease", lang)
+    return f"{direction} ({pct:+.1f}%)"
 
 
 def _assistant_data_note(hist: pd.DataFrame, forecast: pd.DataFrame, metric: str, lang: Optional[str] = None) -> str:
@@ -5424,14 +5543,14 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         max_score = float(valid["score"].max())
         if zero_count == 0:
             msg = _copy(
-                f"Veride sürdürülebilirlik skoru 0 olan kayıt yok. En düşük skor {min_score:.1f}, en yüksek skor {max_score:.1f}. Bu nedenle dashboardda 0 görülüyorsa bu gerçek veri değil; seçim, kolon eşleşmesi veya görselleştirme tarafında kontrol edilmesi gereken bir durumdur.",
-                f"There are no records with a sustainability score of 0. The minimum score is {min_score:.1f} and the maximum is {max_score:.1f}. If the dashboard shows 0, that is not coming from the score data itself; it points to a selection, column mapping, or rendering issue.",
+                f"Kısa cevap: hayır, bu veri için 0 skoru normal görünmüyor. Kontrol ettiğim aralıkta en düşük sürdürülebilirlik skoru {min_score:.1f}, en yüksek skor {max_score:.1f}. Yani ekranda 0 görüyorsan bunu ülkenin gerçek performansı gibi okumamak gerekir; daha çok seçim, kolon eşleşmesi veya görselleştirme tarafında yakalanması gereken bir işarettir.",
+                f"Short answer: no, a score of 0 does not look normal for this dataset. The checked range runs from {min_score:.1f} to {max_score:.1f}. So if the dashboard shows 0, I would not read it as the country's real performance; it points more to a selection, column-mapping, or rendering issue.",
                 lang
             )
         else:
             msg = _copy(
-                f"Veride {zero_count} kayıt 0 skorla geliyor. Bu normal kabul edilmez; skor hesaplama girdileri ve ülke/yıl kırılımı incelenmeli. Aralık: {min_score:.1f}-{max_score:.1f}.",
-                f"The data contains {zero_count} records with a score of 0. That should not be treated as normal; score inputs and country/year slices should be checked. Range: {min_score:.1f}-{max_score:.1f}.",
+                f"Kısa cevap: dikkat etmek gerekir. Veride {zero_count} kayıt 0 skorla geliyor ve bunu normal bir ülke performansı gibi kabul etmem. Önce skor girdilerini, ülke-yıl kırılımını ve eksik değer dönüşümlerini kontrol etmek gerekir. Genel skor aralığı {min_score:.1f}-{max_score:.1f}.",
+                f"Short answer: this needs attention. The data contains {zero_count} records with a score of 0, and I would not treat that as normal country performance. Score inputs, country-year slices, and missing-value conversions should be checked first. Overall score range: {min_score:.1f}-{max_score:.1f}.",
                 lang
             )
         return msg + _assistant_data_note(hist, forecast, metric, lang)
@@ -5439,21 +5558,53 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
     def country_answer(country: str) -> str:
         h = hist[hist["Country"] == country]
         f = forecast[forecast["Country"] == country]
-        lines = [f"### {country}: {_metric_title(metric, lang).title() if en else _metric_title(metric, lang).capitalize()}"]
+        metric_name = _metric_title(metric, lang)
+        display_country = _display_country(country, lang)
+        lines = [f"### {display_country}: {_copy('kısa cevap', 'short answer', lang)}"]
+        quick_sentence = ""
+        data_lines = []
         if not h.empty:
             h_first = h.iloc[0]
             h_last = h.iloc[-1]
-            lines.append(_copy(
-                f"- Tarihsel dönem: {int(h_first['Year'])}-{int(h_last['Year'])} arasında {_format_metric(metric, h_first[metric], lang)} -> {_format_metric(metric, h_last[metric], lang)} ({_pct_change(h_first[metric], h_last[metric])}).",
-                f"- Historical period: {int(h_first['Year'])}-{int(h_last['Year'])}, {_format_metric(metric, h_first[metric], lang)} -> {_format_metric(metric, h_last[metric], lang)} ({_pct_change(h_first[metric], h_last[metric])}).",
+            hist_change = _assistant_change_phrase(metric, h_first[metric], h_last[metric], lang)
+            peer = hist[hist["Year"] == h_last["Year"]].copy()
+            if not peer.empty:
+                median = float(peer[metric].median())
+                value = float(h_last[metric])
+                relation = _copy("üzerinde", "above", lang) if value >= median else _copy("altında", "below", lang)
+                if metric == "Sustainability_Score":
+                    quick_sentence = _copy(
+                        f"{display_country} için skor yüksek görünüyorsa bunun nedeni son tarihsel yılda ülke medyanının {relation} kalması: {_format_metric(metric, value, lang)} ve medyan {_format_metric(metric, median, lang)}.",
+                        f"If {display_country} looks strong, the reason is that its latest historical score is {relation} the country median: {_format_metric(metric, value, lang)} versus a median of {_format_metric(metric, median, lang)}.",
+                        lang
+                    )
+                else:
+                    load_label = _copy("yük", "load", lang)
+                    quick_sentence = _copy(
+                        f"{display_country} için ana sinyal, {metric_name} değerinin ülke medyanının {relation} olması. Son tarihsel değer {_format_metric(metric, value, lang)}, medyan {_format_metric(metric, median, lang)}.",
+                        f"For {display_country}, the main signal is that {metric_name} is {relation} the country median. The latest historical value is {_format_metric(metric, value, lang)} versus a median of {_format_metric(metric, median, lang)}.",
+                        lang
+                    )
+                    if value < median:
+                        quick_sentence += _copy(f" Bu nedenle {load_label} görece daha kontrollü okunur.", f" That makes the {load_label} comparatively more controlled.", lang)
+            data_lines.append(_copy(
+                f"- Geçmiş dönem: 2010-2023 arasında {_format_metric(metric, h_first[metric], lang)} -> {_format_metric(metric, h_last[metric], lang)}; hareket {hist_change}.",
+                f"- Historical period: 2010-2023 moved from {_format_metric(metric, h_first[metric], lang)} to {_format_metric(metric, h_last[metric], lang)}; the movement is {hist_change}.",
                 lang
             ))
         if not f.empty:
             f_first = f.iloc[0]
             f_last = f.iloc[-1]
-            lines.append(_copy(
-                f"- Tahmin dönemi: {int(f_first['Year'])}-{int(f_last['Year'])} arasında {_format_metric(metric, f_first[metric], lang)} -> {_format_metric(metric, f_last[metric], lang)} ({_pct_change(f_first[metric], f_last[metric])}).",
-                f"- Forecast period: {int(f_first['Year'])}-{int(f_last['Year'])}, {_format_metric(metric, f_first[metric], lang)} -> {_format_metric(metric, f_last[metric], lang)} ({_pct_change(f_first[metric], f_last[metric])}).",
+            forecast_change = _assistant_change_phrase(metric, f_first[metric], f_last[metric], lang)
+            if not quick_sentence:
+                quick_sentence = _copy(
+                    f"{display_country} için tahmin tarafında okuduğum ana işaret {forecast_change}.",
+                    f"For {display_country}, the main forecast signal I read is {forecast_change}.",
+                    lang
+                )
+            data_lines.append(_copy(
+                f"- Tahmin dönemi: 2024-2030 arasında {_format_metric(metric, f_first[metric], lang)} -> {_format_metric(metric, f_last[metric], lang)}; hareket {forecast_change}.",
+                f"- Forecast period: 2024-2030 moves from {_format_metric(metric, f_first[metric], lang)} to {_format_metric(metric, f_last[metric], lang)}; the movement is {forecast_change}.",
                 lang
             ))
             year_slice = forecast[forecast["Year"] == f_last["Year"]].copy()
@@ -5463,17 +5614,28 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
             if len(pos):
                 rank = int(pos[0]) + 1
                 rank_label = _copy("en iyi" if metric == "Sustainability_Score" else "en düşük yük", "best" if metric == "Sustainability_Score" else "lowest burden", lang)
-                lines.append(_copy(
-                    f"- {int(f_last['Year'])} sıralaması: {rank}/{len(year_slice)} ({rank_label} tarafına göre).",
-                    f"- {int(f_last['Year'])} rank: {rank}/{len(year_slice)} by {rank_label}.",
+                data_lines.append(_copy(
+                    f"- 2030 konumu: {rank}/{len(year_slice)}. Bu sıralama {rank_label} tarafına göre okunmalı.",
+                    f"- 2030 position: {rank}/{len(year_slice)}. This ranking is read from the {rank_label} side.",
                     lang
                 ))
+        if quick_sentence:
+            lines.append(quick_sentence)
+        if data_lines:
+            lines.append(_copy("**Veride gördüğüm tablo:**", "**What I see in the data:**", lang))
+            lines.extend(data_lines)
         food_col = _assistant_col(real_df, "Food Category")
         country_col = _assistant_col(real_df, "Country")
         year_col = _assistant_col(real_df, "Year")
         metric_col = _assistant_col(real_df, metric)
         if wants_reason:
-            lines.extend(_country_reason_lines(country, metric, hist, real_df, latest_hist_year, lang))
+            reason_lines = [
+                re.sub(r"^-+\s*", "", line).replace("Veri okuması:", "Veri okumasına göre").replace("Data reading:", "The data says")
+                for line in _country_reason_lines(country, metric, hist, real_df, latest_hist_year, lang)
+            ]
+            if reason_lines:
+                lines.append(_copy("**Neden böyle görünüyor?**", "**Why does it look this way?**", lang))
+                lines.extend(f"- {line}" for line in reason_lines)
         if wants_category and food_col and country_col and year_col and metric_col:
             cat_base = real_df[real_df[country_col] == country]
             if latest_hist_year:
@@ -5481,27 +5643,37 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
             cats = cat_base.groupby(food_col)[metric_col].agg(_metric_agg(metric)).sort_values(ascending=False).head(3)
             if not cats.empty:
                 cat_txt = ", ".join(f"{cat}: {_format_metric(metric, val, lang)}" for cat, val in cats.items())
-                lines.append(_copy(f"- En belirgin kategoriler: {cat_txt}.", f"- Leading categories: {cat_txt}.", lang))
+                lines.append(_copy(
+                    f"Kategori tarafında en çok dikkat çeken üçlü şöyle: {cat_txt}.",
+                    f"On the category side, the three slices that stand out are: {cat_txt}.",
+                    lang
+                ))
         if wants_advice:
             advice = {
                 "Sustainability_Score": (
-                    "Öncelik: skoru aşağı çeken yüksek atık ve karbon kategorilerinde ölçüm sıklığını artırıp hedef bazlı azaltım takibi yapmak.",
-                    "Priority: monitor high-waste and high-carbon categories more frequently and track target-based reductions."
+                    "Önce skoru aşağı çeken yüksek atık ve karbon kategorilerini seçer, sonra bu kategoriler için hedef bazlı azaltım takibini açardım.",
+                    "I would first isolate the high-waste and high-carbon categories pulling the score down, then track target-based reductions for those categories."
                 ),
                 "Economic Loss (Million $)": (
-                    "Öncelik: yüksek kayıp yaratan kategorilerde stok devri, bağış kanalı ve fiyatlandırma kararlarını birlikte izlemek.",
-                    "Priority: manage stock rotation, donation channels, and pricing together in high-loss categories."
+                    "Yüksek kayıp yaratan kategorilerde stok devri, bağış kanalı ve fiyatlandırma kararlarını aynı panelde izlerdim.",
+                    "I would track stock rotation, donation channels, and pricing decisions together for high-loss categories."
                 ),
                 "Carbon_Footprint_kgCO2e": (
-                    "Öncelik: karbon yoğun kategorilerde tedarik, soğuk zincir ve fire azaltımı için ayrı hedef koymak.",
-                    "Priority: set separate targets for sourcing, cold chain, and waste reduction in carbon-intensive categories."
+                    "Karbon yoğun kategoriler için tedarik, soğuk zincir ve fire azaltımı hedeflerini ayrı ayrı koyardım.",
+                    "I would set separate sourcing, cold-chain, and waste-reduction targets for carbon-intensive categories."
                 ),
                 "Total Waste (Tons)": (
-                    "Öncelik: en yüksek hacimli kategorilerde fire ölçümü, porsiyon ve raf ömrü yönetimi ile yeniden dağıtım kanallarını birlikte çalıştırmak.",
-                    "Priority: combine waste measurement, portion/shelf-life management, and redistribution channels in the highest-volume categories."
+                    "En yüksek hacimli kategorilerde fire ölçümü, porsiyon/raf ömrü yönetimi ve yeniden dağıtım kanallarını birlikte çalıştırırdım.",
+                    "I would combine waste measurement, portion/shelf-life management, and redistribution channels for the highest-volume categories."
                 ),
             }[metric]
-            lines.append("- " + _copy(*advice, lang))
+            lines.append(_copy("**Benim önerim:** ", "**My recommendation:** ", lang) + _copy(*advice, lang))
+        elif metric == "Sustainability_Score" and wants_reason:
+            lines.append(_copy(
+                "**Benim önerim:** Bu ülkeyi sadece skorla bırakma; aynı ülke için kategori bazında atık, ekonomik kayıp ve karbon sekmelerini birlikte kontrol et. Skorun hangi baskı göstergesiyle taşındığı orada daha net görünür.",
+                "**My recommendation:** Do not stop at the score. Check the same country across category-level waste, economic loss, and carbon views; that shows which pressure indicator is carrying the score.",
+                lang
+            ))
         if len(lines) == 1:
             lines.append(_copy("Bu ülke için yeterli satır bulunamadı.", "There are not enough rows for this country.", lang))
         return "\n".join(lines) + _assistant_data_note(h, f, metric, lang)
@@ -5519,9 +5691,14 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         ascending = wants_low if metric != "Sustainability_Score" else not wants_low
         ranked = source.sort_values(metric, ascending=ascending).head(limit)
         direction = _copy("en düşük" if ascending else "en yüksek", "lowest" if ascending else "highest", lang)
-        lines = [f"### {year} {_copy('için', 'ranking for', lang)} {direction} {_metric_title(metric, lang)}"]
+        lines = [f"### {_copy('Sıralama okuması', 'Ranking readout', lang)}"]
+        lines.append(_copy(
+            f"{year} için {direction} {_metric_title(metric, lang)} listesini çıkardım. İlk grup şöyle:",
+            f"I pulled the {direction} {_metric_title(metric, lang)} list for {year}. The leading group is:",
+            lang
+        ))
         for i, row in enumerate(ranked.to_dict("records"), 1):
-            lines.append(f"{i}. {row['Country']}: {_format_metric(metric, row[metric], lang)}")
+            lines.append(f"{i}. {_display_country(row['Country'], lang)}: {_format_metric(metric, row[metric], lang)}")
         if len(lines) == 1:
             return _copy("Sıralama için yeterli veri yok.", "There is not enough data for a ranking.", lang)
         return "\n".join(lines) + _assistant_data_note(hist, forecast, metric, lang)
@@ -5534,11 +5711,26 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
             return _copy("Kategori kırılımı bu görünümde hazır değil.", "Category breakdown is not available in this view.", lang)
         source = real_df[real_df[year_col] == latest_hist_year] if latest_hist_year else real_df
         ranked = source.groupby(food_col)[metric_col].agg(_metric_agg(metric)).sort_values(ascending=False).head(6)
-        lines = [f"### {latest_hist_year} {_copy('kategori kırılımı', 'category breakdown', lang)}: {_metric_title(metric, lang)}"]
         total = float(ranked.sum()) if metric != "Sustainability_Score" else np.nan
+        lines = [f"### {_copy('Kategori cevabı', 'Category answer', lang)}"]
+        if not ranked.empty:
+            top_cat, top_value = ranked.index[0], float(ranked.iloc[0])
+            share = f" ({top_value / total * 100:.1f}%)" if total and not pd.isna(total) else ""
+            lines.append(_copy(
+                f"Kısa cevap: {latest_hist_year} kırılımında ana yük {top_cat} kategorisinden geliyor: {_format_metric(metric, top_value, lang)}{share}. Bu yüzden kategori bazlı karar alırken ilk bakılacak yer burası.",
+                f"Short answer: in the {latest_hist_year} breakdown, the main load comes from {top_cat}: {_format_metric(metric, top_value, lang)}{share}. That is the first place I would inspect for category-level decisions.",
+                lang
+            ))
+            lines.append(_copy("**İlk altı kategori:**", "**Top six categories:**", lang))
         for i, (cat, value) in enumerate(ranked.items(), 1):
             share = f" ({value / total * 100:.1f}%)" if total and not pd.isna(total) else ""
             lines.append(f"{i}. {cat}: {_format_metric(metric, value, lang)}{share}")
+        if not ranked.empty:
+            lines.append(_copy(
+                "**Benim önerim:** Bu kategoriyi tek başına raporlamak yerine ülke ve gelir grubu kırılımıyla birlikte izle; yüksek hacim ile yüksek kişi başı yük aynı anlama gelmeyebilir.",
+                "**My recommendation:** Track this category together with country and income-group slices; high volume and high per-capita pressure do not always mean the same thing.",
+                lang
+            ))
         return "\n".join(lines) + _assistant_data_note(hist, forecast, metric, lang)
 
     def trend_answer() -> str:
@@ -5548,15 +5740,27 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
         year_series = source.groupby("Year")[metric].agg(_metric_agg(metric)).sort_index()
         first_year, last_year = int(year_series.index.min()), int(year_series.index.max())
         first_value, last_value = year_series.iloc[0], year_series.iloc[-1]
+        change_text = _assistant_change_phrase(metric, first_value, last_value, lang)
         lines = [
-            f"### {_copy('Küresel', 'Global', lang)} {_metric_title(metric, lang)} {_copy('trendi', 'trend', lang)}",
-            f"- {first_year}: {_format_metric(metric, first_value, lang)}",
-            f"- {last_year}: {_format_metric(metric, last_value, lang)}",
-            _copy(f"- Dönem değişimi: {_pct_change(first_value, last_value)}", f"- Period change: {_pct_change(first_value, last_value)}", lang),
+            f"### {_copy('Trend cevabı', 'Trend answer', lang)}",
+            _copy(
+                f"Kısa cevap: {_metric_title(metric, lang)} {first_year}-{last_year} arasında {change_text}. Başlangıç değeri {_format_metric(metric, first_value, lang)}, son değer {_format_metric(metric, last_value, lang)}.",
+                f"Short answer: {_metric_title(metric, lang)} shows {change_text} from {first_year} to {last_year}. It starts at {_format_metric(metric, first_value, lang)} and ends at {_format_metric(metric, last_value, lang)}.",
+                lang
+            )
         ]
         if len(year_series) >= 3:
             strongest = year_series.pct_change().abs().idxmax()
-            lines.append(_copy(f"- En belirgin yıllık kırılma: {int(strongest)}.", f"- Largest annual shift: {int(strongest)}.", lang))
+            lines.append(_copy(
+                f"En belirgin yıllık kırılma {int(strongest)} çevresinde görünüyor; bu yılın öncesi ve sonrası ayrı okunmalı.",
+                f"The largest annual shift appears around {int(strongest)}; I would read the years before and after it separately.",
+                lang
+            ))
+        lines.append(_copy(
+            "Benim önerim: bu trendi tek başına karar noktası yapma; aynı grafikte ülke veya kategori seçerek sapmanın hangi kesitten geldiğini kontrol et.",
+            "My recommendation: do not use this trend alone as the decision point; select a country or category in the same view to see which slice drives the deviation.",
+            lang
+        ))
         return "\n".join(lines) + _assistant_data_note(hist, forecast, metric, lang)
 
     if asks_zero_score:
@@ -5583,18 +5787,21 @@ def generate_ai_response(question, preds_df, real_df, lang: Optional[str] = None
 
 
 def render_data_chatbot(real_df: pd.DataFrame, preds_df: pd.DataFrame, scope: str):
-    """Corrective-RAG tarzı veri sohbet bileşeni."""
+    """Veri kesitlerinden tek aktif yanıt üreten sohbet bileşeni."""
     lang = _lang()
     active_key = "data_chat_active"
     for state_key in list(st.session_state.keys()):
         if str(state_key).endswith("_data_chat_history"):
             st.session_state.pop(state_key, None)
 
-    with st.popover(_copy("🤖 Veri Asistanı", "🤖 Data Assistant", lang), use_container_width=False):
+    with st.popover("🤖", use_container_width=False):
         st.markdown(f"""
-        <div class='rag-bot-title'>
-          <h4>{_copy('Corrective RAG Veri Botu', 'Corrective RAG Data Bot', lang)}</h4>
-          <p>{_copy('Soruyu veri tablosundan okur; yeni yanıt öncekinin yerine geçer.', 'Reads the relevant data slice; each new answer replaces the previous one.', lang)}</p>
+        <div class='ai-panel-header'>
+          <div class='ai-panel-icon'>🤖</div>
+          <div class='ai-panel-copy'>
+            <h4>{_copy('Yapay Zeka Asistanı', 'AI Assistant', lang)}</h4>
+            <p>{_copy('Sorunu ilgili veri kesitinden okuyarak yanıtlar.', 'Answers by reading the relevant data slice.', lang)}</p>
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -5613,15 +5820,13 @@ def render_data_chatbot(real_df: pd.DataFrame, preds_df: pd.DataFrame, scope: st
 
         active = st.session_state.get(active_key)
         if active:
-            st.markdown(
-                f"<div class='rag-question'>{html.escape(active.get('question', ''))}</div>",
-                unsafe_allow_html=True
-            )
-            with st.container(border=True):
+            with st.chat_message("user", avatar="👤"):
+                st.markdown(active.get("question", ""))
+            with st.chat_message("assistant", avatar="🤖"):
                 st.markdown(active.get("answer", ""))
         else:
             st.markdown(
-                f"<div class='rag-empty'>{_copy('Bir ülke, kategori, metrik veya yıl sorusu yaz. Bot yalnızca son yanıtı gösterecek.', 'Ask a country, category, metric, or year question. The bot will show only the latest answer.', lang)}</div>",
+                f"<div class='assistant-empty'>{_copy('Bir ülke, kategori, metrik veya yıl sorusu yaz. Asistan yalnızca son yanıtı gösterecek.', 'Ask a country, category, metric, or year question. The assistant will show only the latest answer.', lang)}</div>",
                 unsafe_allow_html=True
             )
 
@@ -6014,7 +6219,7 @@ def show_ai_insights():
         except Exception:
             pass
 
-    # Veri Asistanı – İçgörü Paneli yorumu
+    # Analitik not – İçgörü Paneli yorumu
     try:
         ai_rows = []
         if not agg.empty:
@@ -6027,7 +6232,7 @@ def show_ai_insights():
             ai_rows.append(f"<span class='ai-badge'>Önemli Sürücüler</span> {', '.join(topf)}")
         st.markdown("""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — İçgörü Özeti</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — İçgörü Özeti</h4>
           <p>{rows}</p>
           <p>Öneri: Pozitif CAGR ülkelerinde sürücüleri büyütme; negatif CAGR ülkelerinde ise ilk 3 sürücüye odaklı politika paketini test et.</p>
         </div>
@@ -6311,7 +6516,7 @@ def show_model_comparison():
         )
         st.plotly_chart(fig, use_container_width=True)
 
-    # Veri Asistanı – Model Karşılaştırma yorumu
+    # Analitik not – Model Karşılaştırma yorumu
     try:
         if 'model_comparison_summary' in ab_report:
             summary = ab_report['model_comparison_summary']
@@ -6322,13 +6527,13 @@ def show_model_comparison():
             ]
             st.markdown("""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Model Karşılaştırma Özeti</h4>
+              <h4><span class='ai-emoji'>📊</span>Analitik Not — Model Karşılaştırma Özeti</h4>
               <p>{rows}</p>
               <p>Öneri: GradientBoosting ana model olarak izlenebilir; CV alt sınırı ise performans eşiği olarak takip edilmelidir.</p>
             </div>
             """.replace("{rows}", " · ".join(msgs)), unsafe_allow_html=True)
     except Exception as e:
-        st.info("💡 Veri Asistanı yorumu yüklenemedi. Bu geçici bir durum olabilir.")
+        st.info("💡 Analitik not yüklenemedi. Bu geçici bir durum olabilir.")
 
     # Sayfa sonu yazısı
     add_page_footer("Model Karşılaştırma")
@@ -6442,7 +6647,7 @@ def show_policy_simulator():
     m3.metric("Karbon (MtCO2e)", f"{out['carbon']:.1f}")
     m4.metric("Sürdürülebilirlik", f"{out['sust']:.1f}")
 
-    # Veri Asistanı – Politika sim.
+    # Analitik not – Politika sim.
     try:
         # Etki analizi
         waste_saved = base['waste'] - out['waste']
@@ -6459,7 +6664,7 @@ def show_policy_simulator():
 
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Politika Etkisi</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Politika Etkisi</h4>
           <p><span class='ai-badge'>Tasarruf</span> Atık: {waste_saved:.1f} Mton | Karbon: {carbon_saved:.1f} MtCO2e | Ekonomik: {economic_saved:.1f} B$</p>
           <p><span class='ai-badge'>Sonuç</span> Atık {out['waste']:.1f} Mton, Karbon {out['carbon']:.1f} MtCO2e, Ekonomik Kayıp {out['loss']:.1f} B$ seviyesinde.</p>
           <p>Öneri: {recommendation}</p>
@@ -6627,7 +6832,7 @@ def show_model_card():
             else:
                 c2.info('Bu hedef için açıklanabilirlik yorumu ana bileşenlerin etkisi üzerinden sunulur.')
 
-    # Veri Asistanı – Model Kartı yorumu
+    # Analitik not – Model Kartı yorumu
     try:
         gaps = []
         for key in ['Total Waste (Tons)','Economic Loss (Million $)','Carbon_Footprint_kgCO2e']:
@@ -6637,7 +6842,7 @@ def show_model_card():
         msg = "stabil" if (gaps and np.mean(gaps) < 0.05) else "iyileştirilebilir"
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Metodoloji Özeti</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Metodoloji Özeti</h4>
           <p><span class='ai-badge'>Regresyon Modeli</span> Gradient Boosting + Cross-Validation + Overfitting Control; genel durum: {msg}.</p>
           <p>Öneri: CV dağılımını sayfada göster, |Test−CV| yüksek hedeflerde λ/k'yi artır.</p>
         </div>
@@ -6893,7 +7098,7 @@ def show_risk_opportunity():
         - Eşikleri değiştirerek farklı senaryoları test edin
         """)
 
-    # Veri Asistanı – Risk & Fırsat yorumu
+    # Analitik not – Risk & Fırsat yorumu
     try:
         worst = df.sort_values('risk_score', ascending=False).head(3)
         best = df.sort_values('risk_score').head(3)
@@ -6904,7 +7109,7 @@ def show_risk_opportunity():
             msg.append(f"<span class='ai-badge'>Fırsat</span> {', '.join(best.index.tolist())}")
         st.markdown("""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Risk & Fırsat</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Risk & Fırsat</h4>
           <p>{rows}</p>
           <p>Öneri: Risk skoru yüksek ülkelerde atık/karbon CAGR'ını aşağı çeken politika sepetlerini önceliklendirin.</p>
         </div>
@@ -7014,12 +7219,12 @@ def show_target_planner():
         4. **Risk & Fırsat** sayfasında ülke konumunu kontrol edin
         """)
 
-    # Veri Asistanı – Hedef planlayıcı yorumu
+    # Analitik not – Hedef planlayıcı yorumu
     try:
         direction = 'artış' if goal > cur else 'azalış'
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Gerekli İvme</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Gerekli İvme</h4>
           <p><span class='ai-badge'>2030</span> hedefi için {direction} gereksinimi ≈ {req*100:.2f}%/yıl.</p>
           <p>Öneri: Ülke için İçgörü Paneli sayfasındaki en etkili sürücülere odaklanarak model karşılaştırmasında parametrik arama yap.</p>
         </div>
@@ -7679,7 +7884,7 @@ def show_what_if_advanced():
     try:
         st.markdown("""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — What‑if</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — What‑if</h4>
           <p>Nüfus {pop}% ve {cat} için {red}% azaltım ile etkiler üstte.</p>
           <p>Öneri: Model karşılaştırması ile kombinasyonları test edin, en yüksek etki/uygulanabilirlik dengesi yakalanana kadar parametreleri tarayın.</p>
         </div>
@@ -7752,7 +7957,7 @@ def show_country_deep_dive():
         Yukarı eğilim pozitif gelişimi, aşağı eğilim iyileştirme ihtiyacını gösterir.
         """)
 
-    # Veri Asistanı – Ülke özeti
+    # Analitik not – Ülke özeti
     try:
         msgs = []
         try:
@@ -7780,7 +7985,7 @@ def show_country_deep_dive():
         if msgs:
             st.markdown("""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Ülke Özeti</h4>
+              <h4><span class='ai-emoji'>📊</span>Analitik Not — Ülke Özeti</h4>
               <p>{rows}</p>
               <p>Öneri: Trend aşağıysa What‑if ve ROI/NPV ile politika setlerini test ederek 2030 hedefini doğrulayın.</p>
             </div>
@@ -7854,7 +8059,7 @@ def show_driver_sensitivity():
         df2 = df2.sort_values('score', ascending=True).tail(15)
         col2.subheader("Ortalama |SHAP|")
         col2.plotly_chart(px.bar(df2, x='score', y='feature', orientation='h', template='plotly_white', height=520), use_container_width=True, key=f"driver_chart_{tnorm}_{hash(str(df2))}_{hash('driver_sensitivity')}")
-    # Veri Asistanı
+    # Analitik not
     try:
         lead = None
         if imp is not None and not imp.empty:
@@ -7866,7 +8071,7 @@ def show_driver_sensitivity():
         if lead:
             st.markdown(f"""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Tornado Özeti</h4>
+              <h4><span class='ai-emoji'>📊</span>Analitik Not — Tornado Özeti</h4>
               <p>En etkili sürücüler: {', '.join(lead)}</p>
               <p>Öneri: What‑if'te bu sürücülere odaklanıp politika etkisini model karşılaştırması ile sınayın.</p>
             </div>
@@ -7874,14 +8079,14 @@ def show_driver_sensitivity():
     except Exception:
         pass
 
-    # Veri Asistanı - Sürücü Tablosu öncesi
+    # Analitik not - Sürücü Tablosu öncesi
     try:
         any_drv = build_driver_table('total_waste_tons')
         lead = None if (any_drv is None or any_drv.empty) else any_drv.head(3)['feature'].astype(str).tolist()
         if lead:
             st.markdown(f"""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Sürücü Analizi</h4>
+              <h4><span class='ai-emoji'>📊</span>Analitik Not — Sürücü Analizi</h4>
               <p>En etkili sürücüler: {', '.join(lead)}</p>
               <p>Öneri: What‑if'te bu sürücülere odaklanıp politika etkisini model karşılaştırması ile sınayın.</p>
             </div>
@@ -7998,7 +8203,7 @@ def show_driver_sensitivity():
             if lead:
                 st.markdown(f"""
                 <div class='ai-assistant'>
-                  <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Sürücüler</h4>
+                  <h4><span class='ai-emoji'>📊</span>Analitik Not — Sürücüler</h4>
                   <p>Bu ülke için öne çıkan sürücüler (genel önem): {', '.join(lead)}</p>
                   <p>Öneri: What‑if'te bu başlıklara odaklanarak hedef rotası planlayın.</p>
                 </div>
@@ -8112,7 +8317,7 @@ def show_roi_npv():
 
     st.markdown(f"""
     <div class='ai-assistant'>
-      <h4><span class='ai-emoji'>📊</span>Veri Asistanı — ROI</h4>
+      <h4><span class='ai-emoji'>📊</span>Analitik Not — ROI</h4>
       <p><span class='ai-badge'>NPV</span> {npv:,.2f} M$ → {tip} | <span class='ai-badge'>ROI</span> {roi:.1f}% → {roi_tip}</p>
       <p>Varsayımlar: % {pol_start}–{pol_end} azaltım profili, iskonto {disc:.1f}%, 1 Mton = {benefit_per_mton:.1f} M$ fayda, yıllık maliyet {cost:.1f} M$.</p>
       <p>Öneri: {action}. Ülke bazlı baz israfı yüksek olanlarda etki artar.</p>
@@ -8229,12 +8434,12 @@ def show_benchmark_league():
             """)
     except Exception:
         pass
-    # Veri Asistanı
+    # Analitik not
     try:
         top = league.head(3)['Country'].astype(str).tolist()
         st.markdown(f"""
         <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Lig Özeti</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Lig Özeti</h4>
           <p>Öne çıkan ülkeler: {', '.join(top)}. Küme sayısını değiştirerek benzerler arasındaki yerini test edebilirsin.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -8531,10 +8736,10 @@ def show_carbon_flows():
                 sağladığını görebilirsiniz. En kalın bağlantılar en kritik akışları gösterir.
                 """)
 
-            # Veri Asistanı
+            # Analitik not
             st.markdown("""
             <div class='ai-assistant'>
-              <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Karbon Akışları</h4>
+              <h4><span class='ai-emoji'>📊</span>Analitik Not — Karbon Akışları</h4>
               <p>Çok-adımlı akış: Kategori→Kıta→Ülke hiyerarşisi. En kalın bağlantılar en yüksek karbon akışını gösterir. Üst seviye gruplama ile karmaşıklık azaltıldı.</p>
             </div>
             """, unsafe_allow_html=True)
@@ -8640,10 +8845,10 @@ def show_carbon_flows():
     except Exception:
         pass
 
-    # Veri Asistanı
+    # Analitik not
     st.markdown("""
             <div class='ai-assistant'>
-          <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Karbon Akışları</h4>
+          <h4><span class='ai-emoji'>📊</span>Analitik Not — Karbon Akışları</h4>
           <p>Treemap: Kategori bazında en yüksek karbon üreticileri. Sankey: Akış yoğunluğu ve bağlantılar. Radar: Yıllık trend ve mevsimsellik.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -8863,10 +9068,10 @@ def show_justice_impact_panel():
         - **Outlier'lar**: Farklı performans gösteren ülkeler
         """)
 
-    # Veri Asistanı
+    # Analitik not
     st.markdown(f"""
     <div class='ai-assistant'>
-      <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Adalet/Etki Analizi</h4>
+      <h4><span class='ai-emoji'>📊</span>Analitik Not — Adalet/Etki Analizi</h4>
       <p><span class='ai-badge'>Gini Analizi</span> Atık: <strong>{gini_waste:.3f}</strong>, Karbon: <strong>{gini_carbon:.3f}</strong>, Ekonomik: <strong>{gini_economic:.3f}</strong>, Sürdürülebilirlik: <strong>{gini_sustainability:.3f}</strong>.</p>
       <p><span class='ai-badge'>Öneri</span> Yüksek eşitsizlik gösteren alanlarda hedefli politika müdahaleleri gerekli. <span class='ai-highlight'>En kritik: {max([gini_waste, gini_carbon, gini_economic, gini_sustainability]):.3f}</span></p>
     </div>
@@ -8944,10 +9149,10 @@ def show_anomaly_monitor():
                       color_discrete_sequence=['#4299E1', '#F56565'])
     st.plotly_chart(fig, use_container_width=True)
 
-    # Veri Asistanı
+    # Analitik not
     st.markdown("""
     <div class='ai-assistant'>
-      <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Anomali Analizi</h4>
+      <h4><span class='ai-emoji'>📊</span>Analitik Not — Anomali Analizi</h4>
       <p>IQR ve z-score metodları ile anomali tespiti yapıldı. Aykırı değerler model eğitiminde dikkatli kullanılmalı.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -9052,10 +9257,10 @@ def show_data_lineage_quality():
     generated_at = perf.get('generated_at', 'Kayıt bulunamadı') if perf else 'Kayıt bulunamadı'
     st.code(f"Son model üretimi: {generated_at}")
 
-    # Veri Asistanı
+    # Analitik not
     st.markdown("""
     <div class='ai-assistant'>
-      <h4><span class='ai-emoji'>📊</span>Veri Asistanı — Veri Kalitesi</h4>
+      <h4><span class='ai-emoji'>📊</span>Analitik Not — Veri Kalitesi</h4>
       <p>Veri kalitesi kontrolü tamamlandı. Tüm dosyalar mevcut ve dashboard hazır durumda.</p>
     </div>
     """, unsafe_allow_html=True)

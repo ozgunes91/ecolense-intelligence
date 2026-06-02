@@ -34,11 +34,9 @@ Ecolense Intelligence is a data-driven decision support platform for global food
 
 ## Dashboard Preview
 
-![Dashboard home](docs/assets/dashboard_home.jpg)
+![Dashboard home and AI Assistant](docs/assets/dashboard_home_en.png)
 
-![Model performance page](docs/assets/dashboard_model_performance.jpg)
-
-![SHAP section](docs/assets/dashboard_shap_section.jpg)
+![Model performance page](docs/assets/dashboard_model_performance_en.png)
 
 ---
 
@@ -46,13 +44,13 @@ Ecolense Intelligence is a data-driven decision support platform for global food
 
 The forecast visual does not compress unrelated scales onto one axis. Waste, economic loss, carbon, and score are shown as separate panels.
 
-![Forecast trends](docs/assets/forecast_trends.png)
+![Forecast trends](docs/assets/forecast_trends_en.png)
 
-![2023 category distribution](docs/assets/category_waste_2023.png)
+![2023 category distribution](docs/assets/category_waste_2023_en.png)
 
-![Model performance](docs/assets/model_performance_summary.png)
+![Model performance](docs/assets/model_performance_summary_en.png)
 
-![SHAP feature impact overview](docs/assets/shap_feature_impact_overview.png)
+![SHAP feature impact overview](docs/assets/shap_feature_impact_overview_en.png)
 
 ---
 
@@ -98,11 +96,11 @@ Separate models are trained for three targets:
 
 Gradient Boosting Regressor is used as the production model. Explainability outputs are stored as CSV files under `outputs/explainability/`, and report-ready PNG visuals are stored under `docs/assets/`.
 
-![Total waste feature impact](docs/assets/shap_total_waste.png)
+![Total waste feature impact](docs/assets/shap_total_waste_en.png)
 
-![Economic loss feature impact](docs/assets/shap_economic_loss.png)
+![Economic loss feature impact](docs/assets/shap_economic_loss_en.png)
 
-![Carbon footprint feature impact](docs/assets/shap_carbon_footprint.png)
+![Carbon footprint feature impact](docs/assets/shap_carbon_footprint_en.png)
 
 ---
 
@@ -110,7 +108,7 @@ Gradient Boosting Regressor is used as the production model. Explainability outp
 
 | Module | Purpose |
 |---|---|
-| Home | Shows core KPI cards, quick navigation, the data chatbot, and story entry points. |
+| Home | Shows core KPI cards, quick navigation, and story entry points. |
 | Data Analysis | Reviews data coverage, missing values, distributions, correlations, and category breakdowns. |
 | Model Performance | Displays test R², CV R², error metrics, and target-level model quality. |
 | Forecasts | Visualizes 2024-2030 forecasts by country and metric. |
@@ -125,7 +123,7 @@ Gradient Boosting Regressor is used as the production model. Explainability outp
 | Carbon Flows | Shows how carbon load is distributed by category, country, or continent. |
 | Model Comparison | Reviews model results, target-level performance, and feature impact together. |
 | Policy Simulator | Tests inputs such as waste reduction, carbon price, and technology adoption. |
-| Insight Panel | Combines the data chatbot, CAGR analysis, SHAP effects, and selected context. |
+| Insight Panel | Combines CAGR analysis, SHAP effects, and selected country/metric context. |
 | Risk & Opportunity | Places countries on risk and opportunity axes. |
 | Target Planner | Calculates the annual change required to reach a 2030 target. |
 | Report Builder | Generates data-driven HTML/Markdown reports with different sections by report type. |
@@ -135,9 +133,11 @@ Gradient Boosting Regressor is used as the production model. Explainability outp
 
 ---
 
-## Data Chatbot
+## AI Assistant
 
-The dashboard chatbot does not return a fixed script. It detects country, metric, category, year, and intent from the question; when the input contains multiple questions, it answers each part separately. Answers are generated from the relevant historical, forecast, and explainability slices and include an evidence note.
+The dashboard-wide AI Assistant opens from the lower-right corner, keeping the page layout clean. It detects country, metric, category, year, and intent from the question; when the input contains multiple questions, it separates them into distinct data-reading steps. Answers are generated from the relevant historical data, 2024-2030 forecast output, and explainability files.
+
+The assistant does not stack a long chat history inside the dashboard. Each new question updates a single active answer panel, so the user always sees the latest evidence-backed response.
 
 ---
 
@@ -172,6 +172,11 @@ streamlit run app.py
 ecolense-intelligence/
 ├── data/
 ├── docs/assets/
+│   ├── dashboard_home_tr.png / dashboard_home_en.png
+│   ├── forecast_trends.png / forecast_trends_en.png
+│   ├── category_waste_2023.png / category_waste_2023_en.png
+│   ├── model_performance_summary.png / model_performance_summary_en.png
+│   └── shap_*_en.png
 ├── outputs/
 │   ├── forecasts/forecasts.csv
 │   ├── metrics/model_performance.json

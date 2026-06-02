@@ -34,7 +34,7 @@ Ecolense Intelligence, küresel gıda israfını ülke, yıl ve gıda kategorisi
 
 ## Dashboard Önizleme
 
-![Dashboard ana sayfa](docs/assets/dashboard_home.jpg)
+![Dashboard ana sayfa ve Yapay Zeka Asistanı](docs/assets/dashboard_home_tr.png)
 
 ![Model performansı sayfası](docs/assets/dashboard_model_performance.jpg)
 
@@ -110,7 +110,7 @@ Gradient Boosting Regressor ana üretim modeli olarak kullanılır. Açıklanabi
 
 | Modül | Ne işe yarar? |
 |---|---|
-| Ana Sayfa | Projenin ana KPI kartlarını, hızlı geçişleri, veri chatbotunu ve hikaye girişlerini sunar. |
+| Ana Sayfa | Projenin ana KPI kartlarını, hızlı geçişleri ve hikaye girişlerini sunar. |
 | Veri Analizi | Veri kapsamını, eksik değerleri, dağılımları, korelasyonları ve kategori kırılımlarını inceler. |
 | Model Performansı | Test R², CV R², hata metrikleri ve hedef bazlı model kalitesini gösterir. |
 | Gelecek Tahminleri | 2024-2030 döneminde ülke ve metrik bazlı tahminleri görselleştirir. |
@@ -125,7 +125,7 @@ Gradient Boosting Regressor ana üretim modeli olarak kullanılır. Açıklanabi
 | Karbon Akışları | Karbon yükünün kategori, ülke veya kıta üzerinden nasıl dağıldığını gösterir. |
 | Model Karşılaştırma | Model sonuçlarını, hedef bazlı performansı ve özellik etkilerini birlikte değerlendirir. |
 | Politika Simülatörü | Atık azaltımı, karbon fiyatı ve teknoloji benimsemesi gibi politika girdilerini test eder. |
-| İçgörü Paneli | Veri chatbotu, CAGR analizi, SHAP etkileri ve seçilen ülke/metrik bağlamında yanıt üretir. |
+| İçgörü Paneli | CAGR analizi, SHAP etkileri ve seçilen ülke/metrik bağlamında içgörü üretir. |
 | Risk & Fırsat | Ülkeleri risk ve fırsat eksenlerinde konumlandırır. |
 | Hedef Planlayıcı | 2030 hedefine ulaşmak için gerekli yıllık değişim oranını hesaplar. |
 | Rapor Oluşturucu | Seçilen rapor türüne göre farklı, veri kaynaklı HTML/Markdown rapor üretir. |
@@ -135,9 +135,11 @@ Gradient Boosting Regressor ana üretim modeli olarak kullanılır. Açıklanabi
 
 ---
 
-## Veri Chatbotu
+## Yapay Zeka Asistanı
 
-Dashboarddaki veri chatbotu sabit metin döndürmez. Soru metninden ülke, metrik, kategori, yıl ve niyet bilgisini yakalar; birden fazla soru varsa parçalayarak ayrı ayrı yanıtlar. Yanıtlar tarihsel veri, tahmin çıktısı ve açıklanabilirlik dosyalarından ilgili kesiti okuyarak üretilir; kullanılan veri dayanağı yanıtın sonunda belirtilir.
+Dashboard genelinde sağ alt köşede açılan Yapay Zeka Asistanı, sayfa içeriğini kalabalıklaştırmadan çalışır. Soru metninden ülke, metrik, kategori, yıl ve niyet bilgisini yakalar; birden fazla soru varsa bunları ayrı veri okuma adımlarına böler. Yanıtlar tarihsel veri, 2024-2030 tahmin çıktısı ve açıklanabilirlik dosyalarından ilgili kesit okunarak üretilir.
+
+Asistan sohbet geçmişini rapor ekranı gibi üst üste yığmaz. Her yeni soru tek aktif yanıt panelini günceller; bu nedenle kullanıcı ekranda her zaman son sorunun veri dayanağıyla birlikte üretilmiş cevabını görür.
 
 ---
 
@@ -176,15 +178,24 @@ ecolense-intelligence/
 │   └── meta.json
 ├── docs/assets/
 │   ├── dashboard_home.jpg
+│   ├── dashboard_home_tr.png
+│   ├── dashboard_home_en.png
 │   ├── dashboard_model_performance.jpg
 │   ├── dashboard_shap_section.jpg
 │   ├── forecast_trends.png
+│   ├── forecast_trends_en.png
 │   ├── category_waste_2023.png
+│   ├── category_waste_2023_en.png
 │   ├── model_performance_summary.png
+│   ├── model_performance_summary_en.png
 │   ├── shap_feature_impact_overview.png
+│   ├── shap_feature_impact_overview_en.png
 │   ├── shap_total_waste.png
 │   ├── shap_economic_loss.png
-│   └── shap_carbon_footprint.png
+│   ├── shap_carbon_footprint.png
+│   ├── shap_total_waste_en.png
+│   ├── shap_economic_loss_en.png
+│   └── shap_carbon_footprint_en.png
 ├── outputs/
 │   ├── forecasts/forecasts.csv
 │   ├── metrics/model_performance.json
