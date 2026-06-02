@@ -40,6 +40,8 @@ Ecolense Intelligence, küresel gıda israfını ülke, yıl ve gıda kategorisi
 
 ![SHAP ve özellik etkisi bölümü](docs/assets/dashboard_shap_section.jpg)
 
+![SDG Index dış doğrulama grafiği](docs/assets/sdg_index_alignment_tr.png)
+
 ---
 
 ## Analitik Görseller
@@ -62,6 +64,8 @@ Sürdürülebilirlik skoru, ülke düzeyinde kişi başı gıda israfı, kişi b
 
 2023 verisinde ortalama skor 82,7/100, ülke medyanı 82,9/100 seviyesindedir. En yüksek skorlar India, Russia, Romania, South Africa ve Lithuania tarafında yoğunlaşır. 2024-2030 projeksiyonunda skor 2023 ölçeğinden koparılmadan, aynı ülkenin kişi başı atık, ekonomik kayıp ve karbon baskısındaki değişime göre güncellenir.
 
+Bu gösterge resmi SDG Index puanı değildir. 2025 Sustainable Development Report / SDG Index veritabanı ile yapılan dış kontrolde 146 ülke eşleşmiştir. Ecolense kompozit skoru ile 2025 genel SDG Index skoru arasındaki Pearson korelasyonu 0,04; SDG 12 skoru ile 0,20; SDG 13 skoru ile 0,39 olarak ölçülmüştür. Bu sonuç, Ecolense skorunun genel sürdürülebilirlik performansını değil; gıda israfı, ekonomik kayıp ve karbon baskısı odağındaki karar destek profilini gösterdiğini doğrular.
+
 ---
 
 ## Veri Seti ve Metodoloji
@@ -76,6 +80,7 @@ Veri seti ülke-yıl-kategori kırılımında hazırlanmıştır. Analizde gıda
 | 2021 | UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri | Tablo A4.1 ve ülke göstergeleri |
 | 2024 güncel veri tabanı | UNEP IRP Global Material Flows Database | Materyal ayak izi göstergeleri | Kişi başına materyal ayak izi |
 | Ekim 2024 | IMF World Economic Outlook Database | 2024-2030 makro projeksiyon girdileri | Büyüme varsayımları |
+| 2025 | Sustainable Development Report / SDG Index Database | 2025 SDG Index ve hedef skorları | Dış doğrulama ve kapsam kontrolü |
 | Erişim: 2 Haziran 2026 | Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri | Dashboard etiketleri ve ülke kırılımları |
 
 Veri hattı üç temel adımdan oluşur:
@@ -121,7 +126,7 @@ Gradient Boosting Regressor ana üretim modeli olarak kullanılır. Açıklanabi
 | ROI / NPV | Azaltım senaryolarının finansal geri dönüşünü ve net bugünkü değerini hesaplar. |
 | Benchmark & Lig | Ülkeleri performans liginde sıralar ve karşılaştırmalı konumlarını gösterir. |
 | Anomali & İzleme | Aykırı değerleri ve izleme sinyallerini kontrol eder. |
-| Veri Hattı & Kalite | Dosya kaynaklarını, veri kapsamını, satır/sütun kalitesini ve üretim akışını özetler. |
+| Veri Hattı & Kalite | Dosya kaynaklarını, veri kapsamını, satır/sütun kalitesini, SDG Index dış doğrulama çıktısını ve üretim akışını özetler. |
 | Karbon Akışları | Karbon yükünün kategori, ülke veya kıta üzerinden nasıl dağıldığını gösterir. |
 | Model Karşılaştırma | Model sonuçlarını, hedef bazlı performansı ve özellik etkilerini birlikte değerlendirir. |
 | Politika Simülatörü | Atık azaltımı, karbon fiyatı ve teknoloji benimsemesi gibi politika girdilerini test eder. |
@@ -195,15 +200,19 @@ ecolense-intelligence/
 │   ├── shap_carbon_footprint.png
 │   ├── shap_total_waste_en.png
 │   ├── shap_economic_loss_en.png
-│   └── shap_carbon_footprint_en.png
+│   ├── shap_carbon_footprint_en.png
+│   ├── sdg_index_alignment.png
+│   └── sdg_index_alignment_tr.png
 ├── outputs/
 │   ├── forecasts/forecasts.csv
 │   ├── metrics/model_performance.json
-│   └── explainability/shap_*.csv
+│   ├── explainability/shap_*.csv
+│   └── validation/sdg_index_comparison.*
 ├── models/
 ├── 01_prepare_data.py
 ├── 02_train_models.py
 ├── 03_generate_forecasts.py
+├── 04_validate_sdg_alignment.py
 ├── run_pipeline.py
 └── app.py
 ```
@@ -221,6 +230,7 @@ Kaynaklar yayın/veri sürümü tarihine göre kronolojik sıralanmıştır. Web
 - 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Ülke bazlı gıda atığı göstergeleri ve Tablo A4.1 için kullanıldı.
 - 2024 güncel veri tabanı — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Kişi başına materyal ayak izi için kullanıldı.
 - Ekim 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). 2024-2030 makro büyüme varsayımları için kullanıldı.
+- 2025 — Sustainable Development Solutions Network. [*Sustainable Development Report 2025 / SDG Index Database*](https://dashboards.sdgindex.org/explorer/). 2025 SDG Index genel skoru, SDG 2, SDG 12 ve SDG 13 skorlarıyla dış doğrulama için kullanıldı.
 
 ---
 

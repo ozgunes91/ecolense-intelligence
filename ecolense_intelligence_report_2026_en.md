@@ -1,6 +1,6 @@
 # Ecolense Intelligence Technical Report
 
-**Date:** June 1, 2026<br>
+**Date:** June 2, 2026<br>
 **Live Dashboard:** [ecolense-intelligence.streamlit.app](https://ecolense-intelligence.streamlit.app)<br>
 **Turkish Report:** [ecolense_intelligence_raporu_2026.md](ecolense_intelligence_raporu_2026.md)<br>
 **Authors:** Özge Güneş · Kübra Saruhan<br>
@@ -37,6 +37,7 @@ The dataset is prepared at country-year-food category level. It includes food wa
 | 2021 | UNEP Food Waste Index Report | Country-level food waste indicators | Table A4.1 and country indicators |
 | 2024 database update | UNEP IRP Global Material Flows Database | Material footprint | Material footprint per capita |
 | October 2024 | IMF World Economic Outlook Database | Macro growth assumptions | 2024-2030 projection inputs |
+| 2025 | Sustainable Development Report / SDG Index Database | 2025 SDG Index and goal scores | External validation and scope control |
 | Accessed June 2, 2026 | Country metadata | Region, income group, ISO code, and population | Dashboard slices |
 
 ![2023 category distribution](docs/assets/category_waste_2023_en.png)
@@ -98,6 +99,16 @@ The sustainability score is a 0-100 composite indicator that reads food waste pe
 
 In the 2023 data, the average score is 82.7/100 and the country median is 82.9/100. The highest scores are observed in India, Russia, Romania, South Africa, and Lithuania. The lowest scores are concentrated in Kuwait, Nigeria, Saudi Arabia, Qatar, and Australia. The 2024-2030 projection uses each country's 2023 score as the baseline and updates it according to projected changes in per-capita waste, economic loss, and carbon pressure.
 
+## External SDG Index Check
+
+The Ecolense sustainability score is not the official SDG Index score. It is an internal composite indicator designed to read food waste, economic loss, and carbon pressure together.
+
+The external check against the 2025 Sustainable Development Report / SDG Index database matched 146 countries. The Pearson correlation between the Ecolense composite score and the 2025 overall SDG Index score is 0.04; the correlation with SDG 12 is 0.20, and the correlation with SDG 13 is 0.39. This means the dashboard should be read as a focused decision-support layer for sustainable food systems, not as a full SDG performance dashboard.
+
+![SDG Index external validation](docs/assets/sdg_index_alignment.png)
+
+The SDG 2, SDG 12, and SDG 13 cards in Story Mode are therefore used as a scope lens, not as the official icon set. SDG 2 represents food-system pressure, SDG 12 frames responsible consumption and production, and SDG 13 represents carbon impact.
+
 ---
 
 ## Dashboard Modules
@@ -156,6 +167,7 @@ References are listed chronologically by publication or data-version date. Web s
 - 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Used for country-level food waste indicators and Table A4.1.
 - 2024 database update — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Used for material footprint per capita.
 - October 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). Used for 2024-2030 macro growth assumptions.
+- 2025 — Sustainable Development Solutions Network. [*Sustainable Development Report 2025 / SDG Index Database*](https://dashboards.sdgindex.org/explorer/). Used for external validation against the 2025 overall SDG Index score and SDG 2, SDG 12, and SDG 13 scores.
 
 ---
 

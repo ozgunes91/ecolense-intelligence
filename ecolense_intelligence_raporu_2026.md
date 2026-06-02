@@ -1,6 +1,6 @@
 # Ecolense Intelligence Teknik Raporu
 
-**Tarih:** 1 Haziran 2026<br>
+**Tarih:** 2 Haziran 2026<br>
 **Canlı Dashboard:** [ecolense-intelligence.streamlit.app](https://ecolense-intelligence.streamlit.app)<br>
 **İngilizce Rapor:** [ecolense_intelligence_report_2026_en.md](ecolense_intelligence_report_2026_en.md)<br>
 **Hazırlayanlar:** Özge Güneş · Kübra Saruhan<br>
@@ -39,6 +39,7 @@ Veri seti ülke-yıl-gıda kategorisi seviyesinde hazırlanmıştır. Çalışma
 | 2021 | UNEP Food Waste Index Report | Ülke bazlı gıda atığı göstergeleri | Tablo A4.1 ve ülke göstergeleri |
 | 2024 güncel veri tabanı | UNEP IRP Global Material Flows Database | Materyal ayak izi | Kişi başına materyal ayak izi |
 | Ekim 2024 | IMF World Economic Outlook Database | Makro büyüme varsayımları | 2024-2030 projeksiyon girdileri |
+| 2025 | Sustainable Development Report / SDG Index Database | 2025 SDG Index ve hedef skorları | Dış doğrulama ve kapsam kontrolü |
 | Erişim: 2 Haziran 2026 | Ülke meta verileri | Bölge, gelir grubu, ISO kodu ve nüfus bilgileri | Dashboard kırılımları |
 
 ![2023 kategori dağılımı](docs/assets/category_waste_2023.png)
@@ -100,6 +101,16 @@ Sürdürülebilirlik skoru, kişi başı gıda israfı, kişi başı ekonomik ka
 
 2023 verisinde ortalama skor 82,7/100, ülke medyanı 82,9/100 seviyesindedir. En yüksek skorlar India, Russia, Romania, South Africa ve Lithuania ülkelerinde görülür. En düşük skorlar Kuwait, Nigeria, Saudi Arabia, Qatar ve Australia tarafında yoğunlaşır. 2024-2030 projeksiyonu, her ülkenin 2023 skorunu baz alır ve gelecekteki kişi başı atık, ekonomik kayıp ve karbon baskısı değişimine göre skoru günceller.
 
+## SDG Index ile Dış Kontrol
+
+Ecolense sürdürülebilirlik skoru resmi SDG Index puanı değildir. Skor, gıda israfı, ekonomik kayıp ve karbon baskısını birlikte okumak için tasarlanmış proje içi kompozit göstergedir.
+
+2025 Sustainable Development Report / SDG Index veritabanı ile ülke düzeyinde yapılan dış kontrolde 146 ülke eşleşmiştir. Ecolense kompozit skoru ile 2025 genel SDG Index skoru arasındaki Pearson korelasyonu 0,04; SDG 12 skoru ile 0,20; SDG 13 skoru ile 0,39 olarak hesaplanmıştır. Bu sonuç, dashboardun tam bir SDG performans panosu değil, sürdürülebilir gıda sistemleri için odaklanmış karar destek panosu olduğunu gösterir.
+
+![SDG Index dış doğrulama grafiği](docs/assets/sdg_index_alignment_tr.png)
+
+Story Mode bölümündeki SDG 2, SDG 12 ve SDG 13 kartları bu nedenle resmi ikon seti olarak değil, kapsam merceği olarak kullanılır. SDG 2 gıda sistemi baskısını, SDG 12 sorumlu tüketim ve üretim bağlamını, SDG 13 ise karbon etkisini temsil eder.
+
 ---
 
 ## Dashboard Modülleri
@@ -158,6 +169,7 @@ Kaynaklar yayın/veri sürümü tarihine göre kronolojik sıralanmıştır. Web
 - 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Ülke bazlı gıda atığı göstergeleri ve Tablo A4.1 için kullanıldı.
 - 2024 güncel veri tabanı — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Kişi başına materyal ayak izi için kullanıldı.
 - Ekim 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). 2024-2030 makro büyüme varsayımları için kullanıldı.
+- 2025 — Sustainable Development Solutions Network. [*Sustainable Development Report 2025 / SDG Index Database*](https://dashboards.sdgindex.org/explorer/). 2025 SDG Index genel skoru, SDG 2, SDG 12 ve SDG 13 skorlarıyla dış doğrulama için kullanıldı.
 
 ---
 

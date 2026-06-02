@@ -56,10 +56,12 @@ OUTPUT_DIR = "outputs"
 FORECAST_DIR = os.path.join(OUTPUT_DIR, "forecasts")
 METRICS_DIR = os.path.join(OUTPUT_DIR, "metrics")
 EXPLAINABILITY_DIR = os.path.join(OUTPUT_DIR, "explainability")
+VALIDATION_DIR = os.path.join(OUTPUT_DIR, "validation")
 
 REAL_DATA_PATH = "data/processed.csv"                              # 148 ISO3 tekil ülke, 2010-2023, UNEP/FAO/Gapminder gerçek veri
 PREDICTIONS_PATH = os.path.join(FORECAST_DIR, "forecasts.csv")      # 2024-2030 ML tahminleri
 PERF_REPORT_PATH = os.path.join(METRICS_DIR, "model_performance.json")
+SDG_ALIGNMENT_SUMMARY_PATH = os.path.join(VALIDATION_DIR, "sdg_index_comparison_summary.json")
 MODEL_COMPARISON_PATH = PERF_REPORT_PATH                           # Aynı dosyadan okunur
 MODEL_RESULTS_PATH = PREDICTIONS_PATH                              # Tahmin sonuçları
 OUTLIER_REPORT_PATH = PREDICTIONS_PATH                             # Mevcut değil, forecasts kullanılır
@@ -2880,6 +2882,96 @@ def _story_action_html(items: list[str]) -> str:
     """
 
 
+@st.cache_data(show_spinner=False)
+def load_sdg_alignment_summary() -> dict:
+    """Resmi SDG Index karşılaştırma özetini okur."""
+    try:
+        if os.path.exists(SDG_ALIGNMENT_SUMMARY_PATH):
+            with open(SDG_ALIGNMENT_SUMMARY_PATH, "r", encoding="utf-8") as fh:
+                return json.load(fh)
+    except Exception:
+        return {}
+    return {}
+
+
+def _sdg_scope_html(summary: Optional[dict] = None) -> str:
+    summary = summary or {}
+    matched = int(summary.get("matched_countries", 146) or 146)
+    r_index = float(summary.get("pearson_sdg_index", 0.043) or 0.043)
+    r_goal12 = float(summary.get("pearson_sdg_goal12", 0.201) or 0.201)
+    r_goal13 = float(summary.get("pearson_sdg_goal13", 0.394) or 0.394)
+    accessed = str(summary.get("accessed", "2026-06-02"))
+
+    cards = [
+        (
+            "SDG 2",
+            _copy("Gıda sistemi baskısı", "Food-system pressure"),
+            _copy("İsraf hacmi ve kategori kırılımı", "Waste volume and category mix"),
+            "#334155",
+        ),
+        (
+            "SDG 12",
+            _copy("Sorumlu tüketim", "Responsible consumption"),
+            _copy(f"Resmi SDG 12 ile yönsel kontrol: r={r_goal12:.2f}", f"Directional check with official SDG 12: r={r_goal12:.2f}"),
+            "#0F766E",
+        ),
+        (
+            "SDG 13",
+            _copy("İklim etkisi", "Climate impact"),
+            _copy(f"Karbon odaklı en güçlü dış uyum: r={r_goal13:.2f}", f"Strongest external alignment is carbon-focused: r={r_goal13:.2f}"),
+            "#166534",
+        ),
+        (
+            "Ecolense",
+            _copy("Kompozit skor", "Composite score"),
+            _copy("Gıda israfı, ekonomik kayıp ve karbon baskısı", "Food waste, economic loss, and carbon pressure"),
+            "#232E5C",
+        ),
+    ]
+    card_html = "".join(
+        f"""
+        <div style="background: #FFFFFF; border: 1px solid rgba(15,23,42,0.08);
+                    border-left: 5px solid {color}; border-radius: 12px; padding: 1rem;
+                    box-shadow: 0 8px 18px rgba(15,23,42,0.06); min-height: 132px;">
+            <div style="font-size: 0.78rem; font-weight: 800; color: {color}; letter-spacing: 0;">{html.escape(code)}</div>
+            <div style="font-size: 1rem; font-weight: 750; color: #0F172A; margin-top: 0.3rem;">{html.escape(title)}</div>
+            <div style="font-size: 0.86rem; color: #475569; line-height: 1.45; margin-top: 0.45rem;">{html.escape(desc)}</div>
+        </div>
+        """
+        for code, title, desc, color in cards
+    )
+
+    return f"""
+    <div style="background: rgba(248,250,252,0.94); border: 1px solid rgba(15,23,42,0.08);
+                border-radius: 14px; padding: 1.25rem; margin: 1rem 0 1.5rem 0;
+                box-shadow: 0 10px 22px rgba(15,23,42,0.07);">
+        <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1rem;">
+            <div>
+                <h3 style="margin: 0; color: #0F172A; font-size: 1.25rem; font-weight: 760;">{html.escape(_copy('Sürdürülebilirlik kapsamı', 'Sustainability scope'))}</h3>
+                <p style="margin: 0.45rem 0 0 0; color: #475569; font-size: 0.94rem; line-height: 1.55;">
+                    {html.escape(_copy(
+                        'Bu dashboard resmi SDG Index puanı üretmez; gıda israfı, ekonomik kayıp ve karbon baskısını karar desteği için birlikte okur.',
+                        'This dashboard does not produce the official SDG Index score; it reads food waste, economic loss, and carbon pressure together for decision support.'
+                    ))}
+                </p>
+            </div>
+            <div style="background: #EAF3F2; color: #0F766E; padding: 0.55rem 0.75rem; border-radius: 999px; font-size: 0.82rem; font-weight: 750;">
+                {html.escape(_copy(f'{matched} ülke eşleşti', f'{matched} countries matched'))}
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.8rem;">
+            {card_html}
+        </div>
+        <p style="margin: 1rem 0 0 0; color: #64748B; font-size: 0.82rem; line-height: 1.5;">
+            {html.escape(_copy(
+                f'2025 SDG Index genel skoru ile Ecolense kompozit skoru arasındaki korelasyon r={r_index:.2f}. Bu sonuç, skorun tam SDG performansı değil gıda sistemi baskı göstergesi olarak yorumlanması gerektiğini gösterir. Kaynak erişimi: {accessed}.',
+                f'The correlation between the 2025 SDG Index score and the Ecolense composite score is r={r_index:.2f}. This means the score should be read as a food-system pressure indicator, not as full SDG performance. Source access: {accessed}.'
+            ))}
+        </p>
+    </div>
+    """
+
+
 def render_story_detail(df: pd.DataFrame, story_mode: str):
     """Seçilen hikayeyi yerel veri ve tahminlerle üretir."""
     year_col = _resolve_column_name(df, ['Year', 'year'])
@@ -2997,6 +3089,13 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
     with kpi_cols[3]:
         st.metric("Ortalama Skor", f"{avg_score:.1f}/100")
 
+    if story_type == "roadmap":
+        st.markdown(_sdg_scope_html(load_sdg_alignment_summary()), unsafe_allow_html=True)
+
+    sdg_summary = load_sdg_alignment_summary()
+    sdg_r = float(sdg_summary.get("pearson_sdg_index", 0.043) or 0.043)
+    sdg_goal13_r = float(sdg_summary.get("pearson_sdg_goal13", 0.394) or 0.394)
+
     story_lines = {
         "crisis": [
             f"{first_year}-{latest_year} döneminde toplam israf {_compact_metric(total_waste, ' ton')} olarak ölçüldü.",
@@ -3020,6 +3119,10 @@ def render_story_detail(df: pd.DataFrame, story_mode: str):
             f"{latest_year} ortalama sürdürülebilirlik skoru {latest_df[score_col].mean():.1f}/100." if score_col else "",
             f"En güçlü skor profili {best_score_country} ülkesinde {best_score_value:.1f}/100 olarak görünüyor." if score_col else "",
             f"Yüksek hacimli ülkeler içinde en düşük skor baskısı {high_pressure_country} tarafında; skor {high_pressure_score:.1f}/100." if score_col else "",
+            _copy(
+                f"Resmi 2025 SDG Index genel skoru ile dış kontrol korelasyonu r={sdg_r:.2f}; SDG 13 karbon odağıyla ilişki daha belirgin (r={sdg_goal13_r:.2f}).",
+                f"External check against the official 2025 SDG Index gives r={sdg_r:.2f}; the SDG 13 carbon lens is more aligned (r={sdg_goal13_r:.2f})."
+            ),
             f"Öncelik, {top_country_name} ve {top_category_name} kesişimindeki hacmi düşürmek."
         ],
         "analytics": [
@@ -3296,6 +3399,8 @@ def show_story_mode_page():
         </div>
         """, unsafe_allow_html=True)
 
+        st.markdown(_sdg_scope_html(load_sdg_alignment_summary()), unsafe_allow_html=True)
+
         # Hikaye seçimi
         st.markdown(f"""
         <div style="background: rgba(255,255,255,0.9);
@@ -3333,7 +3438,7 @@ def show_story_mode_page():
                 },
                 {
                     "title": "🎯 Sustainable Solutions Roadmap",
-                    "subtitle": "Strategic pathway to 2030 sustainability goals and circular economy",
+                    "subtitle": "Food-system pathway for waste, carbon, and economic-loss reduction",
                     "key_metrics": [f"Score: {score_label}", f"Top pressure: {top_country_card}", f"{top_category_card}: {top_category_share_card:.1f}%", "2030 path"],
                     "color": "linear-gradient(135deg, #203F2F 0%, #17291F 100%)"
                 },
@@ -3372,7 +3477,7 @@ def show_story_mode_page():
                 },
                 {
                     "title": "🎯 Sürdürülebilir Çözümler Yol Haritası",
-                    "subtitle": "2030 sürdürülebilirlik hedeflerine stratejik yol ve döngüsel ekonomi",
+                    "subtitle": "Atık, karbon ve ekonomik kayıp azaltımı için gıda sistemi yol haritası",
                     "key_metrics": [f"Skor: {score_label}", f"Baskı: {top_country_card}", f"{top_category_card}: %{top_category_share_card:.1f}", "2030 yolu"],
                     "color": "linear-gradient(135deg, #203F2F 0%, #17291F 100%)"
                 },
@@ -7537,6 +7642,7 @@ def _build_report_context(df: pd.DataFrame, perf_data: Optional[dict], lang: Opt
         "shap_rows": shap_rows,
         "perf_rows": perf_rows,
         "perf": perf_data or {},
+        "sdg_alignment": load_sdg_alignment_summary(),
     }
 
 
@@ -7588,6 +7694,26 @@ def _compose_report_sections(report_type: str, ctx: dict, flags: dict, lang: Opt
         )
     sustainability_html = "<ul>" + "".join(f"<li>{html.escape(line[2:])}</li>" for line in sustainability_md.splitlines() if line.startswith("- ")) + "</ul>"
     sections.append((_copy("Sürdürülebilirlik Skoru", "Sustainability Score", lang), sustainability_md, sustainability_html))
+
+    sdg_ctx = ctx.get("sdg_alignment") or {}
+    if sdg_ctx:
+        matched = int(sdg_ctx.get("matched_countries", 0) or 0)
+        r_index = float(sdg_ctx.get("pearson_sdg_index", 0) or 0)
+        r_goal12 = float(sdg_ctx.get("pearson_sdg_goal12", 0) or 0)
+        r_goal13 = float(sdg_ctx.get("pearson_sdg_goal13", 0) or 0)
+        sdg_md = _copy(
+            f"- Ecolense skoru resmi SDG Index puanı değildir; gıda israfı, ekonomik kayıp ve karbon baskısını birlikte okuyan proje kompozitidir.\n"
+            f"- 2025 Sustainable Development Report / SDG Index veritabanı ile {matched} ülke eşleşti.\n"
+            f"- 2025 genel SDG Index ile korelasyon r={r_index:.2f}; SDG 12 ile r={r_goal12:.2f}; SDG 13 ile r={r_goal13:.2f}.\n"
+            f"- Yorum: dashboard tam SDG performans panosu değil, sürdürülebilir gıda sistemleri için odaklı karar destek katmanıdır.\n",
+            f"- The Ecolense score is not the official SDG Index score; it is a project composite for food waste, economic loss, and carbon pressure.\n"
+            f"- The external check against the 2025 Sustainable Development Report / SDG Index database matched {matched} countries.\n"
+            f"- Correlation is r={r_index:.2f} with the 2025 overall SDG Index, r={r_goal12:.2f} with SDG 12, and r={r_goal13:.2f} with SDG 13.\n"
+            f"- Interpretation: the dashboard is a focused decision-support layer for sustainable food systems, not a full SDG performance dashboard.\n",
+            lang,
+        )
+        sdg_html = "<ul>" + "".join(f"<li>{html.escape(line[2:])}</li>" for line in sdg_md.splitlines() if line.startswith("- ")) + "</ul>"
+        sections.append((_copy("SDG Index ile Dış Kontrol", "External SDG Index Check", lang), sdg_md, sdg_html))
 
     if flags.get("insights"):
         md = (
@@ -9189,6 +9315,7 @@ def show_data_lineage_quality():
     - **Veri hazırlama**: `01_prepare_data.py`
     - **Modelleme**: `02_train_models.py`
     - **Tahmin üretimi**: `03_generate_forecasts.py`
+    - **SDG Index dış doğrulama**: `04_validate_sdg_alignment.py`
     - **Dashboard**: `app.py`
     """)
 
@@ -9223,6 +9350,11 @@ def show_data_lineage_quality():
             "Tarih / Sürüm": "Ekim 2024",
             "Kaynak": "IMF World Economic Outlook Database",
             "Kullanım": "2024-2030 makro büyüme varsayımları",
+        },
+        {
+            "Tarih / Sürüm": "2025",
+            "Kaynak": "Sustainable Development Report / SDG Index Database",
+            "Kullanım": "2025 genel SDG Index, SDG 2, SDG 12 ve SDG 13 dış doğrulaması",
         },
     ])
     st.dataframe(lineage_sources, use_container_width=True, hide_index=True)

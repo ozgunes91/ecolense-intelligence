@@ -38,6 +38,8 @@ Ecolense Intelligence is a data-driven decision support platform for global food
 
 ![Model performance page](docs/assets/dashboard_model_performance_en.png)
 
+![SDG Index external validation](docs/assets/sdg_index_alignment.png)
+
 ---
 
 ## Analytical Visuals
@@ -60,6 +62,8 @@ The sustainability score is a 0-100 composite indicator that reads country-level
 
 In 2023, the average score is 82.7/100 and the country median is 82.9/100. The strongest scores are concentrated in India, Russia, Romania, South Africa, and Lithuania. The 2024-2030 projection keeps the score connected to the 2023 country scale and updates it according to projected changes in per-capita waste, economic loss, and carbon pressure.
 
+This indicator is not the official SDG Index score. An external check against the 2025 Sustainable Development Report / SDG Index database matched 146 countries. The Pearson correlation is 0.04 with the 2025 overall SDG Index score, 0.20 with SDG 12, and 0.39 with SDG 13. This confirms that the Ecolense score should be interpreted as a food-waste, economic-loss, and carbon-pressure decision-support profile, not as full national SDG performance.
+
 ---
 
 ## Dataset And Methodology
@@ -74,6 +78,7 @@ The dataset is prepared at country-year-food category level. It uses food waste,
 | 2021 | UNEP Food Waste Index Report | Country-level food waste indicators | Table A4.1 and country indicators |
 | 2024 database update | UNEP IRP Global Material Flows Database | Material footprint indicators | Material footprint per capita |
 | October 2024 | IMF World Economic Outlook Database | 2024-2030 macro projection inputs | Growth assumptions |
+| 2025 | Sustainable Development Report / SDG Index Database | 2025 SDG Index and goal scores | External validation and scope control |
 | Accessed June 2, 2026 | Country metadata | Region, income group, ISO code, and population | Dashboard labels and country slices |
 
 The pipeline has three main steps:
@@ -176,15 +181,19 @@ ecolense-intelligence/
 │   ├── forecast_trends.png / forecast_trends_en.png
 │   ├── category_waste_2023.png / category_waste_2023_en.png
 │   ├── model_performance_summary.png / model_performance_summary_en.png
-│   └── shap_*_en.png
+│   ├── shap_*_en.png
+│   ├── sdg_index_alignment.png
+│   └── sdg_index_alignment_tr.png
 ├── outputs/
 │   ├── forecasts/forecasts.csv
 │   ├── metrics/model_performance.json
-│   └── explainability/shap_*.csv
+│   ├── explainability/shap_*.csv
+│   └── validation/sdg_index_comparison.*
 ├── models/
 ├── 01_prepare_data.py
 ├── 02_train_models.py
 ├── 03_generate_forecasts.py
+├── 04_validate_sdg_alignment.py
 ├── run_pipeline.py
 └── app.py
 ```
@@ -202,6 +211,7 @@ References are listed chronologically by publication or data-version date. Web s
 - 2021 — UNEP. [*Food Waste Index Report 2021*](https://www.unep.org/resources/report/unep-food-waste-index-report-2021). Used for country-level food waste indicators and Table A4.1.
 - 2024 database update — UNEP International Resource Panel. [*Global Material Flows Database*](https://www.resourcepanel.org/global-material-flows-database). Used for material footprint per capita.
 - October 2024 — IMF. [*World Economic Outlook Database, October 2024*](https://www.imf.org/en/Publications/WEO/weo-database/2024/October). Used for 2024-2030 macro growth assumptions.
+- 2025 — Sustainable Development Solutions Network. [*Sustainable Development Report 2025 / SDG Index Database*](https://dashboards.sdgindex.org/explorer/). Used for external validation against the 2025 overall SDG Index score and SDG 2, SDG 12, and SDG 13 scores.
 
 ---
 

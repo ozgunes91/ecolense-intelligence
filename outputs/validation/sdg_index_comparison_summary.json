@@ -1,0 +1,17 @@
+{
+  "source": "Sustainable Development Report 2025 / SDG Index dashboard database",
+  "source_url": "https://dashboards.sdgindex.org/static/downloads/files/SDR2025-data.xlsx",
+  "accessed": "2026-06-02",
+  "local_year": 2023,
+  "local_countries": 148,
+  "sdg_countries": 208,
+  "matched_countries": 146,
+  "ecolense_zero_country_scores": 0,
+  "ecolense_min_score": 76.42,
+  "ecolense_max_score": 89.38374999999999,
+  "pearson_sdg_index": 0.04327122230078943,
+  "spearman_sdg_index": 0.027095919837566766,
+  "pearson_sdg_goal2": -0.06023012098091038,
+  "pearson_sdg_goal12": 0.20064942909754563,
+  "pearson_sdg_goal13": 0.3937347147170519
+}
